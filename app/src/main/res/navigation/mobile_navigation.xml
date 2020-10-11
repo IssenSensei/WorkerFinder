@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.workerfinder.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.workerfinder.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.example.workerfinder.ui.about.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/about_fragment" />
+    <fragment
+        android:id="@+id/nav_info"
+        android:name="com.example.workerfinder.ui.info.InfoFragment"
+        android:label="@string/menu_info"
+        tools:layout="@layout/fragment_info" />
+    <fragment
+        android:id="@+id/nav_newTask"
+        android:name="com.example.workerfinder.ui.newTask.NewTaskFragment"
+        android:label="@string/menu_newTask"
+        tools:layout="@layout/new_task_fragment" />
+    <fragment
+        android:id="@+id/nav_newWorker"
+        android:name="com.example.workerfinder.ui.newWorker.NewWorkerFragment"
+        android:label="@string/menu_newWorker"
+        tools:layout="@layout/new_worker_fragment" />
+    <fragment
+        android:id="@+id/nav_taskHistory"
+        android:name="com.example.workerfinder.ui.taskHistory.TaskHistoryFragment"
+        android:label="@string/menu_taskHistory"
+        tools:layout="@layout/task_history_fragment" />
+    <fragment
+        android:id="@+id/nav_workers"
+        android:name="com.example.workerfinder.ui.workers.WorkersFragment"
+        android:label="@string/menu_workers"
+        tools:layout="@layout/workers_fragment" />
+
+</navigation>
