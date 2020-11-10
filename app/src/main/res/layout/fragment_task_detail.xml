@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="fullTask"
+            type="com.issen.workerfinder.database.FullTaskModel" />
+    </data>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_large"
+            tools:context=".ui.taskDetail.TaskDetailFragment">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_title"
+                android:text="Title" />
+
+            <TextView
+                android:id="@+id/task_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.taskTitle}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_description"
+                android:text="Description" />
+
+            <TextView
+                android:id="@+id/task_detail_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.taskDescription}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_user"
+                android:text="User" />
+
+            <TextView
+                android:id="@+id/task_detail_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.user}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_worker"
+                android:text="Worker" />
+
+            <TextView
+                android:id="@+id/task_detail_worker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.worker}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_category"
+                android:text="Category" />
+
+            <TextView
+                android:id="@+id/task_detail_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.category}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_next_completion_date"
+                android:text="Deadline" />
+
+            <TextView
+                android:id="@+id/task_detail_next_completion_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.nextCompletionDate}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_cyclic"
+                android:text="Cyclic" />
+
+            <TextView
+                android:id="@+id/task_detail_cyclic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.cyclic}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_repeat_days"
+                android:text="Repeat days" />
+
+            <TextView
+                android:id="@+id/task_detail_repeat_days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_repeat_until"
+                android:text="Repeat until" />
+
+            <TextView
+                android:id="@+id/task_detail_repeat_until"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.repeatUntil.toString()}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_photos"
+                android:text="Photos" />
+
+            <TextView
+                android:id="@+id/task_detail_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_priority"
+                android:text="Priority" />
+
+            <TextView
+                android:id="@+id/task_detail_priority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.priority}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_completion_type"
+                android:text="Completion type" />
+
+            <TextView
+                android:id="@+id/task_detail_completion_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.completed}" />
+
+            <LinearLayout
+                android:id="@+id/task_list_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="horizontal" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/task_detail_completion_date"
+                android:text="Completion date" />
+
+            <TextView
+                android:id="@+id/task_detail_completion_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedblock"
+                android:padding="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="@{fullTask.task.completionDate}" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

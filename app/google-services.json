@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "851085588636",
+    "firebase_url": "https://workerfinder001.firebaseio.com",
+    "project_id": "workerfinder001",
+    "storage_bucket": "workerfinder001.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851085588636:android:ad5d95bf473189368ad559",
+        "android_client_info": {
+          "package_name": "com.issen.workerfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851085588636-enp00jol1f3lqqbvn6j1h8nqjm2kd5r8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.issen.workerfinder",
+            "certificate_hash": "09d60b48073d8c2c010b8380779446611679ada6"
+          }
+        },
+        {
+          "client_id": "851085588636-1fumkat1eaajoam7dkq1aaeas9qvbuuh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO_rWN16MJ7gYEKfKzYhdZmGsc_KHy3DU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "851085588636-1fumkat1eaajoam7dkq1aaeas9qvbuuh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

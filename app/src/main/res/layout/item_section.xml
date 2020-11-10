@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/spacing_large"
-    android:background="@drawable/roundedshape"
+    android:background="@drawable/roundedblock"
     android:paddingLeft="@dimen/spacing_medium"
     android:paddingRight="@dimen/spacing_medium"
     android:paddingTop="@dimen/spacing_large">

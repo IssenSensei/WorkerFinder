@@ -1,135 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
-            name="task"
-            type="com.example.workerfinder.database.TaskModel" />
+            name="fullTask"
+            type="com.issen.workerfinder.database.FullTaskModel" />
 
         <variable
             name="clickListener"
-            type="com.example.workerfinder.ui.home.TaskListListener" />
+            type="com.issen.workerfinder.ui.taskList.TaskListListener" />
     </data>
 
-    <com.balysv.materialripple.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
         android:id="@+id/lyt_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/roundedblock">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <com.balysv.materialripple.MaterialRippleLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/spacing_large"
+            android:background="@drawable/roundedblock"
+            android:onClick="@{() -> clickListener.onTaskSelected(fullTask)}">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/is_cyclic"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/description_is_cyclic"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/cyclic_smallest_black"
-                    app:tint="@color/colorSecondary" />
-
-                <ImageView
-                    android:id="@+id/has_pictures"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/description_has_pictures"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/camera_smallest_black"
-                    app:tint="@color/colorSecondary" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:padding="@dimen/spacing_large">
 
+                <ImageView
+                    android:id="@+id/task_priority_indicator"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/description_task_more"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/indicator"
+                    app:tint="@color/grey_3" />
+
+
                 <CheckBox
-                    android:id="@+id/task_complete_checkbox"
+                    android:id="@+id/task_complete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> clickListener.onTaskComplete(task)}"
-                    android:buttonTint="@color/colorSecondary" />
+                    android:buttonTint="@color/green_900"
+                    android:onClick="@{() -> clickListener.onTaskComplete(fullTask)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/task_priority_indicator" />
+
+                <CheckBox
+                    android:id="@+id/task_abandon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/red_900"
+                    android:onClick="@{() -> clickListener.onTaskAbandon(fullTask)}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/task_complete" />
 
                 <TextView
                     android:id="@+id/task_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/spacing_large"
-                    android:layout_marginRight="@dimen/spacing_large"
-                    android:onClick="@{() -> clickListener.onItemHold(task)}"
-                    android:layout_weight="7"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/grey_10"
-                    tools:text="Tytuł" />
-
-                <ImageView
-                    android:id="@+id/task_expand"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/description_task_more"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/down_smallest_black"
-                    app:tint="@color/colorSecondary" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/task_priority"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/description_task_more"
-                    app:srcCompat="@drawable/priority_smallest_black"
-                    app:tint="@color/grey_3" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/task_list_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                    android:layout_marginStart="4dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/task_priority_indicator"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@{fullTask.task.taskTitle}" />
 
                 <TextView
-                    android:id="@+id/task_description"
-                    android:layout_width="match_parent"
+                    android:id="@+id/task_worker"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_medium"
-                    android:textColor="@color/grey_10" />
+                    android:layout_marginStart="4dp"
+                    android:text="@{fullTask.task.worker}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/task_priority_indicator"
+                    app:layout_constraintTop_toBottomOf="@+id/task_title" />
 
-                <LinearLayout
-                    android:id="@+id/task_list_photos"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/task_next_completion_date"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone" />
+                    android:layout_marginStart="4dp"
+                    android:text="@{fullTask.task.nextCompletionDate}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/task_priority_indicator"
+                    app:layout_constraintTop_toBottomOf="@+id/task_worker" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </com.balysv.materialripple.MaterialRippleLayout>
 
-        </LinearLayout>
-    </com.balysv.materialripple.MaterialRippleLayout>
+        <ImageView
+            android:id="@+id/photos_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/spacing_single"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/camera_smallest_black" />
+
+        <ImageView
+            android:id="@+id/cyclic_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/spacing_double"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:src="@drawable/cyclic_smallest_black" />
+    </FrameLayout>
 </layout>
