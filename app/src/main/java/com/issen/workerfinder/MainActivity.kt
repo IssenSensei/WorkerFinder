@@ -72,8 +72,8 @@ class MainActivity : AppCompatActivity() {
                 val providers = arrayListOf(
                     EmailBuilder().enableEmailLinkSignIn()
                         .setActionCodeSettings(actionCodeSettings).build(),
-                    IdpConfig.GoogleBuilder().build(),
-                    IdpConfig.FacebookBuilder().build()
+                    IdpConfig.GoogleBuilder().build()
+//                    ,                   IdpConfig.FacebookBuilder().build()
                 )
 
                 startActivityForResult(

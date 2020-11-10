@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">WorkerFinder</string>
 
-    <string name="facebook_application_id">367817151110117</string>
-    <string name="facebook_app_id">367817151110117</string>
-    <string name="fb_login_protocol_scheme">fb367817151110117</string>
+<!--    <string name="facebook_application_id">367817151110117</string>-->
+<!--    <string name="facebook_app_id">367817151110117</string>-->
+<!--    <string name="fb_login_protocol_scheme">fb367817151110117</string>-->
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
