@@ -14,13 +14,14 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-@Database(entities = [TaskModel::class, TaskModelPhotos::class, TaskModelRepeatDays::class], version = 1, exportSchema = false)
+@Database(entities = [TaskModel::class, TaskModelPhotos::class, TaskModelRepeatDays::class, UserModel::class], version = 1, exportSchema = false)
 @TypeConverters(DataConverter::class)
 abstract class WorkerFinderDatabase : RoomDatabase() {
 
     abstract val taskModelDao: TaskModelDao
     abstract val taskPhotosDao: TaskPhotosDao
     abstract val taskRepeatDaysDao: TaskRepeatDaysDao
+    abstract val userModelDao: UserModelDao
 
     private class WorkerFinderDatabaseCallback(private val scope: CoroutineScope) :
         RoomDatabase.Callback() {
@@ -31,9 +32,11 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     val taskModelDao = it.taskModelDao
                     val taskPhotosDao = it.taskPhotosDao
                     val taskRepeatDaysDao = it.taskRepeatDaysDao
+                    val userModelDao = it.userModelDao
                     taskModelDao.deleteAll()
                     taskPhotosDao.deleteAll()
                     taskRepeatDaysDao.deleteAll()
+                    userModelDao.deleteAll()
                     taskModelDao.insert(
                         mutableListOf(
                             TaskModel(
@@ -98,6 +101,13 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                             TaskModelRepeatDays(0, 2, "ccccc"),
                             TaskModelRepeatDays(0, 1, "ddddd"),
                             TaskModelRepeatDays(0, 2, "eeeeeeee")
+                        )
+                    )
+                    userModelDao.insert(
+                        mutableListOf(
+                            UserModel(1, "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "111111111", "aaaaa1",false),
+                            UserModel(0, "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "222222222", "aaaaaa2", false),
+                            UserModel(0, "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "333333333", "aaaaaa3", false)
                         )
                     )
 

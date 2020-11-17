@@ -71,5 +71,10 @@
         android:name="com.issen.workerfinder.ui.taskEdit.TaskEditFragment"
         android:label="@string/menu_taskEdit"
         tools:layout="@layout/fragment_task_edit" />
+    <fragment
+        android:id="@+id/nav_user_profile"
+        android:name="com.issen.workerfinder.ui.userProfile.UserProfileFragment"
+        android:label="@string/menu_userProfile"
+        tools:layout="@layout/fragment_user_profile" />
 
 </navigation>

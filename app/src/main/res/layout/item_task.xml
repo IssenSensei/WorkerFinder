@@ -43,24 +43,29 @@
                     app:srcCompat="@drawable/indicator"
                     app:tint="@color/grey_3" />
 
-
-                <CheckBox
-                    android:id="@+id/task_complete"
+                <RadioGroup
+                    android:id="@+id/task_complete_radio_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/green_900"
-                    android:onClick="@{() -> clickListener.onTaskComplete(fullTask)}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/task_priority_indicator" />
+                    app:layout_constraintTop_toBottomOf="@id/task_priority_indicator">
 
-                <CheckBox
-                    android:id="@+id/task_abandon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/red_900"
-                    android:onClick="@{() -> clickListener.onTaskAbandon(fullTask)}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/task_complete" />
+                    <RadioButton
+                        android:id="@+id/task_complete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/green_900"
+                        android:onClick="@{() -> clickListener.onTaskComplete(fullTask)}" />
+
+                    <RadioButton
+                        android:id="@+id/task_abandon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/red_900"
+                        android:onClick="@{() -> clickListener.onTaskAbandon(fullTask)}" />
+
+                </RadioGroup>
+
 
                 <TextView
                     android:id="@+id/task_title"

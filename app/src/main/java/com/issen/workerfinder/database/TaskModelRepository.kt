@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 class TaskModelRepository(
     private val taskModelDao: TaskModelDao,
     private val taskPhotosDao: TaskPhotosDao,
-    private val taskRepeatDaysDao: TaskRepeatDaysDao
+    private val taskRepeatDaysDao: TaskRepeatDaysDao,
+    private val userModelDao: UserModelDao
 ) {
 
     val allTasks: LiveData<List<FullTaskModel>> = taskModelDao.getAllTasks()
+
 
     suspend fun insert(taskModel: TaskModel, photos: List<TaskModelPhotos>, repeatDays: List<TaskModelRepeatDays>) {
         val taskId = taskModelDao.insert(taskModel)
@@ -26,8 +28,13 @@ class TaskModelRepository(
         taskModelDao.insert(taskModel)
     }
 
-    suspend fun updateTask(taskModel: TaskModel) {
-        taskModelDao.completeTask(taskModel)
+    fun getUserById(firebaseKey: String): LiveData<UserModel>{
+        return userModelDao.getUserById(firebaseKey)
     }
 
+    suspend fun getCompletedTasks(firebaseKey: String): Int = taskModelDao.getCompletedTasksCount(firebaseKey)
+    suspend fun getActiveTasks(firebaseKey: String): Int = taskModelDao.getActiveTasksCount(firebaseKey)
+    suspend fun getAbandonedTasks(firebaseKey: String): Int = taskModelDao.getAbandonedTasksCount(firebaseKey)
+    suspend fun completeTask(taskId: Int) = taskModelDao.completeTask(taskId)
+    suspend fun abandonTask(taskId: Int) = taskModelDao.abandonTask(taskId)
 }

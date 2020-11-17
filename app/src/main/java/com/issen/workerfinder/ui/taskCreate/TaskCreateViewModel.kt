@@ -17,10 +17,12 @@ class TaskCreateViewModel(application: Application) : AndroidViewModel(applicati
     val photos = mutableListOf<TaskModelPhotos>()
 
     init {
-        val taskModelDao = WorkerFinderDatabase.getDatabase(application, viewModelScope).taskModelDao
-        val taskPhotosDao = WorkerFinderDatabase.getDatabase(application, viewModelScope).taskPhotosDao
-        val taskRepeatDaysDao = WorkerFinderDatabase.getDatabase(application, viewModelScope).taskRepeatDaysDao
-        repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao)
+        val database = WorkerFinderDatabase.getDatabase(application, viewModelScope)
+        val taskModelDao = database.taskModelDao
+        val taskPhotosDao = database.taskPhotosDao
+        val taskRepeatDaysDao = database.taskRepeatDaysDao
+        val userModelDao = database.userModelDao
+        repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao)
     }
 
 //    fun insert(taskModel: TaskModel, photos: TaskModelPhotos, repeatDays: TaskModelRepeatDays) {

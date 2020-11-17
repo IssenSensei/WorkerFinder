@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
+import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUser
 import com.issen.workerfinder.database.TaskModel
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
@@ -56,7 +57,7 @@ class TaskCreateFragment : Fragment() {
         val tempModel = taskCreateViewModel.generateMockupModel()
         root.new_task_title.setText(tempModel.taskTitle)
         root.new_task_description.setText(tempModel.taskDescription)
-        root.new_task_worker.setText(tempModel.worker)
+        root.new_task_worker.setText(currentLoggedInUser.uid)
         root.new_task_category.setText(tempModel.category)
         root.new_task_date.setText(tempModel.nextCompletionDate)
 

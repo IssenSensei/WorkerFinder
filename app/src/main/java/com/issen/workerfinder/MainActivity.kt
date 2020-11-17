@@ -1,11 +1,13 @@
 package com.issen.workerfinder
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -20,11 +22,17 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.AuthUI.IdpConfig.EmailBuilder
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.gms.auth.api.credentials.Credentials
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.ActionCodeSettings
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.*
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
-import com.google.firebase.auth.FirebaseUser
+import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUser
+import com.issen.workerfinder.database.UserModel
+import com.issen.workerfinder.database.WorkerFinderDatabase
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -62,6 +70,7 @@ class MainActivity : AppCompatActivity() {
             val user = firebaseAuth.currentUser
             if (user != null) {
                 mFirebaseUser = firebaseAuth.currentUser!!
+                currentLoggedInUser = mFirebaseUser
             } else {
                 val actionCodeSettings = ActionCodeSettings.newBuilder()
                     .setAndroidPackageName("com.issen.workerfinder", true, null)
@@ -73,7 +82,6 @@ class MainActivity : AppCompatActivity() {
                     EmailBuilder().enableEmailLinkSignIn()
                         .setActionCodeSettings(actionCodeSettings).build(),
                     IdpConfig.GoogleBuilder().build()
-//                    ,                   IdpConfig.FacebookBuilder().build()
                 )
 
                 startActivityForResult(
@@ -91,7 +99,6 @@ class MainActivity : AppCompatActivity() {
             val providers: List<IdpConfig> = listOf(
                 EmailBuilder().build()
             )
-            Log.d("AAAAAAAAAAAAAAAAAAAAAAA", "got an email link: $link")
             if (link != null) {
                 startActivityForResult(
                     AuthUI.getInstance()
@@ -99,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                         .setEmailLink(link)
                         .setAvailableProviders(providers)
                         .build(),
-                    12345
+                    RC_SIGN_IN_EMAIL_LINK
                 )
             }
         }
@@ -121,13 +128,6 @@ class MainActivity : AppCompatActivity() {
 
         setupNavigationMenu(navController)
         setupActionBar(navController, appBarConfiguration)
-
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            when (destination.id) {
-                R.id.nav_new_task -> {
-                }
-            }
-        }
     }
 
     private fun setupNavigationMenu(navController: NavController) {
@@ -173,25 +173,76 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
-
             if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(this, "Chyba git", Toast.LENGTH_SHORT).show()
-                val user = FirebaseAuth.getInstance().currentUser
-                mFirebaseUser = user!!
-                // ...
+                prepareUser(response)
             } else {
-                Toast.makeText(this, "no i chyba coś nie pykło", Toast.LENGTH_SHORT).show()
-
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
+                if (response != null)
+                    Toast.makeText(this, "Error occured, please try again", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    companion object {
-        private const val RC_SIGN_IN = 9000
+    private fun prepareUser(response: IdpResponse?) {
+        val user = FirebaseAuth.getInstance().currentUser
+        mFirebaseUser = user!!
+        if (response?.isNewUser!!) {
+            MainScope().launch {
+                currentLoggedInUser = mFirebaseUser
+                WorkerFinderDatabase.getDatabase(applicationContext, this).userModelDao.insert(
+                    UserModel(
+                        0,
+                        user.displayName.toString(),
+                        user.photoUrl.toString(),
+                        user.email.toString(),
+                        user.phoneNumber.toString(),
+                        mFirebaseUser.uid,
+                        false
+                    )
+                )
+            }
+        }
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putString("userToken", response.idpToken)
+            apply()
+        }
     }
+
+    fun navigateProfile(view: View) {
+        findNavController(R.id.nav_host_fragment).navigate(R.id.nav_user_profile)
+        drawer_layout.closeDrawers()
+    }
+
+
+    //todo read more about tokens and authentication in firebase
+    fun deleteUser() {
+        val currentUser = FirebaseAuth.getInstance().currentUser!!
+
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        val userToken = sharedPref.getString("userToken", null)
+
+        if(userToken != null){
+            val credential = GoogleAuthProvider.getCredential(userToken, null)
+            FirebaseAuth.getInstance().currentUser!!.reauthenticate(credential).addOnSuccessListener {
+                currentUser.delete()
+                    .addOnFailureListener {
+                        Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnSuccessListener {
+                        Credentials.getClient(this).disableAutoSignIn();
+                    }
+            }
+        } else {
+            Toast.makeText(this, "Incorrect token", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    companion object {
+
+        private const val RC_SIGN_IN = 9000
+        private const val RC_SIGN_IN_EMAIL_LINK = 9001
+    }
+
 
 }
