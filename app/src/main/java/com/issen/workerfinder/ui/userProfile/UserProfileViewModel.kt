@@ -6,8 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.issen.workerfinder.database.TaskModelRepository
-import com.issen.workerfinder.database.models.UserModel
+import com.issen.workerfinder.database.models.FullUserData
 import com.issen.workerfinder.database.WorkerFinderDatabase
+import com.issen.workerfinder.database.models.UserData
 import kotlinx.coroutines.launch
 
 class UserProfileViewModel(application: Application, firebaseKey: String) : AndroidViewModel(application) {
@@ -32,19 +33,19 @@ class UserProfileViewModel(application: Application, firebaseKey: String) : Andr
         val taskModelDao = database.taskModelDao
         val taskPhotosDao = database.taskPhotosDao
         val taskRepeatDaysDao = database.taskRepeatDaysDao
-        val userModelDao = database.userModelDao
+        val userModelDao = database.userDataDao
         repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao)
         viewModelScope.launch { _activeTasks.value = repository.getActiveTasks(firebaseKey) }
         viewModelScope.launch { _completedTasks.value = repository.getCompletedTasks(firebaseKey) }
         viewModelScope.launch { _abandonedTasks.value = repository.getAbandonedTasks(firebaseKey) }
     }
 
-    fun getUserByKey(firebaseKey: String): LiveData<UserModel> {
+    fun getUserByKey(firebaseKey: String): LiveData<FullUserData> {
         return repository.getUserById(firebaseKey)
     }
 
-    fun updateUser(userModel: UserModel) {
-        repository.updateUser(userModel)
+    fun updateUser(userData: UserData) {
+        repository.updateUser(userData)
     }
 
     fun setAccountPublic(firebaseKey: String, isPublic: Boolean) {

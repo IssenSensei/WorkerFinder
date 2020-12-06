@@ -27,7 +27,7 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUser
+import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInFullUser
 import com.issen.workerfinder.database.WorkerFinderDatabase
 import com.issen.workerfinder.databinding.ActivityMainBinding
 import com.issen.workerfinder.databinding.NavHeaderMainBinding
@@ -66,16 +66,22 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
         main_loading.showAnimated()
         MainScope().launch(Dispatchers.IO) {
-            currentLoggedInUser = WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope)
-                .userModelDao
+            currentLoggedInFullUser = WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope)
+                .userDataDao
                 .getUserByFirebaseKey(auth.currentUser!!.uid)
         }.invokeOnCompletion {
-            navHeaderBinding.user = currentLoggedInUser
-            navHeaderBinding.name.text = if (currentLoggedInUser!!.userName != "") currentLoggedInUser!!.userName else "Brak danych"
-            navHeaderBinding.email.text = if (currentLoggedInUser!!.email != "") currentLoggedInUser!!.email else "Brak danych"
+            navHeaderBinding.user = currentLoggedInFullUser
+//            navHeaderBinding.name.text = if (currentLoggedInFullUser!!.userData.userName != "") currentLoggedInFullUser!!.useruserName else
+//                "Brak " +
+//                    "danych"
+//            navHeaderBinding.email.text = if (currentLoggedInFullUser!!.email != "") currentLoggedInFullUser!!.email else "Brak danych"
             main_loading.hideAnimated()
+            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateComments(lifecycleScope, currentLoggedInFullUser
+                !!.userData.userId)
+            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateContacts(lifecycleScope, currentLoggedInFullUser
+                !!.userData.userId)
         }
-        Glide.with(this).load(currentLoggedInUser!!.photo).placeholder(R.drawable.meme).into(navHeaderBinding.avatar)
+        Glide.with(this).load(currentLoggedInFullUser!!.userData.photo).placeholder(R.drawable.meme).into(navHeaderBinding.avatar)
 
         prepareDrawer()
         handleUI()
@@ -146,7 +152,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
     private fun deleteUser(password: String) {
         val credential = EmailAuthProvider
-            .getCredential(currentLoggedInUser!!.email, password)
+            .getCredential(currentLoggedInFullUser!!.userData.email, password)
         auth.currentUser!!.reauthenticate(credential)
             .addOnSuccessListener {
                 auth.currentUser!!.delete()

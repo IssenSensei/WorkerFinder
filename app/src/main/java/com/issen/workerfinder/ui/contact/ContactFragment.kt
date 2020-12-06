@@ -1,7 +1,6 @@
 package com.issen.workerfinder.ui.contact
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUser
+import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInFullUser
 import kotlinx.android.synthetic.main.fragment_contact.*
 import kotlinx.android.synthetic.main.fragment_contact.view.*
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +60,7 @@ class ContactFragment : Fragment() {
             })
             try {
                 val message: Message = MimeMessage(session)
-                message.setFrom(InternetAddress(currentLoggedInUser!!.email))
+                message.setFrom(InternetAddress(currentLoggedInFullUser!!.userData.email))
                 message.setRecipients(
                     Message.RecipientType.TO,
                     InternetAddress.parse("IssenSensei@gmail.com")

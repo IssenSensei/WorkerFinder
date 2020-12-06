@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/task_board_filter_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.workerBoard.WorkerBoardFragment">
+    android:fitsSystemWindows="true"
+    tools:context=".ui.workerBoard.WorkerBoardFragment"
+    tools:openDrawer="end">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/worker_board_recycler_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_worker" />
 
-</FrameLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

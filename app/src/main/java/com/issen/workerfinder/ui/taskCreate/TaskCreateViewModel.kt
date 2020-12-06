@@ -24,7 +24,7 @@ class TaskCreateViewModel(application: Application) : AndroidViewModel(applicati
         val taskModelDao = database.taskModelDao
         val taskPhotosDao = database.taskPhotosDao
         val taskRepeatDaysDao = database.taskRepeatDaysDao
-        val userModelDao = database.userModelDao
+        val userModelDao = database.userDataDao
         repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao)
     }
 
@@ -57,7 +57,6 @@ class TaskCreateViewModel(application: Application) : AndroidViewModel(applicati
         "title" + randomString(10),
         "description" + randomString(20),
         worker = "worker" + randomString(20),
-        category = "category" + randomString(20),
         completionDate = "completionDate" + randomString(20),
         priority = PriorityTypes.NORMAL.toString()
     )

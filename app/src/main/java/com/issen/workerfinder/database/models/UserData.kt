@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(tableName = "user_table")
-data class UserModel(
+data class UserData(
 
     @PrimaryKey(autoGenerate = true)
     var userId: Int = 0,
@@ -20,7 +20,9 @@ data class UserModel(
 
     var firebaseKey: String = "",
 
-    var isAccountPublic: Boolean = false
+    var isAccountPublic: Boolean = false,
+
+    var isOpenForWork: Boolean = false
 
 
 ) : Serializable

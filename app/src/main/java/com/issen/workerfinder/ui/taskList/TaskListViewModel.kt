@@ -22,7 +22,7 @@ class TaskListViewModel(application: Application) : AndroidViewModel(application
         val taskModelDao = database.taskModelDao
         val taskPhotosDao = database.taskPhotosDao
         val taskRepeatDaysDao = database.taskRepeatDaysDao
-        val userModelDao = database.userModelDao
+        val userModelDao = database.userDataDao
         repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao)
         mediatorLiveData.addSource(repository.allTasks) {
             mediatorLiveData.setValue(

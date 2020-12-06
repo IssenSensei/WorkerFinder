@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUser
+import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInFullUser
 import com.issen.workerfinder.database.models.TaskModel
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
@@ -57,8 +57,8 @@ class TaskCreateFragment : Fragment() {
         val tempModel = taskCreateViewModel.generateMockupModel()
         root.new_task_title.setText(tempModel.taskTitle)
         root.new_task_description.setText(tempModel.taskDescription)
-        root.new_task_worker.setText(currentLoggedInUser!!.firebaseKey)
-        root.new_task_category.setText(tempModel.category)
+        root.new_task_worker.setText(currentLoggedInFullUser!!.userData.firebaseKey)
+//        root.new_task_category.setText(tempModel.category)
         root.new_task_date.setText(tempModel.nextCompletionDate)
 
         val prioritySpinnerAdapter = PrioritySpinnerAdapter(requireContext())
@@ -92,7 +92,6 @@ class TaskCreateFragment : Fragment() {
                 new_task_description.text.toString(),
                 "zbysiu",
                 new_task_worker.text.toString(),
-                new_task_category.text.toString(),
                 new_task_date.text.toString(),
                 type,
                 Date(),

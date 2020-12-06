@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import com.issen.workerfinder.database.dao.TaskModelDao
 import com.issen.workerfinder.database.dao.TaskPhotosDao
 import com.issen.workerfinder.database.dao.TaskRepeatDaysDao
-import com.issen.workerfinder.database.dao.UserModelDao
+import com.issen.workerfinder.database.dao.UserDataDao
 import com.issen.workerfinder.database.models.*
 
 class TaskModelRepository(
     private val taskModelDao: TaskModelDao,
     private val taskPhotosDao: TaskPhotosDao,
     private val taskRepeatDaysDao: TaskRepeatDaysDao,
-    private val userModelDao: UserModelDao
+    private val userDataDao: UserDataDao
 ) {
 
     val allTasks: LiveData<List<FullTaskModel>> = taskModelDao.getAllTasks()
@@ -34,8 +34,8 @@ class TaskModelRepository(
         taskModelDao.insert(taskModel)
     }
 
-    fun getUserById(firebaseKey: String): LiveData<UserModel> {
-        return userModelDao.getUserById(firebaseKey)
+    fun getUserById(firebaseKey: String): LiveData<FullUserData> {
+        return userDataDao.getUserById(firebaseKey)
     }
 
     suspend fun getCompletedTasks(firebaseKey: String): Int = taskModelDao.getCompletedTasksCount(firebaseKey)
@@ -43,8 +43,8 @@ class TaskModelRepository(
     suspend fun getAbandonedTasks(firebaseKey: String): Int = taskModelDao.getAbandonedTasksCount(firebaseKey)
     suspend fun completeTask(taskId: Int) = taskModelDao.completeTask(taskId)
     suspend fun abandonTask(taskId: Int) = taskModelDao.abandonTask(taskId)
-    fun updateUser(userModel: UserModel) = userModelDao.update(userModel)
-    suspend fun setAccountPublic(firebaseKey: String, public: Boolean) = userModelDao.setAccountPublic(firebaseKey, public)
+    fun updateUser(userData: UserData) = userDataDao.update(userData)
+    suspend fun setAccountPublic(firebaseKey: String, public: Boolean) = userDataDao.setAccountPublic(firebaseKey, public)
 
 
 }

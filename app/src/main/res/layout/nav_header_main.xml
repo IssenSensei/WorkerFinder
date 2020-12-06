@@ -5,7 +5,7 @@
 
         <variable
             name="user"
-            type="com.issen.workerfinder.database.models.UserModel" />
+            type="com.issen.workerfinder.database.models.FullUserData" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/spacing_double"
             android:layout_marginBottom="@dimen/spacing_large"
             android:onClick="navigateProfile"
-            android:src="@{user.photo}"
+            android:src="@{user.userData.photo}"
             app:civ_border_width="2dp"
             app:civ_shadow="true"
             app:civ_shadow_radius="0" />
@@ -53,12 +53,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
+                    android:text='@{user.userData.userName ?? "Nie podano"}'
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                 <TextView
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text='@{user.userData.email ?? "Nie podano"}'
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             </LinearLayout>

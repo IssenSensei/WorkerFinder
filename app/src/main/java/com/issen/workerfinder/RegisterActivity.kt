@@ -8,8 +8,9 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.issen.workerfinder.database.models.UserModel
+import com.issen.workerfinder.database.models.FullUserData
 import com.issen.workerfinder.database.WorkerFinderDatabase
+import com.issen.workerfinder.database.models.UserData
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -30,15 +31,16 @@ class RegisterActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     MainScope().launch {
                         WorkerFinderDatabase.getDatabase(applicationContext, this)
-                            .userModelDao
+                            .userDataDao
                             .insert(
-                                UserModel(
+                                UserData(
                                     0,
                                     activity_register_user_name.text.toString(),
                                     "",
                                     activity_register_email.text.toString(),
                                     activity_register_phone.text.toString(),
                                     auth.currentUser!!.uid,
+                                    false,
                                     false
                                 )
                             )

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="user"
-            type="com.issen.workerfinder.database.models.UserModel" />
+            type="com.issen.workerfinder.database.models.FullUserData" />
     </data>
 
     <ScrollView

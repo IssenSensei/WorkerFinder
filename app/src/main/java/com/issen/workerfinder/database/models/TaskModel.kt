@@ -27,9 +27,6 @@ data class TaskModel(
     @ColumnInfo(name = "task_worker")
     var worker: String = "",
 
-    @ColumnInfo(name = "task_category")
-    var category: String = "",
-
     @ColumnInfo(name = "task_next_completion_date")
     var nextCompletionDate: String = "",
 
@@ -46,7 +43,11 @@ data class TaskModel(
     var completed: String = CompletionTypes.ONGOING.toString(),
 
     @ColumnInfo(name = "task_completion_date")
-    var completionDate: String = ""
+    var completionDate: String = "",
+
+    var localization: String = "",
+
+    var pay: String = ""
 
 
 ) : Serializable

@@ -7,7 +7,7 @@
 
         <variable
             name="user"
-            type="com.issen.workerfinder.database.models.UserModel" />
+            type="com.issen.workerfinder.database.models.FullUserData" />
 
         <variable
             name="clickListener"
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text='@{user.userName ?? "Brak danych"}'
+                android:text='@{user.userData.userName ?? "Brak danych"}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -309,7 +309,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_large"
-                            android:text='@{user.email ?? "Bral danych"}'
+                            android:text='@{user.userData.email ?? "Brak danych"}'
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_90" />
                     </LinearLayout>
@@ -332,7 +332,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_large"
-                            android:text='@{user.phone ?? "Brak danych"}'
+                            android:text='@{user.userData.phone ?? "Brak danych"}'
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_90" />
                     </LinearLayout>

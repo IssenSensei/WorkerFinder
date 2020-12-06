@@ -95,8 +95,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundedblock"
                 android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.category}" />
+                android:layout_marginBottom="@dimen/spacing_small" />
 
             <TextView
                 android:layout_width="wrap_content"
