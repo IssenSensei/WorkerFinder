@@ -6,6 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.issen.workerfinder.database.dao.TaskModelDao
+import com.issen.workerfinder.database.dao.TaskPhotosDao
+import com.issen.workerfinder.database.dao.TaskRepeatDaysDao
+import com.issen.workerfinder.database.dao.UserModelDao
+import com.issen.workerfinder.database.models.TaskModel
+import com.issen.workerfinder.database.models.TaskModelPhotos
+import com.issen.workerfinder.database.models.TaskModelRepeatDays
+import com.issen.workerfinder.database.models.UserModel
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
 import com.issen.workerfinder.enums.PriorityTypes
@@ -36,17 +44,17 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     taskModelDao.deleteAll()
                     taskPhotosDao.deleteAll()
                     taskRepeatDaysDao.deleteAll()
-                    userModelDao.deleteAll()
+//                    userModelDao.deleteAll()
                     taskModelDao.insert(
                         mutableListOf(
                             TaskModel(
                                 1,
-                                "title",
-                                "description",
+                                "Odśnieżanie",
+                                "Należy odśnieżyć całą posesję",
                                 "user",
-                                "worker",
+                                "Zbysiu Zbyś",
                                 "category",
-                                "22-12-20202",
+                                "22-12-2020",
                                 CyclicTypes.NONE.toString(),
                                 Date(),
                                 PriorityTypes.URGENT.toString(),
@@ -55,12 +63,12 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                             ),
                             TaskModel(
                                 2,
-                                "title2",
-                                "description2",
+                                "Pomoc na budowie",
+                                "Potrzebny pomocnik na budowie",
                                 "user2",
-                                "worker2",
+                                "Zbysiu Robotnik Zbyś",
                                 "category2",
-                                "22-12-20202",
+                                "01-01-2020",
                                 CyclicTypes.MONTHDAY.toString(),
                                 Date(),
                                 PriorityTypes.NORMAL.toString(),
@@ -69,12 +77,12 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                             ),
                             TaskModel(
                                 3,
-                                "title",
-                                "description",
+                                "Klaun na urodzinach online",
+                                "Najlepiej jakiś rudy",
                                 "user",
-                                "worker",
+                                "Zbysiu Rudy Zbyś",
                                 "category",
-                                "22-12-20202",
+                                "03-02-2021",
                                 CyclicTypes.NONE.toString(),
                                 Date(),
                                 PriorityTypes.LOW.toString(),
@@ -103,15 +111,32 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                             TaskModelRepeatDays(0, 2, "eeeeeeee")
                         )
                     )
+//                    userModelDao.insert(
+//                        mutableListOf(
+//                            UserModel(1, "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "111111111", "aaaaa1",false),
+//                            UserModel(0, "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "222222222", "aaaaaa2", false),
+//                            UserModel(0, "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "333333333", "aaaaaa3", false)
+//                        )
+//                    )
+
+                }
+            }
+        }
+
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            INSTANCE?.let {
+                scope.launch {
+                    val userModelDao = it.userModelDao
                     userModelDao.insert(
                         mutableListOf(
-                            UserModel(1, "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "111111111", "aaaaa1",false),
+                            UserModel(1, "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "111111111", "aaaaa1", false),
                             UserModel(0, "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "222222222", "aaaaaa2", false),
                             UserModel(0, "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "333333333", "aaaaaa3", false)
                         )
                     )
-
                 }
+
             }
         }
     }

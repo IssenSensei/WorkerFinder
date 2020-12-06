@@ -1,4 +1,4 @@
-package com.issen.workerfinder.database
+package com.issen.workerfinder.database.models
 
 import androidx.room.*
 import java.io.Serializable

@@ -1,7 +1,8 @@
-package com.issen.workerfinder.database
+package com.issen.workerfinder.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.issen.workerfinder.database.models.UserModel
 
 @Dao
 interface UserModelDao {
@@ -22,7 +23,9 @@ interface UserModelDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM user_table where firebaseKey = :firebaseKey")
-    fun getUserById(firebaseKey: String): LiveData<UserModel>
+    fun getUserByFirebaseKey(firebaseKey: String): UserModel
 
+    @Query("SELECT * FROM user_table where firebaseKey = :firebaseKey")
+    fun getUserById(firebaseKey: String): LiveData<UserModel>
 
 }

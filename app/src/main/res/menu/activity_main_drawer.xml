@@ -5,32 +5,50 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_task_list"
-            android:icon="@drawable/tasks_smallest_black"
-            android:title="@string/menu_task_list" />
+            android:id="@+id/nav_task_menu_title"
+            android:title="Zadania">
+            <menu>
+                <item
+                    android:id="@+id/nav_task_list"
+                    android:icon="@drawable/tasks_smallest_black"
+                    android:title="@string/menu_task_list" />
+                <item
+                    android:id="@+id/nav_new_task"
+                    android:icon="@drawable/new_task_smallest_black"
+                    android:title="@string/menu_newTask" />
+            </menu>
+        </item>
         <item
-            android:id="@+id/nav_new_task"
-            android:icon="@drawable/new_task_smallest_black"
-            android:title="@string/menu_newTask" />
+            android:id="@+id/nav_worker_menu_title"
+            android:title="Pracownicy">
+            <menu>
+                <item
+                    android:id="@+id/nav_new_worker"
+                    android:icon="@drawable/new_worker_smallest_black"
+                    android:title="@string/menu_newWorker" />
+                <item
+                    android:id="@+id/nav_workers"
+                    android:icon="@drawable/my_workers_smallest_black"
+                    android:title="@string/menu_workers" />
+            </menu>
+        </item>
         <item
-            android:id="@+id/nav_new_worker"
-            android:icon="@drawable/new_worker_smallest_black"
-            android:title="@string/menu_newWorker" />
-        <item
-            android:id="@+id/nav_workers"
-            android:icon="@drawable/my_workers_smallest_black"
-            android:title="@string/menu_workers" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/settings_smallest_black"
-            android:title="@string/menu_settings" />
-        <item
-            android:id="@+id/nav_info"
-            android:icon="@drawable/info_smallest_black"
-            android:title="@string/menu_info" />
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/about_smallest_black"
-            android:title="@string/menu_about" />
+            android:id="@+id/nav_other_menu_title"
+            android:title="Pozostałe">
+            <menu>
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/settings_smallest_black"
+                    android:title="@string/menu_settings" />
+                <item
+                    android:id="@+id/nav_info"
+                    android:icon="@drawable/info_smallest_black"
+                    android:title="@string/menu_info" />
+                <item
+                    android:id="@+id/nav_contact"
+                    android:icon="@drawable/about_smallest_black"
+                    android:title="@string/menu_contact" />
+            </menu>
+        </item>
     </group>
 </menu>

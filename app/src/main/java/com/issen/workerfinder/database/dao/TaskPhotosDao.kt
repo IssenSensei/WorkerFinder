@@ -1,8 +1,9 @@
-package com.issen.workerfinder.database
+package com.issen.workerfinder.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.issen.workerfinder.database.models.TaskModelPhotos
 
 @Dao
 interface TaskPhotosDao {

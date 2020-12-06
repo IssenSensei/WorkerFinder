@@ -1,7 +1,9 @@
-package com.issen.workerfinder.database
+package com.issen.workerfinder.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.issen.workerfinder.database.models.FullTaskModel
+import com.issen.workerfinder.database.models.TaskModel
 
 @Dao
 interface TaskModelDao {

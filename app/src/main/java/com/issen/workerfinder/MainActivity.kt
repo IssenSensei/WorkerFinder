@@ -1,115 +1,85 @@
 package com.issen.workerfinder
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.AuthUI.IdpConfig
-import com.firebase.ui.auth.AuthUI.IdpConfig.EmailBuilder
-import com.firebase.ui.auth.IdpResponse
-import com.google.android.gms.auth.api.credentials.Credentials
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.*
-import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUser
-import com.issen.workerfinder.database.UserModel
 import com.issen.workerfinder.database.WorkerFinderDatabase
+import com.issen.workerfinder.databinding.ActivityMainBinding
+import com.issen.workerfinder.databinding.NavHeaderMainBinding
+import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
+import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
+import com.issen.workerfinder.ui.misc.TaskListFilter
+import com.issen.workerfinder.ui.taskList.TaskListFragment
+import com.issen.workerfinder.utils.ViewAnimation
+import com.issen.workerfinder.utils.hideAnimated
+import com.issen.workerfinder.utils.nestedScrollTo
+import com.issen.workerfinder.utils.showAnimated
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.drawer_content_task_list.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var mFirebaseAuth: FirebaseAuth
-    private lateinit var mFirebaseUser: FirebaseUser
-    private lateinit var mAuthListener: AuthStateListener
-
+class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDrawerListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private var auth = FirebaseAuth.getInstance()
+    private var doubleBackToExitPressedOnce = false
+
+    private var currentTaskListFilter = TaskListFilter()
+    private var selectedTaskListFilter: TaskListFilter = currentTaskListFilter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val mainBinding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mainBinding.drawerFilterClickListener = this
 
-        handleAuth()
+        val navHeaderBinding: NavHeaderMainBinding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.nav_header_main, mainBinding.root.nav_view, false)
+        mainBinding.root.nav_view.addHeaderView(navHeaderBinding.root)
+
+        main_loading.showAnimated()
+        MainScope().launch(Dispatchers.IO) {
+            currentLoggedInUser = WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope)
+                .userModelDao
+                .getUserByFirebaseKey(auth.currentUser!!.uid)
+        }.invokeOnCompletion {
+            navHeaderBinding.user = currentLoggedInUser
+            navHeaderBinding.name.text = if (currentLoggedInUser!!.userName != "") currentLoggedInUser!!.userName else "Brak danych"
+            navHeaderBinding.email.text = if (currentLoggedInUser!!.email != "") currentLoggedInUser!!.email else "Brak danych"
+            main_loading.hideAnimated()
+        }
+        Glide.with(this).load(currentLoggedInUser!!.photo).placeholder(R.drawable.meme).into(navHeaderBinding.avatar)
+
+        prepareDrawer()
+
         handleUI()
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        mFirebaseAuth.addAuthStateListener(mAuthListener)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (mAuthListener != null) {
-            mFirebaseAuth.removeAuthStateListener(mAuthListener)
-        }
-    }
-
-    private fun handleAuth() {
-        mFirebaseAuth = FirebaseAuth.getInstance()
-        mAuthListener = AuthStateListener { firebaseAuth ->
-            val user = firebaseAuth.currentUser
-            if (user != null) {
-                mFirebaseUser = firebaseAuth.currentUser!!
-                currentLoggedInUser = mFirebaseUser
-            } else {
-                val actionCodeSettings = ActionCodeSettings.newBuilder()
-                    .setAndroidPackageName("com.issen.workerfinder", true, null)
-                    .setHandleCodeInApp(true)
-                    .setUrl("https://workerfinder.page.link")
-                    .build();
-
-                val providers = arrayListOf(
-                    EmailBuilder().enableEmailLinkSignIn()
-                        .setActionCodeSettings(actionCodeSettings).build(),
-                    IdpConfig.GoogleBuilder().build()
-                )
-
-                startActivityForResult(
-                    AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                    RC_SIGN_IN
-                )
-            }
-        }
-
-        if (AuthUI.canHandleIntent(intent)) {
-            val link = intent?.data?.toString()
-            val providers: List<IdpConfig> = listOf(
-                EmailBuilder().build()
-            )
-            if (link != null) {
-                startActivityForResult(
-                    AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setEmailLink(link)
-                        .setAvailableProviders(providers)
-                        .build(),
-                    RC_SIGN_IN_EMAIL_LINK
-                )
-            }
-        }
     }
 
     private fun handleUI() {
@@ -122,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_task_list, R.id.nav_new_task, R.id.nav_new_worker,
-                R.id.nav_workers, R.id.nav_settings, R.id.nav_info, R.id.nav_about
+                R.id.nav_workers, R.id.nav_settings, R.id.nav_info, R.id.nav_contact
             ), drawerLayout
         )
 
@@ -160,7 +130,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun logout() {
-        AuthUI.getInstance().signOut(this)
+        Firebase.auth.signOut()
+        setResult(RESULT_CANCELED)
+        finish()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -168,81 +140,210 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {
-                prepareUser(response)
-            } else {
-                if (response != null)
-                    Toast.makeText(this, "Error occured, please try again", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun prepareUser(response: IdpResponse?) {
-        val user = FirebaseAuth.getInstance().currentUser
-        mFirebaseUser = user!!
-        if (response?.isNewUser!!) {
-            MainScope().launch {
-                currentLoggedInUser = mFirebaseUser
-                WorkerFinderDatabase.getDatabase(applicationContext, this).userModelDao.insert(
-                    UserModel(
-                        0,
-                        user.displayName.toString(),
-                        user.photoUrl.toString(),
-                        user.email.toString(),
-                        user.phoneNumber.toString(),
-                        mFirebaseUser.uid,
-                        false
-                    )
-                )
-            }
-        }
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putString("userToken", response.idpToken)
-            apply()
-        }
-    }
-
     fun navigateProfile(view: View) {
         findNavController(R.id.nav_host_fragment).navigate(R.id.nav_user_profile)
         drawer_layout.closeDrawers()
     }
 
-
-    //todo read more about tokens and authentication in firebase
-    fun deleteUser() {
-        val currentUser = FirebaseAuth.getInstance().currentUser!!
-
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
-        val userToken = sharedPref.getString("userToken", null)
-
-        if(userToken != null){
-            val credential = GoogleAuthProvider.getCredential(userToken, null)
-            FirebaseAuth.getInstance().currentUser!!.reauthenticate(credential).addOnSuccessListener {
-                currentUser.delete()
-                    .addOnFailureListener {
-                        Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnSuccessListener {
-                        Credentials.getClient(this).disableAutoSignIn();
+    private fun deleteUser(password: String) {
+        val credential = EmailAuthProvider
+            .getCredential(currentLoggedInUser!!.email, password)
+        auth.currentUser!!.reauthenticate(credential)
+            .addOnSuccessListener {
+                auth.currentUser!!.delete()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Account deleted successfully!", Toast.LENGTH_SHORT).show()
+                            setResult(RESULT_CANCELED)
+                            finish()
+                        } else {
+                            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
+                        }
                     }
             }
-        } else {
-            Toast.makeText(this, "Incorrect token", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener {
+                Toast.makeText(this, "Error authenticating user!", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    fun askUserForPassword() {
+        val promptsView: View = LayoutInflater.from(this).inflate(R.layout.dialog_password_prompt, null)
+        val passwordInput = promptsView.findViewById<View>(R.id.dialog_user_password) as EditText
+
+        val dialog = AlertDialog.Builder(this).apply {
+            setView(promptsView)
+            setCancelable(false)
+            setTitle("Verification")
+            setPositiveButton("Verify") { dialog, id -> deleteUser(passwordInput.text.toString()) }
+            setNegativeButton("Cancel") { dialog, id -> dialog.cancel() }
         }
 
+        dialog.create().show()
     }
 
-    companion object {
+    override fun onBackPressed() {
+        when {
+            drawer_layout.isDrawerOpen(GravityCompat.END) -> {
+                onCancelClicked()
+            }
+            drawer_layout.isDrawerOpen(GravityCompat.START) -> {
+                drawer_layout.closeDrawer(GravityCompat.START)
+            }
+            else -> {
+                if (doubleBackToExitPressedOnce) {
+                    super.onBackPressed()
+                    finishAffinity()
+                }
 
-        private const val RC_SIGN_IN = 9000
-        private const val RC_SIGN_IN_EMAIL_LINK = 9001
+                this.doubleBackToExitPressedOnce = true
+                Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show()
+
+                Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+            }
+        }
+    }
+
+    override fun onMainHeaderClicked(view: View) {
+        toggleSectionInput(
+            view.findViewWithTag("viewButton"),
+            (view.parent as LinearLayout).findViewWithTag(view.tag.toString() + "Container")
+        )
+    }
+
+    override fun onFilterContainerClicked(view: View) {
+        drawer_filter_main_container.visibility = View.GONE
+        drawer_filter_back.visibility = View.VISIBLE
+        (drawer_filter_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(view.tag.toString() + "Container").visibility =
+            View.VISIBLE
+    }
+
+    override fun onAcceptClicked() {
+        Toast.makeText(this, "onAcceptClicked", Toast.LENGTH_SHORT).show()
+        when (val currentFragment = getCurrentlyDisplayedFragment()) {
+            is TaskListFragment -> {
+                currentFragment.onAcceptClicked(selectedTaskListFilter)
+                currentTaskListFilter = selectedTaskListFilter
+            }
+            else -> {
+                Toast.makeText(this, "Error closing drawer!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onCancelClicked() {
+        drawer_layout.closeDrawer(GravityCompat.END)
+        Toast.makeText(this, "onCancelClicked!!", Toast.LENGTH_SHORT).show()
+
+        //todo add sharedprefs
+        //todo clear filters
+        selectedTaskListFilter = currentTaskListFilter
+        drawer_filter_group_radio.check(R.id.drawer_filter_group_none)
+        drawer_filter_sort_radio.check(R.id.drawer_filter_sort_none)
+    }
+
+    override fun onBackClicked() {
+        Toast.makeText(this, "onBackClicked!!", Toast.LENGTH_SHORT).show()
+        selectedTaskListFilter = currentTaskListFilter
+        drawer_filter_worker_container.visibility = View.GONE
+        drawer_filter_user_container.visibility = View.GONE
+        drawer_filter_category_container.visibility = View.GONE
+        drawer_filter_cyclic_container.visibility = View.GONE
+        drawer_filter_priority_container.visibility = View.GONE
+        drawer_filter_completion_container.visibility = View.GONE
+        drawer_filter_main_container.visibility = View.VISIBLE
+        drawer_filter_back.visibility = View.INVISIBLE
     }
 
 
+    override fun onClearClicked() {
+        selectedTaskListFilter = TaskListFilter()
+        //todo clear filters
+        drawer_filter_group_radio.check(R.id.drawer_filter_group_none)
+        drawer_filter_sort_radio.check(R.id.drawer_filter_sort_none)
+        drawer_filter_sort_switch.isChecked = false
+    }
+
+    override fun onOrderSwitched(view: View) {
+        selectedTaskListFilter.orderBy = view.tag.toString()
+         drawer_filter_sort_switch.isChecked = view.tag == "asc"
+    }
+
+    private fun prepareDrawer() {
+
+        drawer_filter_sort_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
+            val radio = radioGroup.findViewById<RadioButton>(checkedId)
+            selectedTaskListFilter.sortBy = getSelectedSortValue(radio)
+            Toast.makeText(this, radio.text, Toast.LENGTH_SHORT).show()
+        }
+
+        drawer_filter_group_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
+            val radio = radioGroup.findViewById<RadioButton>(checkedId)
+            selectedTaskListFilter.groupBy = getSelectedGroupValue(radio)
+            Toast.makeText(this, radio.text, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getSelectedGroupValue(radio: RadioButton): String {
+        return when(radio.id){
+            R.id.drawer_filter_group_none ->{""}
+            R.id.drawer_filter_group_worker -> {"task_worker"}
+            R.id.drawer_filter_group_user -> {"task_user"}
+            R.id.drawer_filter_group_category -> {"task_category"}
+            R.id.drawer_filter_group_cyclic_type -> {"task_cyclic_type"}
+            R.id.drawer_filter_group_priority -> {"task_priority_type"}
+            R.id.drawer_filter_group_completed -> {"task_completion_type"}
+            else -> {""}
+        }
+    }
+
+    private fun getSelectedSortValue(radio: RadioButton): String {
+        return when(radio.id){
+            R.id.drawer_filter_sort_none ->{""}
+            R.id.drawer_filter_sort_taskName -> {"task_title"}
+            R.id.drawer_filter_sort_worker -> {"task_worker"}
+            R.id.drawer_filter_sort_user -> {"task_user"}
+            R.id.drawer_filter_sort_category -> {"task_category"}
+            R.id.drawer_filter_sort_next_date -> {"task_next_completion_date"}
+            R.id.drawer_filter_sort_priority -> {"task_priority_type"}
+            R.id.drawer_filter_sort_completion_date -> {"task_completion_date"}
+            else -> {""}
+        }
+    }
+
+    override fun onDrawerRequest(interactionImpl: (v: DrawerLayout) -> Unit) {
+        interactionImpl(drawer_layout)
+    }
+
+    override fun onDrawerClose(interactionImpl: (v: DrawerLayout) -> Unit) {
+        interactionImpl(drawer_layout)
+    }
+
+    private fun getCurrentlyDisplayedFragment() = (supportFragmentManager.primaryNavigationFragment as NavHostFragment)
+        .childFragmentManager.primaryNavigationFragment
+
+    private fun toggleSectionInput(view: View, containerView: View) {
+        val show = toggleArrow(view)
+        if (show) {
+            ViewAnimation.expand(containerView) {
+                fun onFinish() {
+                    nestedScrollTo(
+                        drawer_filter_nested_scroll_view,
+                        containerView
+                    )
+                }
+            }
+        } else {
+            ViewAnimation.collapse(containerView)
+        }
+    }
+
+    private fun toggleArrow(view: View): Boolean {
+        return if (view.rotation == 0f) {
+            view.animate().setDuration(200).rotation(180f)
+            true
+        } else {
+            view.animate().setDuration(200).rotation(0f)
+            false
+        }
+    }
 }

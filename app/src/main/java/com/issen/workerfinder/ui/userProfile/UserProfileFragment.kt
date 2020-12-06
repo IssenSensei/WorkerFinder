@@ -1,24 +1,28 @@
 package com.issen.workerfinder.ui.userProfile
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.MainActivity
 import com.issen.workerfinder.R
 import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUser
-import com.issen.workerfinder.database.UserModel
 import com.issen.workerfinder.databinding.FragmentUserProfileBinding
 
 class UserProfileFragment : Fragment() {
 
-    val userProfileViewModel: UserProfileViewModel by viewModels { UserProfileViewModelFactory(this.requireActivity().application, currentLoggedInUser.uid) }
+    val userProfileViewModel: UserProfileViewModel by viewModels { UserProfileViewModelFactory(this.requireActivity().application,
+        currentLoggedInUser!!.firebaseKey) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,10 +32,10 @@ class UserProfileFragment : Fragment() {
         val binding: FragmentUserProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
         val view = binding.root
 
-        binding.userProfileName.text = currentLoggedInUser.displayName
-        binding.userProfilePhone.text = currentLoggedInUser.phoneNumber
-        binding.userProfileEmail.text = currentLoggedInUser.email
-        Glide.with(requireContext()).load(currentLoggedInUser.photoUrl).into(binding.userProfilePhoto)
+        binding.userProfileName.text = if(currentLoggedInUser!!.userName != "") currentLoggedInUser!!.userName else "Brak danych"
+        binding.userProfilePhone.text = if(currentLoggedInUser!!.phone != "") currentLoggedInUser!!.phone else "Brak danych"
+        binding.userProfileEmail.text = if(currentLoggedInUser!!.email != "") currentLoggedInUser!!.email else "Brak danych"
+        Glide.with(requireContext()).load(currentLoggedInUser!!.photo).placeholder(R.drawable.meme).into(binding.userProfilePhoto)
 
         userProfileViewModel.activeTasks.observe(viewLifecycleOwner, Observer {
             binding.userProfileActiveTasks.text = it.toString()
@@ -44,10 +48,6 @@ class UserProfileFragment : Fragment() {
         userProfileViewModel.abandonedTasks.observe(viewLifecycleOwner, Observer {
             binding.userProfileAbandonedTasks.text = it.toString()
         })
-
-        binding.userProfileDeleteButton.setOnClickListener {
-            (this.activity as MainActivity).deleteUser()
-        }
 
         binding.userProfileChat.setOnClickListener {
             Toast.makeText(requireContext(), "chat clicked", Toast.LENGTH_SHORT).show()
@@ -66,5 +66,29 @@ class UserProfileFragment : Fragment() {
 
         return view
     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.menu_profile, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_edit -> {
+                editUserInfo()
+                return true
+            }
+            R.id.action_delete -> {
+                (this.activity as MainActivity).askUserForPassword()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun editUserInfo() {
+        findNavController().navigate(R.id.action_nav_user_profile_to_nav_user_profile_edit)
+    }
+
 
 }

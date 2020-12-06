@@ -24,10 +24,10 @@
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/nav_about"
-        android:name="com.issen.workerfinder.ui.about.AboutFragment"
-        android:label="@string/menu_about"
-        tools:layout="@layout/about_fragment" />
+        android:id="@+id/nav_contact"
+        android:name="com.issen.workerfinder.ui.contact.ContactFragment"
+        android:label="@string/menu_contact"
+        tools:layout="@layout/fragment_contact" />
     <fragment
         android:id="@+id/nav_info"
         android:name="com.issen.workerfinder.ui.info.InfoFragment"
@@ -61,7 +61,7 @@
         tools:layout="@layout/fragment_task_detail">
         <argument
             android:name="fullTask"
-            app:argType="com.issen.workerfinder.database.FullTaskModel" />
+            app:argType="com.issen.workerfinder.database.models.FullTaskModel" />
         <action
             android:id="@+id/action_nav_task_detail_to_task_edit_fragment"
             app:destination="@id/task_edit_fragment" />
@@ -75,6 +75,15 @@
         android:id="@+id/nav_user_profile"
         android:name="com.issen.workerfinder.ui.userProfile.UserProfileFragment"
         android:label="@string/menu_userProfile"
-        tools:layout="@layout/fragment_user_profile" />
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_nav_user_profile_to_nav_user_profile_edit"
+            app:destination="@id/nav_user_profile_edit" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_user_profile_edit"
+        android:name="com.issen.workerfinder.ui.userProfile.UserProfileEditFragment"
+        android:label="@string/menu_userProfileEdit"
+        tools:layout="@layout/fragment_user_profile_edit" />
 
 </navigation>

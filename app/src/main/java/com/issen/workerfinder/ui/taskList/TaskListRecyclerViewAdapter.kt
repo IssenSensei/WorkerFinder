@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.issen.workerfinder.TaskApplication.Companion.getIndicatorColor
-import com.issen.workerfinder.database.FullTaskModel
+import com.issen.workerfinder.database.models.FullTaskModel
 import com.issen.workerfinder.databinding.ItemTaskBinding
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
@@ -60,7 +60,7 @@ class TaskListDiffCallback : DiffUtil.ItemCallback<FullTaskModel>() {
     }
 
     override fun areContentsTheSame(oldItem: FullTaskModel, newItem: FullTaskModel): Boolean {
-        return oldItem.task == newItem.task
+        return oldItem == newItem
     }
 }
 

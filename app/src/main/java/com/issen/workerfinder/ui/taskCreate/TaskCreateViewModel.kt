@@ -4,6 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.issen.workerfinder.database.*
+import com.issen.workerfinder.database.models.TaskModel
+import com.issen.workerfinder.database.models.TaskModelPhotos
+import com.issen.workerfinder.database.models.TaskModelRepeatDays
 import com.issen.workerfinder.enums.PriorityTypes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

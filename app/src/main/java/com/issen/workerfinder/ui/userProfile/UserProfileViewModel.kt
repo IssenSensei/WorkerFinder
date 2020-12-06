@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.issen.workerfinder.database.TaskModelRepository
-import com.issen.workerfinder.database.UserModel
+import com.issen.workerfinder.database.models.UserModel
 import com.issen.workerfinder.database.WorkerFinderDatabase
 import kotlinx.coroutines.launch
 
@@ -41,5 +41,9 @@ class UserProfileViewModel(application: Application, firebaseKey: String) : Andr
 
     fun getUserByKey(firebaseKey: String): LiveData<UserModel> {
         return repository.getUserById(firebaseKey)
+    }
+
+    fun updateUser(userModel: UserModel) {
+        repository.updateUser(userModel)
     }
 }

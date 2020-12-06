@@ -1,0 +1,802 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="drawerFilterClickListener"
+            type="com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener" />
+
+    </data>
+
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/drawer_filter_navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:fitsSystemWindows="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/grey_5"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/drawer_filter_appBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/drawer_filter_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> drawerFilterClickListener.onBackClicked()}"
+                        android:padding="@dimen/spacing_medium"
+                        android:src="@drawable/ic_arrow_left"
+                        android:tint="@color/colorPrimaryDark"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/spacing_large"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_medium"
+                        android:text="Dostosuj"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="@color/colorPrimaryDark"
+                        app:fontFamily="sans-serif-medium" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageButton
+                        android:id="@+id/drawer_filter_cancel_button"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> drawerFilterClickListener.onCancelClicked()}"
+                        android:tint="@color/red_500"
+                        app:srcCompat="@drawable/clear_smallest_black" />
+                </LinearLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/drawer_filter_nested_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/spacing_small">
+
+                    <LinearLayout
+                        android:id="@+id/drawer_filter_main_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_small"
+                            android:layout_marginRight="@dimen/spacing_small"
+                            android:layout_marginBottom="@dimen/spacing_small"
+                            app:cardCornerRadius="2dp"
+                            app:cardElevation="2dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/drawer_filter_toggle_filter_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/white"
+                                    android:gravity="center_vertical"
+                                    android:minHeight="?attr/actionBarSize"
+                                    android:onClick="@{(view) -> drawerFilterClickListener.onMainHeaderClicked(view)}"
+                                    android:orientation="horizontal"
+                                    android:tag="filter">
+
+                                    <View
+                                        android:layout_width="@dimen/spacing_large"
+                                        android:layout_height="wrap_content" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Filtruj"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                        android:textColor="@color/grey_80" />
+
+                                    <ImageButton
+                                        android:id="@+id/drawer_filter_toggle_filter_button"
+                                        android:layout_width="?attr/actionBarSize"
+                                        android:layout_height="?attr/actionBarSize"
+                                        android:background="?attr/selectableItemBackgroundBorderless"
+                                        android:clickable="false"
+                                        android:tag="viewButton"
+                                        android:tint="@color/grey_80"
+                                        app:srcCompat="@drawable/ic_expand_arrow" />
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:id="@+id/drawer_filter_filter_expand_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:tag="filterContainer"
+                                    android:visibility="gone">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
+                                        android:orientation="horizontal"
+                                        android:tag="worker">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_weight="1"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:text="Pracownik" />
+
+                                        <ImageButton
+                                            android:id="@+id/drawer_filter_filter_worker"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="?attr/selectableItemBackgroundBorderless"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:src="@drawable/ic_arrow_right"
+                                            android:tint="@color/colorPrimaryDark" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
+                                        android:orientation="horizontal"
+                                        android:tag="user">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_weight="1"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:text="Pracodawca" />
+
+                                        <ImageButton
+                                            android:id="@+id/drawer_filter_filter_user"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="?attr/selectableItemBackgroundBorderless"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:src="@drawable/ic_arrow_right"
+                                            android:tint="@color/colorPrimaryDark" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
+                                        android:orientation="horizontal"
+                                        android:tag="category">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_weight="1"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:text="Kategoria" />
+
+                                        <ImageButton
+                                            android:id="@+id/drawer_filter_filter_category"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="?attr/selectableItemBackgroundBorderless"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:src="@drawable/ic_arrow_right"
+                                            android:tint="@color/colorPrimaryDark" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
+                                        android:orientation="horizontal"
+                                        android:tag="cyclic">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_weight="1"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:text="Cykliczność" />
+
+                                        <ImageButton
+                                            android:id="@+id/drawer_filter_filter_cyclic_type"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="?attr/selectableItemBackgroundBorderless"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:src="@drawable/ic_arrow_right"
+                                            android:tint="@color/colorPrimaryDark" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
+                                        android:orientation="horizontal"
+                                        android:tag="priority">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_weight="1"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:text="Priorytet" />
+
+                                        <ImageButton
+                                            android:id="@+id/drawer_filter_filter_priority"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="?attr/selectableItemBackgroundBorderless"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:src="@drawable/ic_arrow_right"
+                                            android:tint="@color/colorPrimaryDark" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
+                                        android:orientation="horizontal"
+                                        android:tag="completion">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_weight="1"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:text="Stan" />
+
+                                        <ImageButton
+                                            android:id="@+id/drawer_filter_filter_completion_type"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="?attr/selectableItemBackgroundBorderless"
+                                            android:padding="@dimen/spacing_medium"
+                                            android:src="@drawable/ic_arrow_right"
+                                            android:tint="@color/colorPrimaryDark" />
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_small"
+                            android:layout_marginRight="@dimen/spacing_small"
+                            android:layout_marginBottom="@dimen/spacing_small"
+                            android:visibility="visible"
+                            app:cardCornerRadius="2dp"
+                            app:cardElevation="2dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/drawer_filter_toggle_sort_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/white"
+                                    android:gravity="center_vertical"
+                                    android:minHeight="?attr/actionBarSize"
+                                    android:onClick="@{(view) -> drawerFilterClickListener.onMainHeaderClicked(view)}"
+                                    android:orientation="horizontal"
+                                    android:tag="sort">
+
+                                    <View
+                                        android:layout_width="@dimen/spacing_large"
+                                        android:layout_height="wrap_content" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Sortuj"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                        android:textColor="@color/grey_80" />
+
+                                    <ImageButton
+                                        android:id="@+id/drawer_filter_toggle_sort_button"
+                                        android:layout_width="?attr/actionBarSize"
+                                        android:layout_height="?attr/actionBarSize"
+                                        android:background="?attr/selectableItemBackgroundBorderless"
+                                        android:clickable="false"
+                                        android:tag="viewButton"
+                                        android:tint="@color/grey_80"
+                                        app:srcCompat="@drawable/ic_expand_arrow" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/drawer_filter_sort_expand_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:tag="sortContainer"
+                                    android:visibility="gone">
+
+                                    <RadioGroup
+                                        android:id="@+id/drawer_filter_sort_radio"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="@dimen/spacing_large">
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_sort_none"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:checked="true"
+                                            android:text="Brak" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_sort_taskName"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Nazwa zadania" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_sort_worker"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Pracownik" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_sort_user"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Pracodawca" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_sort_category"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Kategoria" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_sort_next_date"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Termin wykonania" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_sort_priority"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Priorytet" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_sort_completion_date"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Data zakończenia" />
+
+                                    </RadioGroup>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingBottom="@dimen/spacing_medium">
+
+                                        <TextView
+                                            android:id="@+id/drawer_filter_sort_desc"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:clickable="true"
+                                            android:gravity="center"
+                                            android:onClick="@{(view) -> drawerFilterClickListener.onOrderSwitched(view)}"
+                                            android:tag="desc"
+                                            android:text="Malejąco" />
+
+                                        <androidx.appcompat.widget.SwitchCompat
+                                            android:id="@+id/drawer_filter_sort_switch"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:gravity="center" />
+
+                                        <TextView
+                                            android:id="@+id/drawer_filter_sort_asc"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:onClick="@{(view) -> drawerFilterClickListener.onOrderSwitched(view)}"
+                                            android:tag="asc"
+                                            android:text="Rosnąco" />
+
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_small"
+                            android:layout_marginRight="@dimen/spacing_small"
+                            android:layout_marginBottom="@dimen/spacing_small"
+                            android:visibility="visible"
+                            app:cardCornerRadius="2dp"
+                            app:cardElevation="2dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/drawer_filter_toggle_group_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/white"
+                                    android:gravity="center_vertical"
+                                    android:minHeight="?attr/actionBarSize"
+                                    android:onClick="@{(view) -> drawerFilterClickListener.onMainHeaderClicked(view)}"
+                                    android:orientation="horizontal"
+                                    android:tag="group">
+
+                                    <View
+                                        android:layout_width="@dimen/spacing_large"
+                                        android:layout_height="wrap_content" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Grupuj"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                        android:textColor="@color/grey_80" />
+
+                                    <ImageButton
+                                        android:id="@+id/drawer_filter_toggle_group_button"
+                                        android:layout_width="?attr/actionBarSize"
+                                        android:layout_height="?attr/actionBarSize"
+                                        android:background="?attr/selectableItemBackgroundBorderless"
+                                        android:clickable="false"
+                                        android:tag="viewButton"
+                                        android:tint="@color/grey_80"
+                                        app:srcCompat="@drawable/ic_expand_arrow" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/drawer_filter_group_expand_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:tag="groupContainer"
+                                    android:visibility="gone">
+
+                                    <RadioGroup
+                                        android:id="@+id/drawer_filter_group_radio"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="@dimen/spacing_large">
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_group_none"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:checked="true"
+                                            android:text="Brak" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_group_worker"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Pracownik" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_group_user"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Pracodawca" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_group_category"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Kategoria" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_group_cyclic_type"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Cykliczność" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_group_priority"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Priorytet" />
+
+                                        <RadioButton
+                                            android:id="@+id/drawer_filter_group_completed"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Stan" />
+
+                                    </RadioGroup>
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_small"
+                            android:layout_marginRight="@dimen/spacing_small"
+                            android:layout_marginBottom="@dimen/spacing_small"
+                            android:visibility="visible"
+                            app:cardCornerRadius="2dp"
+                            app:cardElevation="2dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/drawer_filter_toggle_active_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/white"
+                                    android:gravity="center_vertical"
+                                    android:minHeight="?attr/actionBarSize"
+                                    android:onClick="@{(view) -> drawerFilterClickListener.onMainHeaderClicked(view)}"
+                                    android:orientation="horizontal"
+                                    android:tag="active">
+
+                                    <View
+                                        android:layout_width="@dimen/spacing_large"
+                                        android:layout_height="wrap_content" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Aktywne ustawienia"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                        android:textColor="@color/grey_80" />
+
+                                    <ImageButton
+                                        android:id="@+id/drawer_filter_toggle_active_button"
+                                        android:layout_width="?attr/actionBarSize"
+                                        android:layout_height="?attr/actionBarSize"
+                                        android:background="?attr/selectableItemBackgroundBorderless"
+                                        android:clickable="false"
+                                        android:tag="viewButton"
+                                        android:tint="@color/grey_80"
+                                        app:srcCompat="@drawable/ic_expand_arrow" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/drawer_filter_active_expand_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:tag="activeContainer"
+                                    android:visibility="gone"
+                                    tools:visibility="visible">
+
+
+<!--todo when there will be active-->
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/drawer_filter_worker_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="workerContainer"
+                        android:visibility="gone">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/drawer_filter_worker_container_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/drawer_filter_user_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="userContainer"
+                        android:visibility="gone">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/drawer_filter_user_container_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/drawer_filter_category_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="categoryContainer"
+                        android:visibility="gone">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/drawer_filter_category_container_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/drawer_filter_cyclic_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="cyclicContainer"
+                        android:visibility="gone">
+
+                        <RadioGroup
+                            android:id="@+id/drawer_filter_cyclic_radio"
+                            android:layout_width="match_parent"
+                            android:layout_margin="@dimen/spacing_medium"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:id="@+id/drawer_filter_cyclic_radio_both"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="Wszystkie" />
+
+                            <RadioButton
+                                android:id="@+id/drawer_filter_cyclic_radio_single"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="Tylko jednorazowe" />
+
+                            <RadioButton
+                                android:id="@+id/drawer_filter_cyclic_radio_cyclic"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="Tylko cykliczne" />
+
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/drawer_filter_priority_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="priorityContainer"
+                        android:visibility="gone">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/drawer_filter_priority_container_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/drawer_filter_completion_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="completionContainer"
+                        android:visibility="gone">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/drawer_filter_completion_container_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/drawer_filter_clear"
+                    style="@style/Widget.AppCompat.ImageButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="?actionBarSize"
+                    android:drawableStart="@drawable/clear_smallest_black"
+                    android:drawableTint="@color/blue_600"
+                    android:shadowRadius="3"
+                    android:onClick="@{() -> drawerFilterClickListener.onClearClicked()}"
+                    android:text="Wyczyść" />
+
+                <Button
+                    android:id="@+id/drawer_filter_accept"
+                    style="@style/Widget.AppCompat.ImageButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="?actionBarSize"
+                    android:drawableStart="@drawable/ic_done"
+                    android:drawableTint="@color/green_600"
+                    android:shadowRadius="3"
+                    android:onClick="@{() -> drawerFilterClickListener.onAcceptClicked()}"
+                    android:text="Zatwierdź" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
+</layout>

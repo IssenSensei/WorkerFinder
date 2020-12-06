@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.issen.workerfinder.database.models.UserModel
 import com.issen.workerfinder.enums.PriorityTypes
 
 
@@ -20,7 +20,7 @@ class TaskApplication : Application() {
 
     companion object {
 
-        lateinit var currentLoggedInUser: FirebaseUser
+        var currentLoggedInUser: UserModel? = null
         var currentUserToken: String = ""
 
         lateinit var appContext: Context
