@@ -12,16 +12,16 @@ import com.bumptech.glide.Glide
 import com.issen.workerfinder.MainActivity
 import com.issen.workerfinder.R
 import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUser
+import com.issen.workerfinder.database.models.UserModel
 import com.issen.workerfinder.databinding.FragmentUserProfileBinding
 
-class UserProfileFragment : Fragment() {
+class UserProfileFragment : Fragment(), UserProfileListener {
 
-    val userProfileViewModel: UserProfileViewModel by viewModels { UserProfileViewModelFactory(this.requireActivity().application,
-        currentLoggedInUser!!.firebaseKey) }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+    private val userProfileViewModel: UserProfileViewModel by viewModels {
+        UserProfileViewModelFactory(
+            this.requireActivity().application,
+            currentLoggedInUser!!.firebaseKey
+        )
     }
 
     override fun onCreateView(
@@ -32,10 +32,9 @@ class UserProfileFragment : Fragment() {
         val binding: FragmentUserProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
         val view = binding.root
 
-        binding.userProfileName.text = if(currentLoggedInUser!!.userName != "") currentLoggedInUser!!.userName else "Brak danych"
-        binding.userProfilePhone.text = if(currentLoggedInUser!!.phone != "") currentLoggedInUser!!.phone else "Brak danych"
-        binding.userProfileEmail.text = if(currentLoggedInUser!!.email != "") currentLoggedInUser!!.email else "Brak danych"
         Glide.with(requireContext()).load(currentLoggedInUser!!.photo).placeholder(R.drawable.meme).into(binding.userProfilePhoto)
+        binding.user = currentLoggedInUser
+        binding.clickListener = this
 
         userProfileViewModel.activeTasks.observe(viewLifecycleOwner, Observer {
             binding.userProfileActiveTasks.text = it.toString()
@@ -49,46 +48,76 @@ class UserProfileFragment : Fragment() {
             binding.userProfileAbandonedTasks.text = it.toString()
         })
 
-        binding.userProfileChat.setOnClickListener {
-            Toast.makeText(requireContext(), "chat clicked", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.userProfileCall.setOnClickListener {
-            Toast.makeText(requireContext(), "call clicked", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.userProfilePhoto.setOnClickListener {
-            Toast.makeText(requireContext(), "photo clicked", Toast.LENGTH_SHORT).show()
-        }
-
         binding.executePendingBindings()
 
 
         return view
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.menu_profile, menu)
+    override fun onCallClicked(user: UserModel) {
+        Toast.makeText(requireContext(), "call clicked", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_edit -> {
-                editUserInfo()
-                return true
-            }
-            R.id.action_delete -> {
-                (this.activity as MainActivity).askUserForPassword()
-            }
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onChatClicked(user: UserModel) {
+        Toast.makeText(requireContext(), "chat clicked", Toast.LENGTH_SHORT).show()
     }
 
-    private fun editUserInfo() {
+    override fun onEmailClicked(user: UserModel) {
+        Toast.makeText(requireContext(), "email clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSmsClicked(user: UserModel) {
+        Toast.makeText(requireContext(), "sms clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onEditProfileClicked(user: UserModel) {
         findNavController().navigate(R.id.action_nav_user_profile_to_nav_user_profile_edit)
     }
 
+    override fun onDeleteAccountClicked(user: UserModel) {
+        (this.activity as MainActivity).askUserForPassword()
+    }
 
+    override fun onPublicManageClicked(user: UserModel) {
+        if(user.isAccountPublic){
+            //todo check if there are any active tasks in dialog and confirm decision
+            userProfileViewModel.setAccountPublic(user.firebaseKey, false)
+            user.isAccountPublic = false
+        } else {
+            //todo validate data
+            userProfileViewModel.setAccountPublic(user.firebaseKey, true)
+            user.isAccountPublic = true
+            Toast.makeText(requireContext(), "public clicked", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onContactManageClicked(user: UserModel) {
+        Toast.makeText(requireContext(), "addContact clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onProfilePhotoClicked(user: UserModel) {
+        Toast.makeText(requireContext(), "photo clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onShowUserCommentsClicked(user: UserModel) {
+        Toast.makeText(requireContext(), "userComments clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onShowWorkerCommentsClicked(user: UserModel) {
+        Toast.makeText(requireContext(), "workerComments clicked", Toast.LENGTH_SHORT).show()
+    }
+}
+
+interface UserProfileListener{
+    fun onCallClicked(user: UserModel)
+    fun onChatClicked(user: UserModel)
+    fun onEmailClicked(user: UserModel)
+    fun onSmsClicked(user: UserModel)
+    fun onEditProfileClicked(user: UserModel)
+    fun onDeleteAccountClicked(user: UserModel)
+    fun onPublicManageClicked(user: UserModel)
+    fun onContactManageClicked(user: UserModel)
+    fun onProfilePhotoClicked(user: UserModel)
+    fun onShowUserCommentsClicked(user: UserModel)
+    fun onShowWorkerCommentsClicked(user: UserModel)
 }

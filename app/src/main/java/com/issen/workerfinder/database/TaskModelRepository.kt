@@ -34,7 +34,7 @@ class TaskModelRepository(
         taskModelDao.insert(taskModel)
     }
 
-    fun getUserById(firebaseKey: String): LiveData<UserModel>{
+    fun getUserById(firebaseKey: String): LiveData<UserModel> {
         return userModelDao.getUserById(firebaseKey)
     }
 
@@ -44,5 +44,7 @@ class TaskModelRepository(
     suspend fun completeTask(taskId: Int) = taskModelDao.completeTask(taskId)
     suspend fun abandonTask(taskId: Int) = taskModelDao.abandonTask(taskId)
     fun updateUser(userModel: UserModel) = userModelDao.update(userModel)
+    suspend fun setAccountPublic(firebaseKey: String, public: Boolean) = userModelDao.setAccountPublic(firebaseKey, public)
+
 
 }

@@ -28,4 +28,7 @@ interface UserModelDao {
     @Query("SELECT * FROM user_table where firebaseKey = :firebaseKey")
     fun getUserById(firebaseKey: String): LiveData<UserModel>
 
+    @Query("UPDATE user_table SET isAccountPublic = :public WHERE firebaseKey = :firebaseKey")
+    suspend fun setAccountPublic(firebaseKey: String, public: Boolean)
+
 }

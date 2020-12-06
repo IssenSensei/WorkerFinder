@@ -78,7 +78,6 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         Glide.with(this).load(currentLoggedInUser!!.photo).placeholder(R.drawable.meme).into(navHeaderBinding.avatar)
 
         prepareDrawer()
-
         handleUI()
     }
 

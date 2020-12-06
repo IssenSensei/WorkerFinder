@@ -46,4 +46,10 @@ class UserProfileViewModel(application: Application, firebaseKey: String) : Andr
     fun updateUser(userModel: UserModel) {
         repository.updateUser(userModel)
     }
+
+    fun setAccountPublic(firebaseKey: String, isPublic: Boolean) {
+        viewModelScope.launch {
+            repository.setAccountPublic(firebaseKey, isPublic)
+        }
+    }
 }
