@@ -10,10 +10,12 @@
     <string name="action_filter">Filter</string>
 
     <string name="menu_task_list">Lista zadań</string>
+    <string name="menu_task_board">Ogłoszenia</string>
     <string name="menu_newTask">Nowe zadanie</string>
     <string name="menu_taskHistory">Historia zadań</string>
     <string name="menu_newWorker">Dodaj pracownika</string>
     <string name="menu_workers">Moi pracownicy</string>
+    <string name="menu_worker_board">Ogłoszenia</string>
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_info">Co nowego?</string>
     <string name="menu_contact">Kontakt</string>

@@ -31,7 +31,7 @@ class ContactFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_contact, container, false)
 
-        contact = arrayListOf("Bug", "Idea", "Other")
+        contact = arrayListOf("Error", "Idea", "Other")
         val contactSpinnerAdapter = ArrayAdapter<String>(requireContext(), R.layout.item_contact_dropdown, contact)
         root.contact_spinner.adapter = contactSpinnerAdapter
         root.contact_spinner.setSelection(0)

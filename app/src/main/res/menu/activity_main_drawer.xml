@@ -16,6 +16,10 @@
                     android:id="@+id/nav_new_task"
                     android:icon="@drawable/new_task_smallest_black"
                     android:title="@string/menu_newTask" />
+                <item
+                    android:id="@+id/nav_task_board"
+                    android:icon="@drawable/new_task_smallest_black"
+                    android:title="@string/menu_task_board" />
             </menu>
         </item>
         <item
@@ -23,13 +27,17 @@
             android:title="Pracownicy">
             <menu>
                 <item
+                    android:id="@+id/nav_workers"
+                    android:icon="@drawable/my_workers_smallest_black"
+                    android:title="@string/menu_workers" />
+                <item
                     android:id="@+id/nav_new_worker"
                     android:icon="@drawable/new_worker_smallest_black"
                     android:title="@string/menu_newWorker" />
                 <item
-                    android:id="@+id/nav_workers"
-                    android:icon="@drawable/my_workers_smallest_black"
-                    android:title="@string/menu_workers" />
+                    android:id="@+id/nav_worker_board"
+                    android:icon="@drawable/new_worker_smallest_black"
+                    android:title="@string/menu_worker_board" />
             </menu>
         </item>
         <item
