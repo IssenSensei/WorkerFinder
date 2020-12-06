@@ -3,6 +3,14 @@
 
     <data>
 
+        <variable
+            name="worker"
+            type="com.issen.workerfinder.database.models.FullUserData" />
+
+        <variable
+            name="clickListener"
+            type="com.issen.workerfinder.ui.workerList.WorkerListListener" />
+
     </data>
 
     <androidx.cardview.widget.CardView
@@ -12,6 +20,7 @@
         android:layout_marginTop="@dimen/spacing_small"
         android:layout_marginEnd="@dimen/spacing_small"
         android:background="@drawable/roundedblock"
+        android:onClick="@{() -> clickListener.onWorkerClicked(worker)}"
         app:cardCornerRadius="@dimen/spacing_large"
         app:cardElevation="@dimen/spacing_medium">
 
@@ -21,18 +30,26 @@
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/worker_profile_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
+                photo="@{worker.userData.photo}"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="@dimen/spacing_medium"
+                app:civ_border="false"
+                app:civ_shadow="true"
+                app:civ_shadow_radius="0"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/worker_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:text="@{worker.userData.userName}"
+                android:layout_margin="@dimen/spacing_medium"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                app:layout_constraintStart_toEndOf="@id/worker_profile_photo"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

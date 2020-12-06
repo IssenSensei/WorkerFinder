@@ -9,7 +9,7 @@ import com.issen.workerfinder.database.models.UserData
 interface UserDataDao {
 
     @Insert
-    suspend fun insert(userData: UserData) : Long
+    suspend fun insert(userData: UserData): Long
 
     @Insert
     suspend fun insert(userDataList: MutableList<UserData>)
@@ -27,10 +27,16 @@ interface UserDataDao {
     @Query("SELECT * FROM user_table where firebaseKey = :firebaseKey")
     fun getUserByFirebaseKey(firebaseKey: String): FullUserData
 
+    @Transaction
     @Query("SELECT * FROM user_table where firebaseKey = :firebaseKey")
     fun getUserById(firebaseKey: String): LiveData<FullUserData>
 
     @Query("UPDATE user_table SET isAccountPublic = :public WHERE firebaseKey = :firebaseKey")
     suspend fun setAccountPublic(firebaseKey: String, public: Boolean)
+
+    @Transaction
+    @Query("SELECT * FROM user_table WHERE userId in (SELECT contactId from contact_table where userId = :userId)")
+    fun getUserWorkers(userId: Int): LiveData<List<FullUserData>>
+
 
 }

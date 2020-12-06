@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
             WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateContacts(lifecycleScope, currentLoggedInFullUser
                 !!.userData.userId)
         }
-        Glide.with(this).load(currentLoggedInFullUser!!.userData.photo).placeholder(R.drawable.meme).into(navHeaderBinding.avatar)
+//        Glide.with(this).load(currentLoggedInFullUser!!.userData.photo).placeholder(R.drawable.meme).into(navHeaderBinding.avatar)
 
         prepareDrawer()
         handleUI()

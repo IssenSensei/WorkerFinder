@@ -264,7 +264,6 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
         coroutineScope.launch {
             contactsDao.insert(
                 mutableListOf(
-                    Contacts(0, userId, 1),
                     Contacts(0, userId, 2),
                     Contacts(0, userId, 3),
                     Contacts(0, userId, 5),
