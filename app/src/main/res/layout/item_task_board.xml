@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="fullTask"
+            type="com.issen.workerfinder.database.models.FullTaskModel" />
+
+        <variable
+            name="clickListener"
+            type="com.issen.workerfinder.ui.taskBoard.TaskBoardListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:background="@drawable/roundedblock"
+        app:cardElevation="@dimen/spacing_medium">
+
+        <FrameLayout
+            android:id="@+id/lyt_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="@{() -> clickListener.onTaskClicked(fullTask)}">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/spacing_large">
+
+                    <ImageView
+                        android:id="@+id/task_priority_indicator"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/description_task_more"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/indicator"
+                        app:tint="@color/grey_3" />
+
+
+                    <TextView
+                        android:id="@+id/task_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/task_priority_indicator"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@{fullTask.task.taskTitle}" />
+
+                    <TextView
+                        android:id="@+id/task_worker"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@{fullTask.task.worker}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/task_priority_indicator"
+                        app:layout_constraintTop_toBottomOf="@+id/task_title" />
+
+                    <TextView
+                        android:id="@+id/task_next_completion_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@{fullTask.task.nextCompletionDate}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/task_priority_indicator"
+                        app:layout_constraintTop_toBottomOf="@+id/task_worker" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <ImageView
+                android:id="@+id/photos_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/spacing_single"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:src="@drawable/camera_smallest_black" />
+
+            <ImageView
+                android:id="@+id/cyclic_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/spacing_double"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:src="@drawable/cyclic_smallest_black" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

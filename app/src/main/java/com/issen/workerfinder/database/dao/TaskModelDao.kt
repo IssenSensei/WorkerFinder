@@ -9,7 +9,7 @@ import com.issen.workerfinder.database.models.TaskModel
 interface TaskModelDao {
 
     @Insert
-    suspend fun insert(taskModel: TaskModel) : Long
+    suspend fun insert(taskModel: TaskModel): Long
 
     @Insert
     suspend fun insert(taskModelList: MutableList<TaskModel>)
@@ -26,6 +26,10 @@ interface TaskModelDao {
     @Transaction
     @Query("SELECT * FROM task_table")
     fun getAllTasks(): LiveData<List<FullTaskModel>>
+
+    @Transaction
+    @Query("SELECT * FROM task_table WHERE task_worker = '' AND task_completion_type = 'PENDING'")
+    fun getBoardTasks(): LiveData<List<FullTaskModel>>
 
     @Transaction
     @Query("SELECT * FROM task_table WHERE task_completion_type LIKE 'ONGOING'")

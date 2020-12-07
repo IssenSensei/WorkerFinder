@@ -88,10 +88,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
             }
         }
-
-
     }
-
 
     fun populateDbOpen(coroutineScope: CoroutineScope) {
         populateTasksOpen(coroutineScope)
@@ -190,7 +187,6 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
     private fun populateTasksOpen(coroutineScope: CoroutineScope) {
         coroutineScope.launch {
-            taskModelDao.deleteAll()
             taskModelDao.insert(
                 mutableListOf(
                     TaskModel(
@@ -203,7 +199,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         CyclicTypes.NONE.toString(),
                         Date(),
                         PriorityTypes.URGENT.toString(),
-                        CompletionTypes.ONGOING.toString(),
+                        CompletionTypes.PENDING.toString(),
                         "completion"
                     ),
                     TaskModel(
@@ -211,7 +207,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "Pomoc na budowie",
                         "Potrzebny pomocnik na budowie",
                         "user2",
-                        "Zbysiu Robotnik Zbyś",
+                        "",
                         "01-01-2020",
                         CyclicTypes.MONTHDAY.toString(),
                         Date(),
@@ -224,12 +220,12 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "Klaun na urodzinach online",
                         "Najlepiej jakiś rudy",
                         "user",
-                        "Zbysiu Rudy Zbyś",
+                        "",
                         "03-02-2021",
                         CyclicTypes.NONE.toString(),
                         Date(),
                         PriorityTypes.LOW.toString(),
-                        CompletionTypes.ONGOING.toString(),
+                        CompletionTypes.PENDING.toString(),
                         "completion"
                     )
                 )
@@ -280,10 +276,10 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                 mutableListOf(
                     UserData(0, "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "0000000", "aaaaa", false, true),
                     UserData(0, "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "11111111", "aaaaaa1", false, true),
-                    UserData(0, "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "2222222222", "aaaaaa2", false, true),
+                    UserData(0, "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "2222222222", "aaaaaa2", true, true),
                     UserData(0, "name3 lastName3", "https://i.imgflip.com/15l4w6.jpg", "email3", "3333333333", "aaaaaa3", false, true),
-                    UserData(0, "name4 lastName4", "https://i.imgflip.com/15l4w6.jpg", "email4", "44444444444", "aaaaaa4", false, true),
-                    UserData(0, "name5 lastName5", "https://i.imgflip.com/15l4w6.jpg", "email5", "555555555", "aaaaaa5", false, true),
+                    UserData(0, "name4 lastName4", "https://i.imgflip.com/15l4w6.jpg", "email4", "44444444444", "aaaaaa4", true, true),
+                    UserData(0, "name5 lastName5", "https://i.imgflip.com/15l4w6.jpg", "email5", "555555555", "aaaaaa5", true, true),
                     UserData(0, "name6 lastName6", "https://i.imgflip.com/15l4w6.jpg", "email6", "6666666666", "aaaaaa6", false, false),
                     UserData(0, "name7 lastName7", "https://i.imgflip.com/15l4w6.jpg", "email7", "777777777", "aaaaaa7", false, false),
                     UserData(0, "name8 lastName8", "https://i.imgflip.com/15l4w6.jpg", "email8", "88888888", "aaaaaa8", false, false)

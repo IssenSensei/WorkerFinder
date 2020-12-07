@@ -38,5 +38,9 @@ interface UserDataDao {
     @Query("SELECT * FROM user_table WHERE userId in (SELECT contactId from contact_table where userId = :userId)")
     fun getUserWorkers(userId: Int): LiveData<List<FullUserData>>
 
+    @Transaction
+    @Query("SELECT * FROM user_table WHERE isAccountPublic = 1 AND isOpenForWork = 1")
+    fun getBoardWorkers(): LiveData<List<FullUserData>>
+
 
 }
