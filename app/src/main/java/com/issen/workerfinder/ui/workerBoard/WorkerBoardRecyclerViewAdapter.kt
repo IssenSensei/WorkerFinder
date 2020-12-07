@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.issen.workerfinder.database.models.FullUserData
 import com.issen.workerfinder.databinding.ItemWorkerBinding
+import com.issen.workerfinder.ui.misc.WorkerListener
 
 
-class WorkerBoardRecyclerViewAdapter(private val workerBoardListener: WorkerBoardListener) :
+class WorkerBoardRecyclerViewAdapter(private val workerListener: WorkerListener) :
     ListAdapter<FullUserData, WorkerBoardRecyclerViewAdapter.ViewHolder>(WorkerBoardDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,13 +20,14 @@ class WorkerBoardRecyclerViewAdapter(private val workerBoardListener: WorkerBoar
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position)!!, workerBoardListener)
+        holder.bind(getItem(position)!!, workerListener)
     }
 
     class ViewHolder(val binding: ItemWorkerBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: FullUserData, workerBoardListener: WorkerBoardListener) {
+        fun bind(item: FullUserData, workerListener: WorkerListener) {
             binding.worker = item
+            binding.clickListener = workerListener
             binding.executePendingBindings()
         }
     }
@@ -39,8 +41,4 @@ class WorkerBoardDiffCallback : DiffUtil.ItemCallback<FullUserData>() {
     override fun areContentsTheSame(oldItem: FullUserData, newItem: FullUserData): Boolean {
         return oldItem == newItem
     }
-}
-
-interface WorkerBoardListener {
-    fun onWorkerClicked(fullUserData: FullUserData)
 }

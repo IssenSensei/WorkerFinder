@@ -14,9 +14,10 @@ import com.issen.workerfinder.databinding.ItemTaskBinding
 import com.issen.workerfinder.databinding.ItemWorkerBinding
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
+import com.issen.workerfinder.ui.misc.WorkerListener
 
 
-class WorkerListRecyclerViewAdapter(private val workerListListener: WorkerListListener) :
+class WorkerListRecyclerViewAdapter(private val workerListener: WorkerListener) :
     ListAdapter<FullUserData, WorkerListRecyclerViewAdapter.ViewHolder>(WorkerListDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,13 +27,14 @@ class WorkerListRecyclerViewAdapter(private val workerListListener: WorkerListLi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position)!!, workerListListener)
+        holder.bind(getItem(position)!!, workerListener)
     }
 
     class ViewHolder(val binding: ItemWorkerBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: FullUserData, workerListListener: WorkerListListener) {
+        fun bind(item: FullUserData, workerListener: WorkerListener) {
             binding.worker = item
+            binding.clickListener = workerListener
             binding.executePendingBindings()
         }
     }
@@ -46,8 +48,4 @@ class WorkerListDiffCallback : DiffUtil.ItemCallback<FullUserData>() {
     override fun areContentsTheSame(oldItem: FullUserData, newItem: FullUserData): Boolean {
         return oldItem == newItem
     }
-}
-
-interface WorkerListListener {
-    fun onWorkerClicked(fullUserData: FullUserData)
 }

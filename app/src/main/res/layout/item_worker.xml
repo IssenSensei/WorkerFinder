@@ -9,7 +9,7 @@
 
         <variable
             name="clickListener"
-            type="com.issen.workerfinder.ui.workerList.WorkerListListener" />
+            type="com.issen.workerfinder.ui.misc.WorkerListener" />
 
     </data>
 

@@ -48,12 +48,20 @@
         android:id="@+id/nav_new_worker"
         android:name="com.issen.workerfinder.ui.workerAdd.WorkerAddFragment"
         android:label="@string/menu_newWorker"
-        tools:layout="@layout/fragment_worker_add" />
+        tools:layout="@layout/fragment_worker_add">
+        <action
+            android:id="@+id/action_nav_new_worker_to_nav_user_profile"
+            app:destination="@id/nav_user_profile" />
+    </fragment>
     <fragment
-        android:id="@+id/nav_workers"
+        android:id="@+id/nav_worker_list"
         android:name="com.issen.workerfinder.ui.workerList.WorkerListFragment"
         android:label="@string/menu_workers"
-        tools:layout="@layout/fragment_worker_list" />
+        tools:layout="@layout/fragment_worker_list">
+        <action
+            android:id="@+id/action_nav_worker_list_to_nav_user_profile"
+            app:destination="@id/nav_user_profile" />
+    </fragment>
     <fragment
         android:id="@+id/nav_task_detail"
         android:name="com.issen.workerfinder.ui.taskDetail.TaskDetailFragment"
@@ -65,17 +73,27 @@
         <action
             android:id="@+id/action_nav_task_detail_to_task_edit_fragment"
             app:destination="@id/task_edit_fragment" />
+        <action
+            android:id="@+id/action_nav_task_detail_to_nav_user_profile"
+            app:destination="@id/nav_user_profile" />
     </fragment>
     <fragment
         android:id="@+id/task_edit_fragment"
         android:name="com.issen.workerfinder.ui.taskEdit.TaskEditFragment"
         android:label="@string/menu_taskEdit"
-        tools:layout="@layout/fragment_task_edit" />
+        tools:layout="@layout/fragment_task_edit" >
+        <argument
+            android:name="fullTask"
+            app:argType="com.issen.workerfinder.database.models.FullTaskModel" />
+    </fragment>
     <fragment
         android:id="@+id/nav_user_profile"
         android:name="com.issen.workerfinder.ui.userProfile.UserProfileFragment"
         android:label="@string/menu_userProfile"
-        tools:layout="@layout/fragment_user_profile" >
+        tools:layout="@layout/fragment_user_profile">
+        <argument
+            android:name="fullUserData"
+            app:argType="com.issen.workerfinder.database.models.FullUserData" />
         <action
             android:id="@+id/action_nav_user_profile_to_nav_user_profile_edit"
             app:destination="@id/nav_user_profile_edit" />
@@ -84,16 +102,28 @@
         android:id="@+id/nav_user_profile_edit"
         android:name="com.issen.workerfinder.ui.userProfile.UserProfileEditFragment"
         android:label="@string/menu_userProfileEdit"
-        tools:layout="@layout/fragment_user_profile_edit" />
+        tools:layout="@layout/fragment_user_profile_edit">
+        <argument
+            android:name="fullUserData"
+            app:argType="com.issen.workerfinder.database.models.FullUserData" />
+    </fragment>
     <fragment
         android:id="@+id/nav_task_board"
         android:name="com.issen.workerfinder.ui.taskBoard.TaskBoardFragment"
         android:label="@string/menu_task_board"
-        tools:layout="@layout/fragment_task_board" />
+        tools:layout="@layout/fragment_task_board">
+        <action
+            android:id="@+id/action_nav_task_board_to_nav_task_detail"
+            app:destination="@id/nav_task_detail" />
+    </fragment>
     <fragment
         android:id="@+id/nav_worker_board"
         android:name="com.issen.workerfinder.ui.workerBoard.WorkerBoardFragment"
         android:label="@string/menu_worker_board"
-        tools:layout="@layout/fragment_worker_board" />
+        tools:layout="@layout/fragment_worker_board">
+        <action
+            android:id="@+id/action_nav_worker_board_to_nav_user_profile"
+            app:destination="@id/nav_user_profile" />
+    </fragment>
 
 </navigation>

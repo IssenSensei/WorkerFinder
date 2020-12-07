@@ -1,19 +1,23 @@
 package com.issen.workerfinder.ui.workerBoard
 
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
 import com.issen.workerfinder.database.models.FullUserData
+import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
+import com.issen.workerfinder.ui.misc.WorkerListener
 import kotlinx.android.synthetic.main.fragment_worker_board.view.*
 
-class WorkerBoardFragment : Fragment(), WorkerBoardListener {
+class WorkerBoardFragment : Fragment(), WorkerListener {
 
     private lateinit var workerBoardViewModel: WorkerBoardViewModel
+    private lateinit var onDrawerRequestListener: OnDrawerRequestListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +38,45 @@ class WorkerBoardFragment : Fragment(), WorkerBoardListener {
         return root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_filter, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_filter -> {
+                toggleFilterDrawer()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnDrawerRequestListener)
+            onDrawerRequestListener = context
+
+    }
+
+    private fun toggleFilterDrawer() {
+        onDrawerRequestListener.onDrawerRequest {
+            if (it.isDrawerOpen(GravityCompat.END)) {
+                it.closeDrawer(GravityCompat.END)
+            } else {
+                it.openDrawer(GravityCompat.END)
+            }
+        }
+    }
+
     override fun onWorkerClicked(fullUserData: FullUserData) {
-        TODO("Not yet implemented")
+        val actionProfile = WorkerBoardFragmentDirections.actionNavWorkerBoardToNavUserProfile(fullUserData)
+        findNavController().navigate(actionProfile)
     }
 
 }

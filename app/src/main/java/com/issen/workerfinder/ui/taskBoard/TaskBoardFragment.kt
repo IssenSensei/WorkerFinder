@@ -1,14 +1,17 @@
 package com.issen.workerfinder.ui.taskBoard
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.*
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
 import com.issen.workerfinder.database.models.FullTaskModel
+import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
+import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.workerBoard.WorkerBoardRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_task_board.view.*
 import kotlinx.android.synthetic.main.fragment_worker_board.view.*
@@ -16,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_worker_board.view.*
 class TaskBoardFragment : Fragment(), TaskBoardListener {
 
     private lateinit var taskBoardViewModel: TaskBoardViewModel
+    private lateinit var onDrawerRequestListener: OnDrawerRequestListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +39,45 @@ class TaskBoardFragment : Fragment(), TaskBoardListener {
         return root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_filter, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_filter -> {
+                toggleFilterDrawer()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnDrawerRequestListener)
+            onDrawerRequestListener = context
+
+    }
+
+    private fun toggleFilterDrawer() {
+        onDrawerRequestListener.onDrawerRequest {
+            if (it.isDrawerOpen(GravityCompat.END)) {
+                it.closeDrawer(GravityCompat.END)
+            } else {
+                it.openDrawer(GravityCompat.END)
+            }
+        }
+    }
+
     override fun onTaskClicked(fullTaskModel: FullTaskModel) {
-        TODO("Not yet implemented")
+        val actionDetail = TaskBoardFragmentDirections.actionNavTaskBoardToNavTaskDetail(fullTaskModel)
+        findNavController().navigate(actionDetail)
     }
 
 }

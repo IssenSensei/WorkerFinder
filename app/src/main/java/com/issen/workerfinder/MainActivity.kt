@@ -21,7 +21,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -76,10 +75,14 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 //                    "danych"
 //            navHeaderBinding.email.text = if (currentLoggedInFullUser!!.email != "") currentLoggedInFullUser!!.email else "Brak danych"
             main_loading.hideAnimated()
-            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateComments(lifecycleScope, currentLoggedInFullUser
-                !!.userData.userId)
-            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateContacts(lifecycleScope, currentLoggedInFullUser
-                !!.userData.userId)
+            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateComments(
+                lifecycleScope, currentLoggedInFullUser
+                !!.userData.userId
+            )
+            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateContacts(
+                lifecycleScope, currentLoggedInFullUser
+                !!.userData.userId
+            )
         }
 //        Glide.with(this).load(currentLoggedInFullUser!!.userData.photo).placeholder(R.drawable.meme).into(navHeaderBinding.avatar)
 
@@ -96,8 +99,8 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_task_list, R.id.nav_new_task, R.id.nav_new_worker,
-                R.id.nav_workers, R.id.nav_settings, R.id.nav_info, R.id.nav_contact
+                R.id.nav_task_list, R.id.nav_task_board, R.id.nav_worker_board,
+                R.id.nav_worker_list
             ), drawerLayout
         )
 
@@ -270,7 +273,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
     override fun onOrderSwitched(view: View) {
         selectedTaskListFilter.orderBy = view.tag.toString()
-         drawer_filter_sort_switch.isChecked = view.tag == "asc"
+        drawer_filter_sort_switch.isChecked = view.tag == "asc"
     }
 
     private fun prepareDrawer() {
@@ -289,29 +292,63 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     }
 
     private fun getSelectedGroupValue(radio: RadioButton): String {
-        return when(radio.id){
-            R.id.drawer_filter_group_none ->{""}
-            R.id.drawer_filter_group_worker -> {"task_worker"}
-            R.id.drawer_filter_group_user -> {"task_user"}
-            R.id.drawer_filter_group_category -> {"task_category"}
-            R.id.drawer_filter_group_cyclic_type -> {"task_cyclic_type"}
-            R.id.drawer_filter_group_priority -> {"task_priority_type"}
-            R.id.drawer_filter_group_completed -> {"task_completion_type"}
-            else -> {""}
+        return when (radio.id) {
+            R.id.drawer_filter_group_none -> {
+                ""
+            }
+            R.id.drawer_filter_group_worker -> {
+                "task_worker"
+            }
+            R.id.drawer_filter_group_user -> {
+                "task_user"
+            }
+            R.id.drawer_filter_group_category -> {
+                "task_category"
+            }
+            R.id.drawer_filter_group_cyclic_type -> {
+                "task_cyclic_type"
+            }
+            R.id.drawer_filter_group_priority -> {
+                "task_priority_type"
+            }
+            R.id.drawer_filter_group_completed -> {
+                "task_completion_type"
+            }
+            else -> {
+                ""
+            }
         }
     }
 
     private fun getSelectedSortValue(radio: RadioButton): String {
-        return when(radio.id){
-            R.id.drawer_filter_sort_none ->{""}
-            R.id.drawer_filter_sort_taskName -> {"task_title"}
-            R.id.drawer_filter_sort_worker -> {"task_worker"}
-            R.id.drawer_filter_sort_user -> {"task_user"}
-            R.id.drawer_filter_sort_category -> {"task_category"}
-            R.id.drawer_filter_sort_next_date -> {"task_next_completion_date"}
-            R.id.drawer_filter_sort_priority -> {"task_priority_type"}
-            R.id.drawer_filter_sort_completion_date -> {"task_completion_date"}
-            else -> {""}
+        return when (radio.id) {
+            R.id.drawer_filter_sort_none -> {
+                ""
+            }
+            R.id.drawer_filter_sort_taskName -> {
+                "task_title"
+            }
+            R.id.drawer_filter_sort_worker -> {
+                "task_worker"
+            }
+            R.id.drawer_filter_sort_user -> {
+                "task_user"
+            }
+            R.id.drawer_filter_sort_category -> {
+                "task_category"
+            }
+            R.id.drawer_filter_sort_next_date -> {
+                "task_next_completion_date"
+            }
+            R.id.drawer_filter_sort_priority -> {
+                "task_priority_type"
+            }
+            R.id.drawer_filter_sort_completion_date -> {
+                "task_completion_date"
+            }
+            else -> {
+                ""
+            }
         }
     }
 
