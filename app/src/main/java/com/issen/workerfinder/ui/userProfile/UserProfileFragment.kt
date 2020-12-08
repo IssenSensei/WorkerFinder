@@ -1,7 +1,6 @@
 package com.issen.workerfinder.ui.userProfile
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -15,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.issen.workerfinder.MainActivity
 import com.issen.workerfinder.R
 import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInFullUser
-import com.issen.workerfinder.database.models.Comments
 import com.issen.workerfinder.database.models.FullUserData
 import com.issen.workerfinder.database.models.UserDataWithComments
 import com.issen.workerfinder.databinding.FragmentUserProfileBinding
@@ -101,6 +99,7 @@ class UserProfileFragment : Fragment(), UserProfileListener {
         Toast.makeText(requireContext(), "sms clicked", Toast.LENGTH_SHORT).show()
     }
 
+    //todo add restrictions if profile is public
     override fun onEditProfileClicked(fullUser: FullUserData) {
         findNavController().navigate(R.id.action_nav_user_profile_to_nav_user_profile_edit)
     }
@@ -111,15 +110,22 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 
     override fun onPublicManageClicked(fullUser: FullUserData) {
         if (fullUser.userData.isAccountPublic) {
-            //todo check if there are any active tasks in dialog and confirm decision
-            userProfileViewModel.setAccountPublic(fullUser.userData.firebaseKey, false)
-            fullUser.userData.isAccountPublic = false
+            showConfirmationDialog(false)
         } else {
-            //todo validate data
-            userProfileViewModel.setAccountPublic(fullUser.userData.firebaseKey, true)
-            fullUser.userData.isAccountPublic = true
-            Toast.makeText(requireContext(), "public clicked", Toast.LENGTH_SHORT).show()
+            if (checkValidation()) {
+                showConfirmationDialog(true)
+            } else {
+                Toast.makeText(requireContext(), "Uzupełnij wymagane dane aby móc uczynić profil publicznym!", Toast.LENGTH_SHORT).show()
+            }
         }
+    }
+
+
+    //todo create solid validation
+    private fun checkValidation() = when {
+        fullUserData.userData.userName == "" -> false
+        fullUserData.userData.email == "" && fullUserData.userData.phone == "" -> false
+        else -> true
     }
 
     override fun onContactManageClicked(fullUser: FullUserData) {
@@ -149,6 +155,35 @@ class UserProfileFragment : Fragment(), UserProfileListener {
             setView(dialogView)
             setTitle("Komentarze")
             setNeutralButton("Zamknij") { dialogInterface, i -> }
+            create()
+            show()
+        }
+    }
+
+    private fun showConfirmationDialog(goingToPublic: Boolean) {
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.apply {
+            setTitle("Potwierdź decyzję")
+            if (goingToPublic) {
+                setMessage("Twój profil stanie się widoczny dla innych użytkowników, czy jesteś pewien?")
+                setPositiveButton("Akceptuj") { dialogInterface, i ->
+                    userProfileViewModel.setAccountPublic(fullUserData.userData.firebaseKey, goingToPublic)
+                    fullUserData.userData.isAccountPublic = goingToPublic
+                    Toast.makeText(requireContext(), "Twój profil jest teraz publiczny", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                setMessage(
+                    "Twój profil przestanie być widoczny dla innych użytkowników, oraz nie będzie już dostępny w wynikach " +
+                            "wyszukiwania, czy jesteś pewien?"
+                )
+                setPositiveButton("Akceptuj") { dialogInterface, i ->
+                    userProfileViewModel.setAccountPublic(fullUserData.userData.firebaseKey, goingToPublic)
+                    fullUserData.userData.isAccountPublic = goingToPublic
+                    Toast.makeText(requireContext(), "Twój profil jest teraz prywatny", Toast.LENGTH_SHORT).show()
+                }
+            }
+            setNeutralButton("Anuluj") { dialogInterface, i -> }
             create()
             show()
         }
