@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.issen.workerfinder.database.models.FullUserData
 import com.issen.workerfinder.database.models.UserData
+import com.issen.workerfinder.database.models.UserDataWithComments
 
 @Dao
 interface UserDataDao {
@@ -42,5 +43,17 @@ interface UserDataDao {
     @Query("SELECT * FROM user_table WHERE isAccountPublic = 1 AND isOpenForWork = 1")
     fun getBoardWorkers(): LiveData<List<FullUserData>>
 
+    @Transaction
+    @Query(
+        "SELECT comment_table.*, user_table.* from user_table join comment_table on userId = commentedUserId " +
+                "where commentedUserId = :userId and commentByWorker = 0"
+    )
+    suspend fun getCommentUser(userId: Int): List<UserDataWithComments>?
 
+    @Transaction
+    @Query(
+        "SELECT comment_table.*, user_table.* from user_table join comment_table on userId = commentedUserId " +
+                "where commentedUserId = :userId and commentByWorker = 1"
+    )
+    suspend fun getCommentWorker(userId: Int): List<UserDataWithComments>?
 }

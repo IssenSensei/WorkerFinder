@@ -10,7 +10,9 @@ data class Comments(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
 
-    var userId: Int = 0,
+    var commentedUserId: Int = 0,
+
+    var commentatorUserId: Int = 0,
 
     var rating: Float = 0f,
 

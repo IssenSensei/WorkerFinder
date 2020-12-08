@@ -25,7 +25,8 @@ class TaskCreateViewModel(application: Application) : AndroidViewModel(applicati
         val taskPhotosDao = database.taskPhotosDao
         val taskRepeatDaysDao = database.taskRepeatDaysDao
         val userModelDao = database.userDataDao
-        repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao)
+        val commentsDao = database.commentsDao
+        repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao, commentsDao)
     }
 
 //    fun insert(taskModel: TaskModel, photos: TaskModelPhotos, repeatDays: TaskModelRepeatDays) {

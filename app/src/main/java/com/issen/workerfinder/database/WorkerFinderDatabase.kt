@@ -233,24 +233,25 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
         }
     }
 
-     fun populateComments(coroutineScope: CoroutineScope, userId: Int) {
+    fun populateComments(coroutineScope: CoroutineScope, userId: Int) {
         coroutineScope.launch {
+            commentsDao.deleteAll()
             commentsDao.insert(
                 mutableListOf(
-                    Comments(0, userId, 4.5f, "Było w porządeczku", true),
-                    Comments(0, userId, 4.8f, "a", true),
-                    Comments(0, userId, 2f, "b", true),
-                    Comments(0, userId, 4f, "c", true),
-                    Comments(0, userId, 0f, "d", false),
-                    Comments(0, userId, 1f, "e", true),
-                    Comments(0, userId, 3f, "f", false),
-                    Comments(0, userId, 5f, "g", true),
-                    Comments(0, userId, 2f, "h", true),
-                    Comments(0, userId, 3f, "i", false),
-                    Comments(0, userId, 3.5f, "j", true),
-                    Comments(0, userId, 4.9f, "k", false),
-                    Comments(0, userId, 4.1f, "l", true),
-                    Comments(0, userId, 3.3f, "z", true)
+                    Comments(0, userId,3,4.5f, "Było w porządeczku", true),
+                    Comments(0, userId,2, 4.8f, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true),
+                    Comments(0, userId,3, 2f, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true),
+                    Comments(0, userId,4, 4f, "cccccccccccccccccccccccccccccccc", true),
+                    Comments(0, userId,5, 0f, "dddddddddddddddddddddddddddddddddddddddd", false),
+                    Comments(0, userId,2, 1f, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true),
+                    Comments(0, userId,4, 3f, "ffffffffffffffffffffffffffffffffffff", false),
+                    Comments(0, userId,6, 5f, "gggggggggggggggggggggggggggg", true),
+                    Comments(0, userId,6, 2f, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", true),
+                    Comments(0, userId,5, 3f, "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", false),
+                    Comments(0, userId,6, 3.5f, "jjjjjjjjjjjjjjjjjjjjjjjjjjjjj", true),
+                    Comments(0, userId,4, 4.9f, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkk", false),
+                    Comments(0, userId,2, 4.1f, "llllllllllllllllllllllllllllllllllllllllllllllllllllllll", true),
+                    Comments(0, userId,3, 3.3f, "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", true)
                 )
             )
         }
@@ -274,15 +275,42 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 //            userDataDao.deleteAll()
             userDataDao.insert(
                 mutableListOf(
-                    UserData(0, "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "0000000", "aaaaa", false, true),
-                    UserData(0, "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "11111111", "aaaaaa1", false, true),
-                    UserData(0, "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "2222222222", "aaaaaa2", true, true),
-                    UserData(0, "name3 lastName3", "https://i.imgflip.com/15l4w6.jpg", "email3", "3333333333", "aaaaaa3", false, true),
-                    UserData(0, "name4 lastName4", "https://i.imgflip.com/15l4w6.jpg", "email4", "44444444444", "aaaaaa4", true, true),
-                    UserData(0, "name5 lastName5", "https://i.imgflip.com/15l4w6.jpg", "email5", "555555555", "aaaaaa5", true, true),
-                    UserData(0, "name6 lastName6", "https://i.imgflip.com/15l4w6.jpg", "email6", "6666666666", "aaaaaa6", false, false),
-                    UserData(0, "name7 lastName7", "https://i.imgflip.com/15l4w6.jpg", "email7", "777777777", "aaaaaa7", false, false),
-                    UserData(0, "name8 lastName8", "https://i.imgflip.com/15l4w6.jpg", "email8", "88888888", "aaaaaa8", false, false)
+                    UserData(
+                        0, "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "0000000", "aaaaa", "random " +
+                                "description", false, true
+                    ),
+                    UserData(
+                        0, "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "11111111", "aaaaaa1", "random " +
+                                "description1", false, true
+                    ),
+                    UserData(
+                        0, "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "2222222222", "aaaaaa2", "random " +
+                                "description2", true, true
+                    ),
+                    UserData(
+                        0, "name3 lastName3", "https://i.imgflip.com/15l4w6.jpg", "email3", "3333333333", "aaaaaa3", "random " +
+                                "description3", false, true
+                    ),
+                    UserData(
+                        0, "name4 lastName4", "https://i.imgflip.com/15l4w6.jpg", "email4", "44444444444", "aaaaaa4", "random " +
+                                "description4", true, true
+                    ),
+                    UserData(
+                        0, "name5 lastName5", "https://i.imgflip.com/15l4w6.jpg", "email5", "555555555", "aaaaaa5", "random " +
+                                "description5", true, true
+                    ),
+                    UserData(
+                        0, "name6 lastName6", "https://i.imgflip.com/15l4w6.jpg", "email6", "6666666666", "aaaaaa6", "random " +
+                                "description6", false, false
+                    ),
+                    UserData(
+                        0, "name7 lastName7", "https://i.imgflip.com/15l4w6.jpg", "email7", "777777777", "aaaaaa7", "random " +
+                                "description7", false, false
+                    ),
+                    UserData(
+                        0, "name8 lastName8", "https://i.imgflip.com/15l4w6.jpg", "email8", "88888888", "aaaaaa8", "random " +
+                                "description8", false, false
+                    )
                 )
             )
         }

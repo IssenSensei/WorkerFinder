@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_nav_task_list_to_nav_task_detail"
             app:destination="@id/nav_task_detail" />
+        <action
+            android:id="@+id/action_nav_task_list_to_nav_user_profile2"
+            app:destination="@id/nav_user_profile" />
     </fragment>
 
     <fragment

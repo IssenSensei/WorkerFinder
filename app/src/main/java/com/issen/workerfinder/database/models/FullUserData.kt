@@ -23,7 +23,7 @@ data class FullUserData(
 
     @Relation(
         parentColumn = "userId",
-        entityColumn = "userId"
+        entityColumn = "commentedUserId"
     )
     val comments: List<Comments>
 

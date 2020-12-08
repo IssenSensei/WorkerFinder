@@ -46,11 +46,11 @@
                 android:id="@+id/user_profile_contact_email"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:scaleType="centerCrop"
                 android:layout_margin="@dimen/spacing_large"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/colorSecondary"
                 android:onClick="@{() -> clickListener.onEmailClicked(user)}"
+                android:scaleType="centerCrop"
+                android:tint="@color/colorSecondary"
                 app:layout_constraintBottom_toBottomOf="@+id/user_profile_photo"
                 app:layout_constraintEnd_toStartOf="@id/user_profile_contact_sms"
                 app:layout_constraintTop_toTopOf="@+id/user_profile_photo"
@@ -62,8 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_large"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/colorSecondary"
                 android:onClick="@{() -> clickListener.onSmsClicked(user)}"
+                android:tint="@color/colorSecondary"
                 app:layout_constraintBottom_toBottomOf="@+id/user_profile_photo"
                 app:layout_constraintEnd_toStartOf="@id/user_profile_photo"
                 app:layout_constraintTop_toTopOf="@+id/user_profile_photo"
@@ -74,12 +74,12 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="@dimen/spacing_large"
+                android:onClick="@{() -> clickListener.onProfilePhotoClicked(user)}"
                 app:civ_border="true"
                 app:civ_border_color="@color/colorSecondary"
                 app:civ_border_width="2dp"
                 app:civ_shadow="true"
                 app:civ_shadow_radius="0"
-                android:onClick="@{() -> clickListener.onProfilePhotoClicked(user)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -92,8 +92,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_large"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/colorSecondary"
                 android:onClick="@{() -> clickListener.onCallClicked(user)}"
+                android:tint="@color/colorSecondary"
                 app:layout_constraintBottom_toBottomOf="@+id/user_profile_photo"
                 app:layout_constraintStart_toEndOf="@id/user_profile_photo"
                 app:layout_constraintTop_toTopOf="@+id/user_profile_photo"
@@ -103,63 +103,100 @@
                 android:id="@+id/user_profile_contact_chat"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:scaleType="centerCrop"
                 android:layout_margin="@dimen/spacing_large"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@color/colorSecondary"
                 android:onClick="@{() -> clickListener.onChatClicked(user)}"
+                android:scaleType="centerCrop"
+                android:tint="@color/colorSecondary"
                 app:layout_constraintBottom_toBottomOf="@+id/user_profile_photo"
                 app:layout_constraintStart_toEndOf="@id/user_profile_contact_call"
                 app:layout_constraintTop_toTopOf="@+id/user_profile_photo"
                 app:srcCompat="@drawable/ic_logo_small" />
 
-            <RatingBar
-                android:id="@+id/user_profile_rating_bar"
+            <LinearLayout
+                android:id="@+id/user_profile_users_comments_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
-                android:foregroundGravity="center"
-                android:rating="4.8"
-                android:clickable="false"
-                android:stepSize="0.01"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_profile_photo" />
-
-            <TextView
-                android:id="@+id/user_profile_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_large"
-                android:layout_marginEnd="16dp"
-                android:text="4.8"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/colorSecondary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_profile_rating_bar" />
-
-            <Button
-                android:id="@+id/user_profile_users_comments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing_medium"
-                android:text="Opinie pracodawców"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:gravity="center"
                 android:onClick="@{() -> clickListener.onShowUserCommentsClicked(user)}"
-                app:layout_constraintEnd_toEndOf="@id/user_profile_completed_tasks"
-                app:layout_constraintStart_toStartOf="@id/user_profile_completed_tasks"
-                app:layout_constraintTop_toBottomOf="@+id/user_profile_rating" />
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@id/user_profile_workers_comments_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_profile_photo">
 
-            <Button
-                android:id="@+id/user_profile_workers_comments"
+                <TextView
+                    android:id="@+id/user_profile_users_comments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:text="Pracownik" />
+
+                <RatingBar
+                    android:id="@+id/user_profile_rating_worker_bar"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:rating="4.8"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:stepSize="0.01" />
+
+                <TextView
+                    android:id="@+id/user_profile_rating_worker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_marginEnd="16dp"
+                    android:text="4.8"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/colorSecondary" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_profile_workers_comments_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_medium"
-                android:text="Opinie pracowników"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:gravity="center"
                 android:onClick="@{() -> clickListener.onShowWorkerCommentsClicked(user)}"
-                app:layout_constraintEnd_toEndOf="@id/user_profile_abandoned_tasks"
-                app:layout_constraintStart_toStartOf="@id/user_profile_abandoned_tasks"
-                app:layout_constraintTop_toBottomOf="@+id/user_profile_rating" />
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/user_profile_users_comments_container"
+                app:layout_constraintTop_toBottomOf="@+id/user_profile_photo">
+
+                <TextView
+                    android:id="@+id/user_profile_workers_comments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:text="Pracodawca" />
+
+                <RatingBar
+                    android:id="@+id/user_profile_rating_user_bar"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:foregroundGravity="center"
+                    android:rating="4.8"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:stepSize="0.01" />
+
+                <TextView
+                    android:id="@+id/user_profile_rating_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_marginEnd="16dp"
+                    android:text="4.8"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/colorSecondary" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/user_profile_completed_tasks"
@@ -196,7 +233,7 @@
                 android:textColor="@color/colorSecondary"
                 app:layout_constraintEnd_toStartOf="@id/user_profile_abandoned_tasks"
                 app:layout_constraintStart_toEndOf="@id/user_profile_completed_tasks"
-                app:layout_constraintTop_toBottomOf="@+id/user_profile_users_comments" />
+                app:layout_constraintTop_toBottomOf="@+id/user_profile_users_comments_container" />
 
             <TextView
                 android:id="@+id/user_profile_active_tasks_text"
@@ -251,7 +288,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_large"
-                    android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    android:text='@{user.userData.description ?? "Brak opisu"}'
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_90" />
 
@@ -366,41 +403,41 @@
                 android:id="@+id/user_profile_contact_manage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{() -> clickListener.onContactManageClicked(user)}"
-                app:layout_constraintTop_toBottomOf="@id/user_profile_user_additional_info_container"
-                android:text="Nawiąż kontakt/ usuń kontakt"/>
+                android:text="Nawiąż kontakt/ usuń kontakt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_user_additional_info_container" />
 
             <Button
                 android:id="@+id/user_profile_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{() -> clickListener.onEditProfileClicked(user)}"
-                app:layout_constraintTop_toBottomOf="@id/user_profile_contact_manage"
-                android:text="Edytuj profil"/>
+                android:text="Edytuj profil"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_contact_manage" />
 
             <Button
                 android:id="@+id/user_profile_public_manage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{() -> clickListener.onPublicManageClicked(user)}"
-                app:layout_constraintTop_toBottomOf="@id/user_profile_edit"
-                android:text="Opublikuj konto"/>
+                android:text="Opublikuj konto"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_edit" />
 
             <Button
                 android:id="@+id/user_profile_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{() -> clickListener.onDeleteAccountClicked(user)}"
-                app:layout_constraintTop_toBottomOf="@id/user_profile_public_manage"
-                android:text="Usuń konto"/>
+                android:text="Usuń konto"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_profile_public_manage" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

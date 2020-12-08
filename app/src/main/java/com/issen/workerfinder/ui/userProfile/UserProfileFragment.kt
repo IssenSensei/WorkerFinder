@@ -1,5 +1,7 @@
 package com.issen.workerfinder.ui.userProfile
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -8,19 +10,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.MainActivity
 import com.issen.workerfinder.R
 import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInFullUser
+import com.issen.workerfinder.database.models.Comments
 import com.issen.workerfinder.database.models.FullUserData
+import com.issen.workerfinder.database.models.UserDataWithComments
 import com.issen.workerfinder.databinding.FragmentUserProfileBinding
+import kotlinx.android.synthetic.main.dialog_user_comments.view.*
 
 class UserProfileFragment : Fragment(), UserProfileListener {
+
+    private val userProfileFragmentArgs: UserProfileFragmentArgs by navArgs()
+    lateinit var fullUserData: FullUserData
 
     private val userProfileViewModel: UserProfileViewModel by viewModels {
         UserProfileViewModelFactory(
             this.requireActivity().application,
-            currentLoggedInFullUser!!.userData.firebaseKey
+            fullUserData
         )
     }
 
@@ -31,9 +40,11 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 
         val binding: FragmentUserProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
         val view = binding.root
-
-        Glide.with(requireContext()).load(currentLoggedInFullUser!!.userData.photo).placeholder(R.drawable.meme).into(binding.userProfilePhoto)
-        binding.user = currentLoggedInFullUser
+        fullUserData = userProfileFragmentArgs.fullUserData
+        Glide.with(requireContext()).load(fullUserData.userData.photo).placeholder(R.drawable.meme).into(
+            binding.userProfilePhoto
+        )
+        binding.user = fullUserData
         binding.clickListener = this
 
         userProfileViewModel.activeTasks.observe(viewLifecycleOwner, Observer {
@@ -48,9 +59,29 @@ class UserProfileFragment : Fragment(), UserProfileListener {
             binding.userProfileAbandonedTasks.text = it.toString()
         })
 
+        userProfileViewModel.ratingAsUser.observe(viewLifecycleOwner, Observer {
+            binding.userProfileRatingUser.text = it?.toString() ?: 0.toString()
+            binding.userProfileRatingUserBar.rating = it ?: 0f
+        })
+
+        userProfileViewModel.ratingAsWorker.observe(viewLifecycleOwner, Observer {
+            binding.userProfileRatingWorker.text = it?.toString() ?: 0.toString()
+            binding.userProfileRatingWorkerBar.rating = it ?: 0f
+        })
+
+        if (fullUserData.userData.firebaseKey == currentLoggedInFullUser!!.userData.firebaseKey) {
+            binding.userProfileContactSms.visibility = View.GONE
+            binding.userProfileContactEmail.visibility = View.GONE
+            binding.userProfileContactCall.visibility = View.GONE
+            binding.userProfileContactChat.visibility = View.GONE
+            binding.userProfileContactManage.visibility = View.GONE
+        } else {
+            binding.userProfileDelete.visibility = View.GONE
+            binding.userProfilePublicManage.visibility = View.GONE
+            binding.userProfileEdit.visibility = View.GONE
+        }
+
         binding.executePendingBindings()
-
-
         return view
     }
 
@@ -79,7 +110,7 @@ class UserProfileFragment : Fragment(), UserProfileListener {
     }
 
     override fun onPublicManageClicked(fullUser: FullUserData) {
-        if(fullUser.userData.isAccountPublic){
+        if (fullUser.userData.isAccountPublic) {
             //todo check if there are any active tasks in dialog and confirm decision
             userProfileViewModel.setAccountPublic(fullUser.userData.firebaseKey, false)
             fullUser.userData.isAccountPublic = false
@@ -100,15 +131,31 @@ class UserProfileFragment : Fragment(), UserProfileListener {
     }
 
     override fun onShowUserCommentsClicked(fullUser: FullUserData) {
-        Toast.makeText(requireContext(), "userComments clicked", Toast.LENGTH_SHORT).show()
+        showRatingDialog(userProfileViewModel.commentUser.value)
     }
 
     override fun onShowWorkerCommentsClicked(fullUser: FullUserData) {
-        Toast.makeText(requireContext(), "workerComments clicked", Toast.LENGTH_SHORT).show()
+        showRatingDialog(userProfileViewModel.commentWorker.value)
+    }
+
+    private fun showRatingDialog(commentList: List<UserDataWithComments>?) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_user_comments, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        val adapter = CommentRecyclerViewAdapter()
+        dialogView.dialog_user_comments_recycler.adapter = adapter
+        adapter.submitList(commentList)
+
+        builder.apply {
+            setView(dialogView)
+            setTitle("Komentarze")
+            setNeutralButton("Zamknij") { dialogInterface, i -> }
+            create()
+            show()
+        }
     }
 }
 
-interface UserProfileListener{
+interface UserProfileListener {
     fun onCallClicked(fullUser: FullUserData)
     fun onChatClicked(fullUser: FullUserData)
     fun onEmailClicked(fullUser: FullUserData)

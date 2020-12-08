@@ -6,19 +6,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.issen.workerfinder.R
 import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInFullUser
-import com.issen.workerfinder.database.models.FullUserData
 import com.issen.workerfinder.database.models.UserData
 import com.issen.workerfinder.databinding.FragmentUserProfileEditBindingImpl
 import kotlinx.android.synthetic.main.fragment_user_profile_edit.*
 
 class UserProfileEditFragment : Fragment() {
 
+    val userProfileEditFragmentArgs: UserProfileEditFragmentArgs by navArgs()
     val userProfileViewModel: UserProfileViewModel by viewModels {
         UserProfileViewModelFactory(
             this.requireActivity().application,
-            currentLoggedInFullUser!!.userData.firebaseKey
+            userProfileEditFragmentArgs.fullUserData
         )
     }
 
@@ -95,6 +96,7 @@ class UserProfileEditFragment : Fragment() {
                 "",
                 user_profile_edit_phone.text.toString(),
                 currentLoggedInFullUser!!.userData.firebaseKey,
+                "aaaaa",
                 false
             )
         )

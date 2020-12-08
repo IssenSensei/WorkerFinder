@@ -20,6 +20,8 @@ data class UserData(
 
     var firebaseKey: String = "",
 
+    var description: String = "",
+
     var isAccountPublic: Boolean = false,
 
     var isOpenForWork: Boolean = false

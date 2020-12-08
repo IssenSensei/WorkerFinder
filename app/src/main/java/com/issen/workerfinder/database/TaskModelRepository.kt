@@ -1,17 +1,15 @@
 package com.issen.workerfinder.database
 
 import androidx.lifecycle.LiveData
-import com.issen.workerfinder.database.dao.TaskModelDao
-import com.issen.workerfinder.database.dao.TaskPhotosDao
-import com.issen.workerfinder.database.dao.TaskRepeatDaysDao
-import com.issen.workerfinder.database.dao.UserDataDao
+import com.issen.workerfinder.database.dao.*
 import com.issen.workerfinder.database.models.*
 
 class TaskModelRepository(
     private val taskModelDao: TaskModelDao,
     private val taskPhotosDao: TaskPhotosDao,
     private val taskRepeatDaysDao: TaskRepeatDaysDao,
-    private val userDataDao: UserDataDao
+    private val userDataDao: UserDataDao,
+    private val commentsDao: CommentsDao
 ) {
 
     val allTasks: LiveData<List<FullTaskModel>> = taskModelDao.getAllTasks()
@@ -45,6 +43,10 @@ class TaskModelRepository(
     suspend fun abandonTask(taskId: Int) = taskModelDao.abandonTask(taskId)
     fun updateUser(userData: UserData) = userDataDao.update(userData)
     suspend fun setAccountPublic(firebaseKey: String, public: Boolean) = userDataDao.setAccountPublic(firebaseKey, public)
+    suspend fun getRatingAsWorker(userId: Int) = commentsDao.getRatingAsWorker(userId)
+    suspend fun getRatingAsUser(userId: Int) = commentsDao.getRatingAsUser(userId)
+    suspend fun getCommentUser(userId: Int): List<UserDataWithComments>? = userDataDao.getCommentUser(userId)
+    suspend fun getCommentWorker(userId: Int): List<UserDataWithComments>? = userDataDao.getCommentWorker(userId)
 
 
 }

@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -34,6 +35,7 @@ import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.TaskListFilter
 import com.issen.workerfinder.ui.taskList.TaskListFragment
+import com.issen.workerfinder.ui.taskList.TaskListFragmentDirections
 import com.issen.workerfinder.utils.ViewAnimation
 import com.issen.workerfinder.utils.hideAnimated
 import com.issen.workerfinder.utils.nestedScrollTo
@@ -149,7 +151,8 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     }
 
     fun navigateProfile(view: View) {
-        findNavController(R.id.nav_host_fragment).navigate(R.id.nav_user_profile)
+        val bundle = bundleOf("fullUserData" to currentLoggedInFullUser!!)
+        findNavController(R.id.nav_host_fragment).navigate(R.id.nav_user_profile, bundle)
         drawer_layout.closeDrawers()
     }
 

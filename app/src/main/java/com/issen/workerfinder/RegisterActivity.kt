@@ -40,6 +40,7 @@ class RegisterActivity : AppCompatActivity() {
                                     activity_register_email.text.toString(),
                                     activity_register_phone.text.toString(),
                                     auth.currentUser!!.uid,
+                                    "",
                                     false,
                                     false
                                 )
