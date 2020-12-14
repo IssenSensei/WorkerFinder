@@ -72,7 +72,7 @@
         tools:layout="@layout/fragment_task_detail">
         <argument
             android:name="fullTask"
-            app:argType="com.issen.workerfinder.database.models.FullTaskModel" />
+            app:argType="com.issen.workerfinder.database.models.TaskModelFull" />
         <action
             android:id="@+id/action_nav_task_detail_to_task_edit_fragment"
             app:destination="@id/task_edit_fragment" />
@@ -87,7 +87,7 @@
         tools:layout="@layout/fragment_task_edit" >
         <argument
             android:name="fullTask"
-            app:argType="com.issen.workerfinder.database.models.FullTaskModel" />
+            app:argType="com.issen.workerfinder.database.models.TaskModelFull" />
     </fragment>
     <fragment
         android:id="@+id/nav_user_profile"
@@ -95,8 +95,8 @@
         android:label="@string/menu_userProfile"
         tools:layout="@layout/fragment_user_profile">
         <argument
-            android:name="fullUserData"
-            app:argType="com.issen.workerfinder.database.models.FullUserData" />
+            android:name="userDataFull"
+            app:argType="com.issen.workerfinder.database.models.UserDataFull" />
         <action
             android:id="@+id/action_nav_user_profile_to_nav_user_profile_edit"
             app:destination="@id/nav_user_profile_edit" />
@@ -107,8 +107,8 @@
         android:label="@string/menu_userProfileEdit"
         tools:layout="@layout/fragment_user_profile_edit">
         <argument
-            android:name="fullUserData"
-            app:argType="com.issen.workerfinder.database.models.FullUserData" />
+            android:name="userDataFull"
+            app:argType="com.issen.workerfinder.database.models.UserDataFull" />
     </fragment>
     <fragment
         android:id="@+id/nav_task_board"
@@ -128,5 +128,10 @@
             android:id="@+id/action_nav_worker_board_to_nav_user_profile"
             app:destination="@id/nav_user_profile" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.issen.workerfinder.ui.dashboard.DashboardFragment"
+        android:label="@string/menu_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
 
 </navigation>

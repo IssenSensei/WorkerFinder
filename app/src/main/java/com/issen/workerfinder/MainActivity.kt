@@ -3,10 +3,11 @@ package com.issen.workerfinder
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -34,7 +35,10 @@ import com.issen.workerfinder.database.WorkerFinderDatabase
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.databinding.ActivityMainBinding
 import com.issen.workerfinder.databinding.NavHeaderMainBinding
-import com.issen.workerfinder.ui.misc.*
+import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
+import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
+import com.issen.workerfinder.ui.misc.TaskListFilter
+import com.issen.workerfinder.ui.misc.WorkerListener
 import com.issen.workerfinder.ui.taskList.TaskListFragment
 import com.issen.workerfinder.ui.workerList.WorkerListRecyclerViewAdapter
 import com.issen.workerfinder.utils.ViewAnimation
@@ -42,10 +46,12 @@ import com.issen.workerfinder.utils.hideAnimated
 import com.issen.workerfinder.utils.nestedScrollTo
 import com.issen.workerfinder.utils.showAnimated
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.drawer_content_task_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDrawerListener, WorkerListener {
@@ -98,7 +104,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_task_list, R.id.nav_task_board, R.id.nav_worker_board,
+                R.id.nav_dashboard, R.id.nav_task_list, R.id.nav_task_board, R.id.nav_worker_board,
                 R.id.nav_worker_list
             ), drawerLayout
         )
@@ -131,6 +137,11 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     private fun setupNavigationMenu(navController: NavController) {
         val sideNavView = findViewById<NavigationView>(R.id.nav_view)
         sideNavView?.setupWithNavController(navController)
+
+        sideNavView.menu.getItem(R.id.nav_logout).setOnMenuItemClickListener {
+            logout()
+            true
+        }
     }
 
     private fun setupActionBar(
@@ -140,22 +151,6 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         setupActionBarWithNavController(navController, appBarConfig)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_logout -> {
-                logout()
-            }
-            R.id.action_settings -> {
-                //todo
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     private fun logout() {
         Firebase.auth.signOut()

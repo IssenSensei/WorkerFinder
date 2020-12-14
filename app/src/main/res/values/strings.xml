@@ -10,6 +10,7 @@
     <string name="action_filter">Filter</string>
 
     <string name="menu_task_list">Lista zadań</string>
+    <string name="menu_dashboard">Tablica powiadomień</string>
     <string name="menu_task_board">Ogłoszenia</string>
     <string name="menu_newTask">Nowe zadanie</string>
     <string name="menu_taskHistory">Historia zadań</string>

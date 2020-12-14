@@ -18,7 +18,6 @@ class DashboardFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
 
-
         return view
     }
 

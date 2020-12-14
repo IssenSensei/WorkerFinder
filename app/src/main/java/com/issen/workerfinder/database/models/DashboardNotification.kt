@@ -2,7 +2,6 @@ package com.issen.workerfinder.database.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.issen.workerfinder.sealedClasses.DashboardNotificationTypes
 import java.io.Serializable
 
 @Entity(tableName = "dashboard_notifications_table")
@@ -17,7 +16,7 @@ data class DashboardNotification(
 
     var notificationCausedByUserId: String = "",
 
-    var type: DashboardNotificationTypes? = null,
+    var dashboardNotificationType: String = "",
 
     var modifiedRecordId: Int = 0,
 
