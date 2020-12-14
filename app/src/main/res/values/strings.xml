@@ -31,6 +31,7 @@
     <string name="title_settings">Ustawienia</string>
     <string name="title_profile">Profil</string>
     <string name="title_edit">Edycja</string>
+    <string name="title_abandon">Porzuć</string>
     <string name="title_filter">Filtry</string>
     <string name="title_save">Zapisz</string>
     <string name="title_logout">Wyloguj się</string>

@@ -106,11 +106,6 @@ class TaskListFragment : Fragment(), TaskListListener {
         Toast.makeText(context, "Zadanie oznaczone jako wykonane!", Toast.LENGTH_SHORT).show()
     }
 
-    private fun abandonTask(taskFull: TaskModelFull) {
-        taskListViewModel.abandonTask(taskFull.task)
-        Toast.makeText(context, taskFull.task.completed, Toast.LENGTH_SHORT).show()
-    }
-
     override fun onTaskSelected(taskFull: TaskModelFull) {
         val actionDetail = TaskListFragmentDirections.actionNavTaskListToNavTaskDetail(taskFull)
         findNavController().navigate(actionDetail)

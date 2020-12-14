@@ -3,17 +3,20 @@ package com.issen.workerfinder.ui.taskDetail
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.R
+import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.databinding.FragmentTaskDetailBinding
 
 class TaskDetailFragment : Fragment() {
 
     private lateinit var tastDetailViewModel: TaskDetailViewModel
+    private lateinit var taskFull: TaskModelFull
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,12 +29,12 @@ class TaskDetailFragment : Fragment() {
     ): View? {
         val binding = FragmentTaskDetailBinding.inflate(inflater, container, false)
         val safeArgs: TaskDetailFragmentArgs by navArgs()
-        val task = safeArgs.fullTask
-        binding.fullTask = task
+        taskFull = safeArgs.fullTask
+        binding.fullTask = taskFull
 
-        if(task.photos.isNotEmpty()){
+        if(taskFull.photos.isNotEmpty()){
             binding.taskListPhotos.visibility = View.VISIBLE
-            task.photos.forEach {
+            taskFull.photos.forEach {
 
                 val imageView = ImageView(requireContext())
                 imageView.layoutParams = ViewGroup.LayoutParams(300, 300)
@@ -41,8 +44,8 @@ class TaskDetailFragment : Fragment() {
             }
         }
 
-        if(task.repeatDays.isNotEmpty()){
-            task.repeatDays.forEach {
+        if(taskFull.repeatDays.isNotEmpty()){
+            taskFull.repeatDays.forEach {
                 binding.taskDetailRepeatDays.append(it.repeatDay + "\n")
             }
         }
@@ -64,8 +67,17 @@ class TaskDetailFragment : Fragment() {
                 editTask()
                 return true
             }
+            R.id.action_abandon -> {
+                abandonTask()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun abandonTask() {
+        tastDetailViewModel.abandonTask(taskFull)
+        Toast.makeText(context, taskFull.task.completed, Toast.LENGTH_SHORT).show()
     }
 
     private fun editTask() {

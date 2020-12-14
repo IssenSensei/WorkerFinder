@@ -68,12 +68,6 @@ class TaskListViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun abandonTask(taskModel: TaskModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            taskModelRepository.abandonTask(taskModel.taskId)
-        }
-    }
-
     fun queryDesc() {
         mediatorLiveData.addSource(taskModelRepository.activeTasks) {
             mediatorLiveData.setValue(
