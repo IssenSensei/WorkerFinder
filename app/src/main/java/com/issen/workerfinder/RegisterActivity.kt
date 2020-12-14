@@ -33,12 +33,11 @@ class RegisterActivity : AppCompatActivity() {
                             .userDataDao
                             .insert(
                                 UserData(
-                                    0,
+                                    auth.currentUser!!.uid,
                                     activity_register_user_name.text.toString(),
                                     "",
                                     activity_register_email.text.toString(),
                                     activity_register_phone.text.toString(),
-                                    auth.currentUser!!.uid,
                                     "",
                                     false,
                                     false

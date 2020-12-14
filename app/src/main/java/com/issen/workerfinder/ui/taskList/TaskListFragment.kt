@@ -12,6 +12,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.issen.workerfinder.R
+import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
@@ -91,9 +92,18 @@ class TaskListFragment : Fragment(), TaskListListener {
         }
     }
 
+    /**
+     * Method can work in 2 ways:
+     * If user created task for himself, complete task
+     * If user completes task for someone else, notify task owner of task state and wait for approval
+     */
     override fun onTaskComplete(taskFull: TaskModelFull) {
-        taskListViewModel.completeTask(taskFull.task)
-        Toast.makeText(context, taskFull.task.completed, Toast.LENGTH_SHORT).show()
+        if (taskFull.task.workerFirebaseKey == currentLoggedInUserFull!!.userData.userId) {
+            taskListViewModel.markTaskAsCompleted(taskFull.task)
+        } else {
+            taskListViewModel.markTaskAsPending(taskFull.task)
+        }
+        Toast.makeText(context, "Zadanie oznaczone jako wykonane!", Toast.LENGTH_SHORT).show()
     }
 
     private fun abandonTask(taskFull: TaskModelFull) {

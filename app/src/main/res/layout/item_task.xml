@@ -68,7 +68,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="@{fullTask.task.worker}"
+                        android:text="@{fullTask.taskWorker.userName}"
                         app:layout_constraintStart_toEndOf="@id/task_checkbox"
                         app:layout_constraintTop_toBottomOf="@+id/task_title" />
 

@@ -97,11 +97,10 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
     }
 
     fun populateDbCreate(coroutineScope: CoroutineScope) {
-        populateTasks(coroutineScope)
         populateUsers(coroutineScope)
+        populateTasks(coroutineScope)
         populatePhotos(coroutineScope)
         populateRepeatDays(coroutineScope)
-        populateNotificationsOpen(coroutineScope)
     }
 
     private fun populateRepeatDays(coroutineScope: CoroutineScope) {
@@ -147,8 +146,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         1,
                         "Odśnieżanie",
                         "Należy odśnieżyć całą posesję",
-                        "user",
-                        "Zbysiu Zbyś",
+                        "aaaaaaa",
+                        "aaaaaaa",
                         "22-12-2020",
                         CyclicTypes.NONE.toString(),
                         Date(),
@@ -160,8 +159,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         2,
                         "Pomoc na budowie",
                         "Potrzebny pomocnik na budowie",
-                        "user2",
-                        "Zbysiu Robotnik Zbyś",
+                        "aaaaaaa",
+                        "aaaaaaa",
                         "01-01-2020",
                         CyclicTypes.MONTHDAY.toString(),
                         Date(),
@@ -173,8 +172,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         3,
                         "Klaun na urodzinach online",
                         "Najlepiej jakiś rudy",
-                        "user",
-                        "Zbysiu Rudy Zbyś",
+                        "aaaaaaa",
+                        "aaaaaaa",
                         "03-02-2021",
                         CyclicTypes.NONE.toString(),
                         Date(),
@@ -250,15 +249,15 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
     }
 
 
-    private fun populateNotificationsOpen(coroutineScope: CoroutineScope) {
+    fun populateNotificationsOpen(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
             dashboardNotificationDao.insert(
                 mutableListOf(
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.CONTACTACCEPTED.toString(),
                         1,
                         false
@@ -266,8 +265,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.CONTACTCANCELED.toString(),
                         1,
                         false
@@ -275,8 +274,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.CONTACTREFUSED.toString(),
                         1,
                         false
@@ -284,8 +283,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.CONTACTINVITED.toString(),
                         1,
                         false
@@ -293,8 +292,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.RATEDBYWORKER.toString(),
                         1,
                         false
@@ -302,8 +301,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.RATEDBYUSER.toString(),
                         1,
                         false
@@ -311,8 +310,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.TASKREJECTED.toString(),
                         1,
                         false
@@ -320,8 +319,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.TASKCOMPLETED.toString(),
                         1,
                         false
@@ -329,8 +328,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.TASKABANDONED.toString(),
                         1,
                         false
@@ -338,8 +337,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.TASKACCEPTED.toString(),
                         1,
                         false
@@ -347,8 +346,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.WORKCANCELED.toString(),
                         1,
                         false
@@ -356,8 +355,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.WORKREFUSED.toString(),
                         1,
                         false
@@ -365,8 +364,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.WORKOFFERED.toString(),
                         1,
                         false
@@ -374,8 +373,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     DashboardNotification(
                         0,
                         Date().toString(),
-                        "3",
-                        "2",
+                        userId,
+                        userId,
                         DashboardNotificationTypes.WORKACCEPTED.toString(),
                         1,
                         false
@@ -386,38 +385,39 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
     }
 
-    fun populateComments(coroutineScope: CoroutineScope, userId: Int) {
+    fun populateComments(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
             commentsDao.deleteAll()
             commentsDao.insert(
                 mutableListOf(
-                    Comments(0, userId, 3, 4.5f, "Było w porządeczku", true),
-                    Comments(0, userId, 2, 4.8f, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true),
-                    Comments(0, userId, 3, 2f, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true),
-                    Comments(0, userId, 4, 4f, "cccccccccccccccccccccccccccccccc", true),
-                    Comments(0, userId, 5, 0f, "dddddddddddddddddddddddddddddddddddddddd", false),
-                    Comments(0, userId, 2, 1f, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true),
-                    Comments(0, userId, 4, 3f, "ffffffffffffffffffffffffffffffffffff", false),
-                    Comments(0, userId, 6, 5f, "gggggggggggggggggggggggggggg", true),
-                    Comments(0, userId, 6, 2f, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", true),
-                    Comments(0, userId, 5, 3f, "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", false),
-                    Comments(0, userId, 6, 3.5f, "jjjjjjjjjjjjjjjjjjjjjjjjjjjjj", true),
-                    Comments(0, userId, 4, 4.9f, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkk", false),
-                    Comments(0, userId, 2, 4.1f, "llllllllllllllllllllllllllllllllllllllllllllllllllllllll", true),
-                    Comments(0, userId, 3, 3.3f, "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", true)
+                    Comments(0, userId, "adwadawdawdwa", 4.5f, "Było w porządeczku", true),
+                    Comments(0, userId, "adwadawdawdwa", 4.8f, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true),
+                    Comments(0, userId, "adagduawwddyga", 2f, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true),
+                    Comments(0, userId, "adagduaawdwdyga", 4f, "cccccccccccccccccccccccccccccccc", true),
+                    Comments(0, userId, "adagduadawawdyga", 0f, "dddddddddddddddddddddddddddddddddddddddd", false),
+                    Comments(0, userId, "adagduefawdyga", 1f, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true),
+                    Comments(0, userId, "adagdueqwawdyga", 3f, "ffffffffffffffffffffffffffffffffffff", false),
+                    Comments(0, userId, "adagdeqwuawdyga", 5f, "gggggggggggggggggggggggggggg", true),
+                    Comments(0, userId, "adagduawdfqyga", 2f, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", true),
+                    Comments(0, userId, "adagdusefawdyga", 3f, "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", false),
+                    Comments(0, userId, "adagduawsefdyga", 3.5f, "jjjjjjjjjjjjjjjjjjjjjjjjjjjjj", true),
+                    Comments(0, userId, "adagduawdyga", 4.9f, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkk", false),
+                    Comments(0, userId, "adagduawdyga", 4.1f, "llllllllllllllllllllllllllllllllllllllllllllllllllllllll", true),
+                    Comments(0, userId, "adagduawdyga", 3.3f, " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz ", true
+                    )
                 )
             )
         }
     }
 
-    fun populateContacts(coroutineScope: CoroutineScope, userId: Int) {
+    fun populateContacts(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
             contactsDao.insert(
                 mutableListOf(
-                    Contacts(0, userId, 2),
-                    Contacts(0, userId, 3),
-                    Contacts(0, userId, 5),
-                    Contacts(0, userId, 6)
+                    Contacts(0, userId, "adwawd"),
+                    Contacts(0, userId, "qqqdaw"),
+                    Contacts(0, userId, "vsevesc"),
+                    Contacts(0, userId, "grgsfe")
                 )
             )
         }
@@ -429,40 +429,31 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
             userDataDao.insert(
                 mutableListOf(
                     UserData(
-                        0, "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "0000000", "aaaaa", "random " +
-                                "description", false, true
+                        "aaaaaaa", "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "0000000", "aaaaa", false, true
                     ),
                     UserData(
-                        0, "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "11111111", "aaaaaa1", "random " +
-                                "description1", false, true
+                        "aaaaaaa1", "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "11111111", "aaaaaa1", false, true
                     ),
                     UserData(
-                        0, "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "2222222222", "aaaaaa2", "random " +
-                                "description2", true, true
+                        "aaaaaaa2", "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "2222222222", "aaaaaa2", true, true
                     ),
                     UserData(
-                        0, "name3 lastName3", "https://i.imgflip.com/15l4w6.jpg", "email3", "3333333333", "aaaaaa3", "random " +
-                                "description3", false, true
+                        "aaaaaaa3", "name3 lastName3", "https://i.imgflip.com/15l4w6.jpg", "email3", "3333333333", "aaaaaa3", false, true
                     ),
                     UserData(
-                        0, "name4 lastName4", "https://i.imgflip.com/15l4w6.jpg", "email4", "44444444444", "aaaaaa4", "random " +
-                                "description4", true, true
+                        "aaaaaaa4", "name4 lastName4", "https://i.imgflip.com/15l4w6.jpg", "email4", "44444444444", "aaaaaa4", true, true
                     ),
                     UserData(
-                        0, "name5 lastName5", "https://i.imgflip.com/15l4w6.jpg", "email5", "555555555", "aaaaaa5", "random " +
-                                "description5", true, true
+                        "aaaaaaa5", "name5 lastName5", "https://i.imgflip.com/15l4w6.jpg", "email5", "555555555", "aaaaaa5", true, true
                     ),
                     UserData(
-                        0, "name6 lastName6", "https://i.imgflip.com/15l4w6.jpg", "email6", "6666666666", "aaaaaa6", "random " +
-                                "description6", false, false
+                        "aaaaaaa6", "name6 lastName6", "https://i.imgflip.com/15l4w6.jpg", "email6", "6666666666", "aaaaaa6", false, false
                     ),
                     UserData(
-                        0, "name7 lastName7", "https://i.imgflip.com/15l4w6.jpg", "email7", "777777777", "aaaaaa7", "random " +
-                                "description7", false, false
+                        "aaaaaaa7", "name7 lastName7", "https://i.imgflip.com/15l4w6.jpg", "email7", "777777777", "aaaaaa7", false, false
                     ),
                     UserData(
-                        0, "name8 lastName8", "https://i.imgflip.com/15l4w6.jpg", "email8", "88888888", "aaaaaa8", "random " +
-                                "description8", false, false
+                        "aaaaaaa8", "name8 lastName8", "https://i.imgflip.com/15l4w6.jpg", "email8", "88888888", "aaaaaa8", false, false
                     )
                 )
             )

@@ -10,8 +10,8 @@ data class Contacts(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
 
-    var userId: Int = 0,
+    var userId: String = "",
 
-    var contactId: Int = 0
+    var contactId: String = ""
 
 ) : Serializable

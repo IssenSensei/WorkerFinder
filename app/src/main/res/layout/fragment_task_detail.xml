@@ -66,7 +66,7 @@
                 android:background="@drawable/roundedblock"
                 android:padding="@dimen/spacing_small"
                 android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.user}" />
+                android:text="@{fullTask.taskUser.userName}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
                 android:background="@drawable/roundedblock"
                 android:padding="@dimen/spacing_small"
                 android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.worker}" />
+                android:text="@{fullTask.taskWorker.userName}" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -67,7 +67,7 @@ class UserProfileFragment : Fragment(), UserProfileListener {
             binding.userProfileRatingWorkerBar.rating = it ?: 0f
         })
 
-        if (userDataFull.userData.firebaseKey == currentLoggedInUserFull!!.userData.firebaseKey) {
+        if (userDataFull.userData.userId == currentLoggedInUserFull!!.userData.userId) {
             binding.userProfileContactSms.visibility = View.GONE
             binding.userProfileContactEmail.visibility = View.GONE
             binding.userProfileContactCall.visibility = View.GONE
@@ -168,7 +168,7 @@ class UserProfileFragment : Fragment(), UserProfileListener {
             if (goingToPublic) {
                 setMessage("Twój profil stanie się widoczny dla innych użytkowników, czy jesteś pewien?")
                 setPositiveButton("Akceptuj") { dialogInterface, i ->
-                    userProfileViewModel.setAccountPublic(userDataFull.userData.firebaseKey, goingToPublic)
+                    userProfileViewModel.setAccountPublic(userDataFull.userData.userId, goingToPublic)
                     userDataFull.userData.isAccountPublic = goingToPublic
                     Toast.makeText(requireContext(), "Twój profil jest teraz publiczny", Toast.LENGTH_SHORT).show()
                 }
@@ -178,7 +178,7 @@ class UserProfileFragment : Fragment(), UserProfileListener {
                             "wyszukiwania, czy jesteś pewien?"
                 )
                 setPositiveButton("Akceptuj") { dialogInterface, i ->
-                    userProfileViewModel.setAccountPublic(userDataFull.userData.firebaseKey, goingToPublic)
+                    userProfileViewModel.setAccountPublic(userDataFull.userData.userId, goingToPublic)
                     userDataFull.userData.isAccountPublic = goingToPublic
                     Toast.makeText(requireContext(), "Twój profil jest teraz prywatny", Toast.LENGTH_SHORT).show()
                 }

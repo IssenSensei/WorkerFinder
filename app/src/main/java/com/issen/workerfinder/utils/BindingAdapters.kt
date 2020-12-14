@@ -18,14 +18,14 @@ import com.issen.workerfinder.enums.DashboardNotificationTypes
 import com.issen.workerfinder.enums.PriorityTypes
 
 @BindingAdapter("photo")
-fun setPhoto(imageView: ImageView, photo: String) {
+fun setPhoto(imageView: ImageView, photo: String?) {
     Glide.with(imageView.context).load(photo).placeholder(R.drawable.meme)
         .into(imageView)
 }
 
 @BindingAdapter("notificationWorkText")
 fun setNotificationWorkText(textView: TextView, notificationFull: DashboardNotificationFull) {
-    textView.text = "Użytkownik ${notificationFull.userData.userName}" + when (notificationFull.notification.dashboardNotificationType) {
+    textView.text = "Użytkownik ${notificationFull.userData?.userName}" + when (notificationFull.notification.dashboardNotificationType) {
         DashboardNotificationTypes.WORKACCEPTED.toString() -> {
             " przyjął Twoją ofertę pracy."
         }
@@ -46,7 +46,7 @@ fun setNotificationWorkText(textView: TextView, notificationFull: DashboardNotif
 
 @BindingAdapter("notificationRatingText")
 fun setNotificationRatingText(textView: TextView, notificationFull: DashboardNotificationFull) {
-    textView.text = "Użytkownik " + notificationFull.userData.userName + when (notificationFull.notification.dashboardNotificationType) {
+    textView.text = "Użytkownik " + notificationFull.userData?.userName + when (notificationFull.notification.dashboardNotificationType) {
         DashboardNotificationTypes.RATEDBYUSER.toString() -> {
             " ocenił Cię jako pracownika."
         }
@@ -61,7 +61,7 @@ fun setNotificationRatingText(textView: TextView, notificationFull: DashboardNot
 
 @BindingAdapter("notificationTaskText")
 fun setNotificationTaskText(textView: TextView, notificationFull: DashboardNotificationFull) {
-    textView.text = "Użytkownik " + notificationFull.userData.userName + when (notificationFull.notification.dashboardNotificationType) {
+    textView.text = "Użytkownik " + notificationFull.userData?.userName + when (notificationFull.notification.dashboardNotificationType) {
         DashboardNotificationTypes.TASKABANDONED.toString() -> {
             " porzucił wykonanie przyjętego od Ciebie zadania."
         }
@@ -82,7 +82,7 @@ fun setNotificationTaskText(textView: TextView, notificationFull: DashboardNotif
 
 @BindingAdapter("notificationContactText")
 fun setNotificationContactText(textView: TextView, notificationFull: DashboardNotificationFull) {
-    textView.text = "Użytkownik " + notificationFull.userData.userName + when (notificationFull.notification.dashboardNotificationType) {
+    textView.text = "Użytkownik " + notificationFull.userData?.userName + when (notificationFull.notification.dashboardNotificationType) {
         DashboardNotificationTypes.CONTACTACCEPTED.toString() -> {
             " przyjął Twoje zaproszenie do kontaktów."
         }

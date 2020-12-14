@@ -35,7 +35,7 @@ class WorkerListRecyclerViewAdapter(private val workerListener: WorkerListener) 
 
 class WorkerListDiffCallback : DiffUtil.ItemCallback<UserDataFull>() {
     override fun areItemsTheSame(oldItem: UserDataFull, newItem: UserDataFull): Boolean {
-        return oldItem.userData.firebaseKey == newItem.userData.firebaseKey
+        return oldItem.userData.userId == newItem.userData.userId
     }
 
     override fun areContentsTheSame(oldItem: UserDataFull, newItem: UserDataFull): Boolean {

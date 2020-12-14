@@ -57,7 +57,7 @@ class TaskCreateViewModel(application: Application) : AndroidViewModel(applicati
         0,
         "title" + randomString(10),
         "description" + randomString(20),
-        worker = "worker" + randomString(20),
+        workerFirebaseKey = "worker" + randomString(20),
         completionDate = "completionDate" + randomString(20),
         priority = PriorityTypes.NORMAL.toString()
     )

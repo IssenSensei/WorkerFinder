@@ -15,8 +15,11 @@ interface DashboardNotificationDao {
     suspend fun insert(mutableListOf: MutableList<DashboardNotification>)
 
     @Transaction
-    @Query("SELECT * FROM dashboard_notifications_table")
+    @Query("SELECT * FROM dashboard_notifications_table ORDER BY date DESC")
     fun getAllNotifications(): LiveData<List<DashboardNotificationFull>>
+
+    @Insert
+    suspend fun notifyOwnerOfTaskState(dashboardNotification: DashboardNotification)
 
 
 }

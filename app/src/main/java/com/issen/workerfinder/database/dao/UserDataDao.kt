@@ -25,23 +25,23 @@ interface UserDataDao {
     suspend fun deleteAll()
 
     @Transaction
-    @Query("SELECT * FROM user_table where firebaseKey = :firebaseKey")
-    fun getUserByFirebaseKey(firebaseKey: String): UserDataFull
+    @Query("SELECT * FROM user_table where userId = :userId")
+    fun getUserByFirebaseKey(userId: String): UserDataFull
 
     @Transaction
-    @Query("SELECT * FROM user_table where firebaseKey = :firebaseKey")
-    fun getUserById(firebaseKey: String): LiveData<UserDataFull>
+    @Query("SELECT * FROM user_table where userId = :userId")
+    fun getUserById(userId: String): LiveData<UserDataFull>
 
-    @Query("UPDATE user_table SET isAccountPublic = :public WHERE firebaseKey = :firebaseKey")
-    suspend fun setAccountPublic(firebaseKey: String, public: Boolean)
+    @Query("UPDATE user_table SET isAccountPublic = :public WHERE userId = :userId")
+    suspend fun setAccountPublic(userId: String, public: Boolean)
 
     @Transaction
     @Query("SELECT * FROM user_table WHERE userId in (SELECT contactId from contact_table where userId = :userId)")
-    fun getUserWorkers(userId: Int): LiveData<List<UserDataFull>>
+    fun getUserWorkers(userId: String): LiveData<List<UserDataFull>>
 
     @Transaction
     @Query("SELECT * FROM user_table WHERE userId in (SELECT userId from contact_table where contactId = :userId)")
-    fun getUserUsers(userId: Int): LiveData<List<UserDataFull>>
+    fun getUserUsers(userId: String): LiveData<List<UserDataFull>>
 
     @Transaction
     @Query("SELECT * FROM user_table WHERE isAccountPublic = 1 AND isOpenForWork = 1")
@@ -52,12 +52,12 @@ interface UserDataDao {
         "SELECT comment_table.*, user_table.* from user_table join comment_table on userId = commentedUserId " +
                 "where commentedUserId = :userId and commentByWorker = 0"
     )
-    suspend fun getCommentUser(userId: Int): List<UserDataWithComments>?
+    suspend fun getCommentUser(userId: String): List<UserDataWithComments>?
 
     @Transaction
     @Query(
         "SELECT comment_table.*, user_table.* from user_table join comment_table on userId = commentedUserId " +
                 "where commentedUserId = :userId and commentByWorker = 1"
     )
-    suspend fun getCommentWorker(userId: Int): List<UserDataWithComments>?
+    suspend fun getCommentWorker(userId: String): List<UserDataWithComments>?
 }

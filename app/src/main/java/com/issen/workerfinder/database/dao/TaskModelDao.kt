@@ -28,7 +28,7 @@ interface TaskModelDao {
     fun getAllTasks(): LiveData<List<TaskModelFull>>
 
     @Transaction
-    @Query("SELECT * FROM task_table WHERE task_worker = '' AND task_completion_type = 'PENDING'")
+    @Query("SELECT * FROM task_table WHERE task_worker_id = '' AND task_completion_type = 'PENDING'")
     fun getBoardTasks(): LiveData<List<TaskModelFull>>
 
     @Transaction
@@ -39,17 +39,20 @@ interface TaskModelDao {
     @Query("SELECT * FROM task_table WHERE task_completion_type NOT LIKE 'ACTIVE'")
     fun getInactiveTasks(): LiveData<List<TaskModelFull>>
 
-    @Query("SELECT count(*) FROM task_table where task_worker = :firebaseKey and task_completion_type = 'ACTIVE'")
+    @Query("SELECT count(*) FROM task_table where task_worker_id = :firebaseKey and task_completion_type = 'ACTIVE'")
     suspend fun getActiveTasksCount(firebaseKey: String): Int
 
-    @Query("SELECT count(*) FROM task_table where task_worker = :firebaseKey and task_completion_type = 'COMPLETED'")
+    @Query("SELECT count(*) FROM task_table where task_worker_id = :firebaseKey and task_completion_type = 'COMPLETED'")
     suspend fun getCompletedTasksCount(firebaseKey: String): Int
 
-    @Query("SELECT count(*) FROM task_table where task_worker = :firebaseKey and task_completion_type = 'ABANDONED'")
+    @Query("SELECT count(*) FROM task_table where task_worker_id = :firebaseKey and task_completion_type = 'ABANDONED'")
     suspend fun getAbandonedTasksCount(firebaseKey: String): Int
 
+    @Query("UPDATE task_table set task_completion_type = 'PENDING' where taskId = :taskId")
+    suspend fun markTaskAsPending(taskId: Int)
+
     @Query("UPDATE task_table set task_completion_type = 'COMPLETED' where taskId = :taskId")
-    suspend fun completeTask(taskId: Int)
+    suspend fun markTaskAsCompleted(taskId: Int)
 
     @Query("UPDATE task_table set task_completion_type = 'ABANDONED' where taskId = :taskId")
     suspend fun abandonTask(taskId: Int)

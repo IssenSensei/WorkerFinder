@@ -39,14 +39,13 @@ class TaskModelRepository(
     suspend fun getCompletedTasks(firebaseKey: String): Int = taskModelDao.getCompletedTasksCount(firebaseKey)
     suspend fun getActiveTasks(firebaseKey: String): Int = taskModelDao.getActiveTasksCount(firebaseKey)
     suspend fun getAbandonedTasks(firebaseKey: String): Int = taskModelDao.getAbandonedTasksCount(firebaseKey)
-    suspend fun completeTask(taskId: Int) = taskModelDao.completeTask(taskId)
+    suspend fun markTaskAsPending(taskId: Int) = taskModelDao.markTaskAsPending(taskId)
+    suspend fun markTaskAsCompleted(taskId: Int) = taskModelDao.markTaskAsCompleted(taskId)
     suspend fun abandonTask(taskId: Int) = taskModelDao.abandonTask(taskId)
     fun updateUser(userData: UserData) = userDataDao.update(userData)
     suspend fun setAccountPublic(firebaseKey: String, public: Boolean) = userDataDao.setAccountPublic(firebaseKey, public)
-    suspend fun getRatingAsWorker(userId: Int) = commentsDao.getRatingAsWorker(userId)
-    suspend fun getRatingAsUser(userId: Int) = commentsDao.getRatingAsUser(userId)
-    suspend fun getCommentUser(userId: Int): List<UserDataWithComments>? = userDataDao.getCommentUser(userId)
-    suspend fun getCommentWorker(userId: Int): List<UserDataWithComments>? = userDataDao.getCommentWorker(userId)
-
-
+    suspend fun getRatingAsWorker(userId: String) = commentsDao.getRatingAsWorker(userId)
+    suspend fun getRatingAsUser(userId: String) = commentsDao.getRatingAsUser(userId)
+    suspend fun getCommentUser(userId: String): List<UserDataWithComments>? = userDataDao.getCommentUser(userId)
+    suspend fun getCommentWorker(userId: String): List<UserDataWithComments>? = userDataDao.getCommentWorker(userId)
 }

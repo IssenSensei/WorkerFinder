@@ -53,9 +53,9 @@ class UserProfileViewModel(application: Application, userDataFull: UserDataFull)
         val userModelDao = database.userDataDao
         val commentsDao = database.commentsDao
         repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao, commentsDao)
-        viewModelScope.launch { _activeTasks.value = repository.getActiveTasks(userDataFull.userData.firebaseKey) }
-        viewModelScope.launch { _completedTasks.value = repository.getCompletedTasks(userDataFull.userData.firebaseKey) }
-        viewModelScope.launch { _abandonedTasks.value = repository.getAbandonedTasks(userDataFull.userData.firebaseKey) }
+        viewModelScope.launch { _activeTasks.value = repository.getActiveTasks(userDataFull.userData.userId) }
+        viewModelScope.launch { _completedTasks.value = repository.getCompletedTasks(userDataFull.userData.userId) }
+        viewModelScope.launch { _abandonedTasks.value = repository.getAbandonedTasks(userDataFull.userData.userId) }
         viewModelScope.launch { _ratingAsWorker.value = repository.getRatingAsWorker(userDataFull.userData.userId) }
         viewModelScope.launch { _ratingAsUser.value = repository.getRatingAsUser(userDataFull.userData.userId) }
         viewModelScope.launch { _commentUser.value = repository.getCommentUser(userDataFull.userData.userId) }

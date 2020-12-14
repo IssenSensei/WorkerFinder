@@ -57,7 +57,7 @@ class TaskCreateFragment : Fragment() {
         val tempModel = taskCreateViewModel.generateMockupModel()
         root.new_task_title.setText(tempModel.taskTitle)
         root.new_task_description.setText(tempModel.taskDescription)
-        root.new_task_worker.setText(currentLoggedInUserFull!!.userData.firebaseKey)
+        root.new_task_worker.setText(currentLoggedInUserFull!!.userData.userName)
 //        root.new_task_category.setText(tempModel.category)
         root.new_task_date.setText(tempModel.nextCompletionDate)
 

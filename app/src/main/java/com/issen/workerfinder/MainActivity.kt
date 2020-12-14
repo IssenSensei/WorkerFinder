@@ -86,6 +86,10 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 lifecycleScope, currentLoggedInUserFull
                 !!.userData.userId
             )
+            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateNotificationsOpen(
+                lifecycleScope, currentLoggedInUserFull
+                !!.userData.userId
+            )
             mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         }
         prepareDrawer()
@@ -138,9 +142,9 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
         sideNavView.menu.findItem(R.id.nav_logout)
             .setOnMenuItemClickListener {
-            logout()
-            true
-        }
+                logout()
+                true
+            }
     }
 
     private fun setupActionBar(

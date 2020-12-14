@@ -7,8 +7,8 @@ import java.io.Serializable
 @Entity(tableName = "user_table")
 data class UserData(
 
-    @PrimaryKey(autoGenerate = true)
-    var userId: Int = 0,
+    @PrimaryKey(autoGenerate = false)
+    var userId: String = "",
 
     var userName: String = "",
 
@@ -17,8 +17,6 @@ data class UserData(
     var email: String = "",
 
     var phone: String = "",
-
-    var firebaseKey: String = "",
 
     var description: String = "",
 

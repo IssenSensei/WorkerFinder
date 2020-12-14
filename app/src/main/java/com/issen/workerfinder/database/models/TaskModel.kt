@@ -21,11 +21,11 @@ data class TaskModel(
     @ColumnInfo(name = "task_description")
     var taskDescription: String = "",
 
-    @ColumnInfo(name = "task_user")
-    var user: String = "",
+    @ColumnInfo(name = "task_user_id")
+    var userFirebaseKey: String = "",
 
-    @ColumnInfo(name = "task_worker")
-    var worker: String = "",
+    @ColumnInfo(name = "task_worker_id")
+    var workerFirebaseKey: String = "",
 
     @ColumnInfo(name = "task_next_completion_date")
     var nextCompletionDate: String = "",
