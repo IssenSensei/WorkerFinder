@@ -7,11 +7,9 @@ import java.io.Serializable
 
 data class DashboardNotificationFull(
 
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
-
     @Embedded
     val notification: DashboardNotification,
+
     @Relation(
         parentColumn = "notificationCausedByUserId",
         entityColumn = "userId"

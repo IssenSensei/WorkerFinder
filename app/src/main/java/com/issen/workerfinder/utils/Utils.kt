@@ -3,6 +3,7 @@ package com.issen.workerfinder.utils
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
+import com.issen.workerfinder.enums.DashboardNotificationTypes
 
 fun isLayoutRtl(view: View): Boolean {
     return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL
@@ -22,4 +23,52 @@ fun View.showAnimated() {
 
 fun nestedScrollTo(nested: NestedScrollView, targetView: View) {
     nested.post(Runnable { nested.scrollTo(500, targetView.bottom) })
+}
+
+fun getDashboardNotificationGroup(type: String) = when(type){
+    DashboardNotificationTypes.RATEDBYWORKER.toString() -> {
+        "RATED"
+    }
+    DashboardNotificationTypes.RATEDBYUSER.toString() ->{
+        "RATED"
+    }
+    DashboardNotificationTypes.WORKOFFERED.toString() -> {
+        "WORK"
+    }
+    DashboardNotificationTypes.WORKACCEPTED.toString() ->{
+        "WORK"
+    }
+    DashboardNotificationTypes.WORKREFUSED.toString() ->{
+        "WORK"
+    }
+    DashboardNotificationTypes.WORKCANCELED.toString() -> {
+        "WORK"
+    }
+    DashboardNotificationTypes.TASKCOMPLETED.toString() -> {
+        "TASK"
+    }
+    DashboardNotificationTypes.TASKABANDONED.toString() ->{
+        "TASK"
+    }
+    DashboardNotificationTypes.TASKREJECTED.toString() ->{
+        "TASK"
+    }
+    DashboardNotificationTypes.TASKACCEPTED.toString() -> {
+        "TASK"
+    }
+    DashboardNotificationTypes.CONTACTINVITED.toString() -> {
+        "CONTACT"
+    }
+    DashboardNotificationTypes.CONTACTREFUSED.toString() ->{
+        "CONTACT"
+    }
+    DashboardNotificationTypes.CONTACTCANCELED.toString() ->{
+        "CONTACT"
+    }
+    DashboardNotificationTypes.CONTACTACCEPTED.toString() -> {
+        "CONTACT"
+    }
+    else -> {
+        "ERROR"
+    }
 }

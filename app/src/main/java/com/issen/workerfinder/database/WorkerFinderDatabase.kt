@@ -10,6 +10,7 @@ import com.issen.workerfinder.database.dao.*
 import com.issen.workerfinder.database.models.*
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
+import com.issen.workerfinder.enums.DashboardNotificationTypes
 import com.issen.workerfinder.enums.PriorityTypes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
     abstract val categoriesDao: CategoriesDao
     abstract val commentsDao: CommentsDao
     abstract val contactsDao: ContactsDao
+    abstract val dashboardNotificationDao: DashboardNotificationDao
 
     private class WorkerFinderDatabaseCallback(private val scope: CoroutineScope) :
         RoomDatabase.Callback() {
@@ -92,6 +94,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
     fun populateDbOpen(coroutineScope: CoroutineScope) {
         populateTasksOpen(coroutineScope)
+        populateNotificationsOpen(coroutineScope)
     }
 
     fun populateDbCreate(coroutineScope: CoroutineScope) {
@@ -246,25 +249,162 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
         }
     }
 
+
+    private fun populateNotificationsOpen(coroutineScope: CoroutineScope) {
+        coroutineScope.launch {
+            dashboardNotificationDao.insert(
+                mutableListOf(
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.CONTACTACCEPTED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.CONTACTCANCELED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.CONTACTREFUSED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.CONTACTINVITED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.RATEDBYWORKER.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.RATEDBYUSER.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.TASKREJECTED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.TASKCOMPLETED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.TASKABANDONED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.TASKACCEPTED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.WORKCANCELED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.WORKREFUSED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.WORKOFFERED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        "3",
+                        "2",
+                        DashboardNotificationTypes.WORKACCEPTED.toString(),
+                        1,
+                        false
+                    )
+                )
+            )
+        }
+
+    }
+
     fun populateComments(coroutineScope: CoroutineScope, userId: Int) {
         coroutineScope.launch {
             commentsDao.deleteAll()
             commentsDao.insert(
                 mutableListOf(
-                    Comments(0, userId,3,4.5f, "Było w porządeczku", true),
-                    Comments(0, userId,2, 4.8f, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true),
-                    Comments(0, userId,3, 2f, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true),
-                    Comments(0, userId,4, 4f, "cccccccccccccccccccccccccccccccc", true),
-                    Comments(0, userId,5, 0f, "dddddddddddddddddddddddddddddddddddddddd", false),
-                    Comments(0, userId,2, 1f, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true),
-                    Comments(0, userId,4, 3f, "ffffffffffffffffffffffffffffffffffff", false),
-                    Comments(0, userId,6, 5f, "gggggggggggggggggggggggggggg", true),
-                    Comments(0, userId,6, 2f, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", true),
-                    Comments(0, userId,5, 3f, "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", false),
-                    Comments(0, userId,6, 3.5f, "jjjjjjjjjjjjjjjjjjjjjjjjjjjjj", true),
-                    Comments(0, userId,4, 4.9f, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkk", false),
-                    Comments(0, userId,2, 4.1f, "llllllllllllllllllllllllllllllllllllllllllllllllllllllll", true),
-                    Comments(0, userId,3, 3.3f, "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", true)
+                    Comments(0, userId, 3, 4.5f, "Było w porządeczku", true),
+                    Comments(0, userId, 2, 4.8f, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true),
+                    Comments(0, userId, 3, 2f, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true),
+                    Comments(0, userId, 4, 4f, "cccccccccccccccccccccccccccccccc", true),
+                    Comments(0, userId, 5, 0f, "dddddddddddddddddddddddddddddddddddddddd", false),
+                    Comments(0, userId, 2, 1f, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true),
+                    Comments(0, userId, 4, 3f, "ffffffffffffffffffffffffffffffffffff", false),
+                    Comments(0, userId, 6, 5f, "gggggggggggggggggggggggggggg", true),
+                    Comments(0, userId, 6, 2f, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", true),
+                    Comments(0, userId, 5, 3f, "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", false),
+                    Comments(0, userId, 6, 3.5f, "jjjjjjjjjjjjjjjjjjjjjjjjjjjjj", true),
+                    Comments(0, userId, 4, 4.9f, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkk", false),
+                    Comments(0, userId, 2, 4.1f, "llllllllllllllllllllllllllllllllllllllllllllllllllllllll", true),
+                    Comments(0, userId, 3, 3.3f, "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", true)
                 )
             )
         }

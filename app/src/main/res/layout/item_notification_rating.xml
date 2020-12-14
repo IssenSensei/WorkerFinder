@@ -1,0 +1,53 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="notificationData"
+            type="com.issen.workerfinder.database.models.DashboardNotificationFull" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:background="@drawable/roundedblock"
+        app:cardCornerRadius="@dimen/spacing_large"
+        app:cardElevation="@dimen/spacing_medium">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/item_notification_rating_user_photo"
+                photo="@{notificationData.userData.photo}"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="@dimen/spacing_medium"
+                app:civ_border="false"
+                app:civ_shadow="true"
+                app:civ_shadow_radius="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/item_notification_rating_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                notificationRatingText="@{notificationData}"
+                android:layout_margin="@dimen/spacing_medium"
+                android:gravity="start"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                app:layout_constraintStart_toEndOf="@id/item_notification_rating_user_photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

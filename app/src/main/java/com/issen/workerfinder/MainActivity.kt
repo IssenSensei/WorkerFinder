@@ -51,8 +51,6 @@ import kotlinx.android.synthetic.main.drawer_content_task_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlin.math.log
-
 
 class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDrawerListener, WorkerListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -138,7 +136,8 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         val sideNavView = findViewById<NavigationView>(R.id.nav_view)
         sideNavView?.setupWithNavController(navController)
 
-        sideNavView.menu.getItem(R.id.nav_logout).setOnMenuItemClickListener {
+        sideNavView.menu.findItem(R.id.nav_logout)
+            .setOnMenuItemClickListener {
             logout()
             true
         }

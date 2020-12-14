@@ -9,7 +9,7 @@ enum class DashboardNotificationTypes(private val type: String) {
     TASKCOMPLETED("TASKCOMPLETED"),
     TASKABANDONED("TASKABANDONED"),
     TASKREJECTED("TASKREJECTED"),
-    TASKRATED("TASKRATED"),
+    TASKACCEPTED("TASKACCEPTED"),
 
     WORKOFFERED("WORKOFFERED"),
     WORKACCEPTED("WORKACCEPTED"),
@@ -23,4 +23,5 @@ enum class DashboardNotificationTypes(private val type: String) {
     override fun toString(): String {
         return type
     }
+
 }
