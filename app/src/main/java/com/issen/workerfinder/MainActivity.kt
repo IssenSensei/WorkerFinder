@@ -14,6 +14,8 @@ import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -29,13 +31,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInFullUser
 import com.issen.workerfinder.database.WorkerFinderDatabase
+import com.issen.workerfinder.database.models.FullUserData
 import com.issen.workerfinder.databinding.ActivityMainBinding
 import com.issen.workerfinder.databinding.NavHeaderMainBinding
-import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
-import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
-import com.issen.workerfinder.ui.misc.TaskListFilter
+import com.issen.workerfinder.ui.misc.*
 import com.issen.workerfinder.ui.taskList.TaskListFragment
 import com.issen.workerfinder.ui.taskList.TaskListFragmentDirections
+import com.issen.workerfinder.ui.workerList.WorkerListRecyclerViewAdapter
 import com.issen.workerfinder.utils.ViewAnimation
 import com.issen.workerfinder.utils.hideAnimated
 import com.issen.workerfinder.utils.nestedScrollTo
@@ -48,13 +50,14 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDrawerListener {
+class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDrawerListener, WorkerListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var auth = FirebaseAuth.getInstance()
     private var doubleBackToExitPressedOnce = false
 
     private var currentTaskListFilter = TaskListFilter()
     private var selectedTaskListFilter: TaskListFilter = currentTaskListFilter
+    private lateinit var mainActivityViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,10 +75,6 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 .getUserByFirebaseKey(auth.currentUser!!.uid)
         }.invokeOnCompletion {
             navHeaderBinding.user = currentLoggedInFullUser
-//            navHeaderBinding.name.text = if (currentLoggedInFullUser!!.userData.userName != "") currentLoggedInFullUser!!.useruserName else
-//                "Brak " +
-//                    "danych"
-//            navHeaderBinding.email.text = if (currentLoggedInFullUser!!.email != "") currentLoggedInFullUser!!.email else "Brak danych"
             main_loading.hideAnimated()
             WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateComments(
                 lifecycleScope, currentLoggedInFullUser
@@ -85,11 +84,11 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 lifecycleScope, currentLoggedInFullUser
                 !!.userData.userId
             )
+            mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         }
-//        Glide.with(this).load(currentLoggedInFullUser!!.userData.photo).placeholder(R.drawable.meme).into(navHeaderBinding.avatar)
-
         prepareDrawer()
         handleUI()
+        prepareFilterContent()
     }
 
     private fun handleUI() {
@@ -109,6 +108,27 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         setupNavigationMenu(navController)
         setupActionBar(navController, appBarConfiguration)
     }
+
+
+    private fun prepareFilterContent() {
+        val workerAdapter = WorkerListRecyclerViewAdapter(this)
+        mainActivityViewModel.workerList.observe(this, Observer {
+            it?.let {
+                workerAdapter.submitList(it)
+            }
+        })
+        drawer_filter_worker_container_recycler.adapter = workerAdapter
+
+        val userAdapter = WorkerListRecyclerViewAdapter(this)
+        mainActivityViewModel.userList.observe(this, Observer {
+            it?.let {
+                userAdapter.submitList(it)
+            }
+        })
+        drawer_filter_user_container_recycler.adapter = userAdapter
+
+    }
+
 
     private fun setupNavigationMenu(navController: NavController) {
         val sideNavView = findViewById<NavigationView>(R.id.nav_view)
@@ -226,6 +246,12 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         drawer_filter_back.visibility = View.VISIBLE
         (drawer_filter_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(view.tag.toString() + "Container").visibility =
             View.VISIBLE
+
+//        when (view.tag.toString()) {
+//            "worker" -> {
+//
+//            }
+//        }
     }
 
     override fun onAcceptClicked() {
@@ -264,7 +290,6 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         drawer_filter_main_container.visibility = View.VISIBLE
         drawer_filter_back.visibility = View.INVISIBLE
     }
-
 
     override fun onClearClicked() {
         selectedTaskListFilter = TaskListFilter()
@@ -390,5 +415,9 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
             view.animate().setDuration(200).rotation(0f)
             false
         }
+    }
+
+    override fun onWorkerClicked(fullUserData: FullUserData) {
+        TODO("Not yet implemented")
     }
 }

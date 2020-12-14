@@ -40,7 +40,7 @@ data class TaskModel(
     var priority: String = PriorityTypes.NORMAL.toString(),
 
     @ColumnInfo(name = "task_completion_type")
-    var completed: String = CompletionTypes.ONGOING.toString(),
+    var completed: String = CompletionTypes.ACTIVE.toString(),
 
     @ColumnInfo(name = "task_completion_date")
     var completionDate: String = "",

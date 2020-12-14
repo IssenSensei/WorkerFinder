@@ -8,11 +8,13 @@
     <color name="colorWhitish">#CCFFFFFF</color>
 
 
-    <color name="colorUrgent">#D30000</color>
-    <color name="colorHigh">#FB9100</color>
-    <color name="colorNormal">#9CDEFF</color>
-    <color name="colorLow">#CDD0D2</color>
-    <color name="colorOther">#DCB2F3</color>
+    <color name="colorUrgent">@color/red_700</color>
+    <color name="colorHigh">@color/orange_900</color>
+    <color name="colorNormal">@color/light_blue_400</color>
+    <color name="colorLow">@color/blue_grey_600</color>
+    <color name="colorOther">@color/purple_A400</color>
+    <color name="colorPositive">#43A047</color>
+    <color name="colorNeutral">#2196F3</color>
 
 
     <color name="overlay_dark_10">#1A000000</color>

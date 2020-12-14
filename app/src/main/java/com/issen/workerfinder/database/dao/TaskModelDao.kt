@@ -32,14 +32,14 @@ interface TaskModelDao {
     fun getBoardTasks(): LiveData<List<FullTaskModel>>
 
     @Transaction
-    @Query("SELECT * FROM task_table WHERE task_completion_type LIKE 'ONGOING'")
+    @Query("SELECT * FROM task_table WHERE task_completion_type LIKE 'ACTIVE'")
     fun getActiveTasks(): LiveData<List<FullTaskModel>>
 
     @Transaction
-    @Query("SELECT * FROM task_table WHERE task_completion_type NOT LIKE 'ONGOING'")
+    @Query("SELECT * FROM task_table WHERE task_completion_type NOT LIKE 'ACTIVE'")
     fun getInactiveTasks(): LiveData<List<FullTaskModel>>
 
-    @Query("SELECT count(*) FROM task_table where task_worker = :firebaseKey and task_completion_type = 'ONGOING'")
+    @Query("SELECT count(*) FROM task_table where task_worker = :firebaseKey and task_completion_type = 'ACTIVE'")
     suspend fun getActiveTasksCount(firebaseKey: String): Int
 
     @Query("SELECT count(*) FROM task_table where task_worker = :firebaseKey and task_completion_type = 'COMPLETED'")

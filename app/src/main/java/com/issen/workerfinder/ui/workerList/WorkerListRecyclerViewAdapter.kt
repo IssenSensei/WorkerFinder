@@ -1,19 +1,12 @@
 package com.issen.workerfinder.ui.workerList
 
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.issen.workerfinder.TaskApplication.Companion.getIndicatorColor
-import com.issen.workerfinder.database.models.FullTaskModel
 import com.issen.workerfinder.database.models.FullUserData
-import com.issen.workerfinder.databinding.ItemTaskBinding
 import com.issen.workerfinder.databinding.ItemWorkerBinding
-import com.issen.workerfinder.enums.CompletionTypes
-import com.issen.workerfinder.enums.CyclicTypes
 import com.issen.workerfinder.ui.misc.WorkerListener
 
 

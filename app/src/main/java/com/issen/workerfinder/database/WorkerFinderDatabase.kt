@@ -150,7 +150,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         CyclicTypes.NONE.toString(),
                         Date(),
                         PriorityTypes.URGENT.toString(),
-                        CompletionTypes.ONGOING.toString(),
+                        CompletionTypes.ACTIVE.toString(),
                         "completion"
                     ),
                     TaskModel(
@@ -176,7 +176,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         CyclicTypes.NONE.toString(),
                         Date(),
                         PriorityTypes.LOW.toString(),
-                        CompletionTypes.ONGOING.toString(),
+                        CompletionTypes.ACTIVE.toString(),
                         "completion"
                     )
                 )
@@ -199,7 +199,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         CyclicTypes.NONE.toString(),
                         Date(),
                         PriorityTypes.URGENT.toString(),
-                        CompletionTypes.PENDING.toString(),
+                        CompletionTypes.ABANDONED.toString(),
                         "completion"
                     ),
                     TaskModel(
@@ -226,6 +226,19 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date(),
                         PriorityTypes.LOW.toString(),
                         CompletionTypes.PENDING.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Zadanie testowe oznaczone jako active",
+                        "opisu brak",
+                        "user",
+                        "",
+                        "03-02-2021",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.URGENT.toString(),
+                        CompletionTypes.ACTIVE.toString(),
                         "completion"
                     )
                 )

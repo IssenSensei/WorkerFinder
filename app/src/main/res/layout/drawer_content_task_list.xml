@@ -667,6 +667,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/drawer_filter_worker_container_recycler"
                             android:layout_width="match_parent"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
 
@@ -680,6 +681,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/drawer_filter_user_container_recycler"
                             android:layout_width="match_parent"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
 
@@ -693,6 +695,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/drawer_filter_category_container_recycler"
                             android:layout_width="match_parent"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
 
@@ -743,6 +746,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/drawer_filter_priority_container_recycler"
                             android:layout_width="match_parent"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:layout_height="wrap_content" />
 
                     </LinearLayout>
@@ -757,6 +761,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/drawer_filter_completion_container_recycler"
                             android:layout_width="match_parent"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
 

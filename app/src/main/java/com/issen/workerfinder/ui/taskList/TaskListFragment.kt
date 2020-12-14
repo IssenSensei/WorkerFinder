@@ -3,6 +3,7 @@ package com.issen.workerfinder.ui.taskList
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -17,6 +18,8 @@ import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.TaskListFilter
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 
 
 class TaskListFragment : Fragment(), TaskListListener {
@@ -34,7 +37,7 @@ class TaskListFragment : Fragment(), TaskListListener {
         taskListViewModel =
             ViewModelProvider(this).get(TaskListViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_task_list, container, false)
-        val adapter = TaskListRecyclerViewAdapter(this)
+        val adapter = TaskListRecyclerViewAdapter(this, requireContext())
 
         taskListViewModel.mediatorLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -96,7 +99,7 @@ class TaskListFragment : Fragment(), TaskListListener {
         Toast.makeText(context, fullTask.task.completed, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onTaskAbandon(fullTask: FullTaskModel) {
+    private fun abandonTask(fullTask: FullTaskModel) {
         taskListViewModel.abandonTask(fullTask.task)
         Toast.makeText(context, fullTask.task.completed, Toast.LENGTH_SHORT).show()
     }

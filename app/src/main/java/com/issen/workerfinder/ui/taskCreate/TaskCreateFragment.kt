@@ -96,7 +96,7 @@ class TaskCreateFragment : Fragment() {
                 type,
                 Date(),
                 PriorityTypes.NORMAL.toString(),
-                CompletionTypes.ONGOING.toString(),
+                CompletionTypes.ACTIVE.toString(),
                 ""
             )
         )

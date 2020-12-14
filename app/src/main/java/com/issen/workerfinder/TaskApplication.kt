@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.issen.workerfinder.database.models.FullUserData
+import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.PriorityTypes
 
 
@@ -25,7 +26,7 @@ class TaskApplication : Application() {
 
         lateinit var appContext: Context
 
-        fun getIndicatorColor(priorityValue: String): Int = when (priorityValue) {
+        fun getPriorityIndicatorColor(priorityValue: String): Int = when (priorityValue) {
             PriorityTypes.URGENT.toString() -> {
                 ContextCompat.getColor(appContext, R.color.colorUrgent)
             }
@@ -45,5 +46,7 @@ class TaskApplication : Application() {
                 0
             }
         }
+
+
     }
 }

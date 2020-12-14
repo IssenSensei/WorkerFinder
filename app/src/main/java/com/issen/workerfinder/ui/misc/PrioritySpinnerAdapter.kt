@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication.Companion.getIndicatorColor
+import com.issen.workerfinder.TaskApplication.Companion.getPriorityIndicatorColor
+//import com.issen.workerfinder.TaskApplication.Companion.getPriorityIndicatorColor
 import com.issen.workerfinder.enums.PriorityTypes
 import kotlinx.android.synthetic.main.item_priority.view.*
 
@@ -21,7 +22,7 @@ class PrioritySpinnerAdapter(
         val view: View =
             convertView ?: layoutInflater.inflate(R.layout.item_priority, parent, false)
         getItem(position)?.let { priorityValue ->
-            val color = getIndicatorColor(priorityValue.toString())
+            val color = getPriorityIndicatorColor(priorityValue.toString())
             setItemForCountry(view, priorityValue, color)
         }
         return view
@@ -32,7 +33,7 @@ class PrioritySpinnerAdapter(
 
         view = layoutInflater.inflate(R.layout.item_priority_dropdown, parent, false)
         getItem(position)?.let { priorityValue ->
-            val color = getIndicatorColor(priorityValue.toString())
+            val color = getPriorityIndicatorColor(priorityValue.toString())
             setItemForCountry(view, priorityValue, color)
         }
         convertView?.setOnClickListener {
@@ -45,10 +46,7 @@ class PrioritySpinnerAdapter(
 
     private fun setItemForCountry(view: View, priorityType: PriorityTypes, color: Int) {
         view.priority_name.text = priorityType.name
-        view.priority_indicator.setColorFilter(
-            getIndicatorColor(priorityType.toString()),
-            PorterDuff.Mode.SRC_IN
-        )
+        view.priority_indicator.setColorFilter(color, PorterDuff.Mode.SRC_IN)
     }
 
 }
