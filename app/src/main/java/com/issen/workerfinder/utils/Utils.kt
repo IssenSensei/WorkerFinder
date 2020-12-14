@@ -27,10 +27,10 @@ fun nestedScrollTo(nested: NestedScrollView, targetView: View) {
 
 fun getDashboardNotificationGroup(type: String) = when(type){
     DashboardNotificationTypes.RATEDBYWORKER.toString() -> {
-        "RATED"
+        "RATING"
     }
     DashboardNotificationTypes.RATEDBYUSER.toString() ->{
-        "RATED"
+        "RATING"
     }
     DashboardNotificationTypes.WORKOFFERED.toString() -> {
         "WORK"
