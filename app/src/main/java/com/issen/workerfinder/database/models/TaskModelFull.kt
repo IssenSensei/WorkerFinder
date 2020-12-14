@@ -3,7 +3,7 @@ package com.issen.workerfinder.database.models
 import androidx.room.*
 import java.io.Serializable
 
-data class FullTaskModel(
+data class TaskModelFull(
 
     @Embedded val task: TaskModel,
     @Relation(

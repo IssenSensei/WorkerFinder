@@ -29,21 +29,19 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInFullUser
+import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.WorkerFinderDatabase
-import com.issen.workerfinder.database.models.FullUserData
+import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.databinding.ActivityMainBinding
 import com.issen.workerfinder.databinding.NavHeaderMainBinding
 import com.issen.workerfinder.ui.misc.*
 import com.issen.workerfinder.ui.taskList.TaskListFragment
-import com.issen.workerfinder.ui.taskList.TaskListFragmentDirections
 import com.issen.workerfinder.ui.workerList.WorkerListRecyclerViewAdapter
 import com.issen.workerfinder.utils.ViewAnimation
 import com.issen.workerfinder.utils.hideAnimated
 import com.issen.workerfinder.utils.nestedScrollTo
 import com.issen.workerfinder.utils.showAnimated
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.drawer_content_task_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -70,18 +68,18 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
         main_loading.showAnimated()
         MainScope().launch(Dispatchers.IO) {
-            currentLoggedInFullUser = WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope)
+            currentLoggedInUserFull = WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope)
                 .userDataDao
                 .getUserByFirebaseKey(auth.currentUser!!.uid)
         }.invokeOnCompletion {
-            navHeaderBinding.user = currentLoggedInFullUser
+            navHeaderBinding.user = currentLoggedInUserFull
             main_loading.hideAnimated()
             WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateComments(
-                lifecycleScope, currentLoggedInFullUser
+                lifecycleScope, currentLoggedInUserFull
                 !!.userData.userId
             )
             WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateContacts(
-                lifecycleScope, currentLoggedInFullUser
+                lifecycleScope, currentLoggedInUserFull
                 !!.userData.userId
             )
             mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
@@ -120,7 +118,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         drawer_filter_worker_container_recycler.adapter = workerAdapter
 
         val userAdapter = WorkerListRecyclerViewAdapter(this)
-        mainActivityViewModel.userList.observe(this, Observer {
+        mainActivityViewModel.userListFull.observe(this, Observer {
             it?.let {
                 userAdapter.submitList(it)
             }
@@ -171,14 +169,14 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     }
 
     fun navigateProfile(view: View) {
-        val bundle = bundleOf("fullUserData" to currentLoggedInFullUser!!)
+        val bundle = bundleOf("fullUserData" to currentLoggedInUserFull!!)
         findNavController(R.id.nav_host_fragment).navigate(R.id.nav_user_profile, bundle)
         drawer_layout.closeDrawers()
     }
 
     private fun deleteUser(password: String) {
         val credential = EmailAuthProvider
-            .getCredential(currentLoggedInFullUser!!.userData.email, password)
+            .getCredential(currentLoggedInUserFull!!.userData.email, password)
         auth.currentUser!!.reauthenticate(credential)
             .addOnSuccessListener {
                 auth.currentUser!!.delete()
@@ -417,7 +415,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         }
     }
 
-    override fun onWorkerClicked(fullUserData: FullUserData) {
+    override fun onWorkerClicked(userDataFull: UserDataFull) {
         TODO("Not yet implemented")
     }
 }

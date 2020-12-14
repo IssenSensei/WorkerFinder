@@ -9,12 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
-import com.issen.workerfinder.database.models.FullTaskModel
-import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
+import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
-import com.issen.workerfinder.ui.workerBoard.WorkerBoardRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_task_board.view.*
-import kotlinx.android.synthetic.main.fragment_worker_board.view.*
 
 class TaskBoardFragment : Fragment(), TaskBoardListener {
 
@@ -30,7 +27,7 @@ class TaskBoardFragment : Fragment(), TaskBoardListener {
 
         val adapter = TaskBoardRecyclerViewAdapter(this)
 
-        taskBoardViewModel.taskList.observe(viewLifecycleOwner, Observer {
+        taskBoardViewModel.taskListFull.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
@@ -75,8 +72,8 @@ class TaskBoardFragment : Fragment(), TaskBoardListener {
         }
     }
 
-    override fun onTaskClicked(fullTaskModel: FullTaskModel) {
-        val actionDetail = TaskBoardFragmentDirections.actionNavTaskBoardToNavTaskDetail(fullTaskModel)
+    override fun onTaskClicked(taskModelFull: TaskModelFull) {
+        val actionDetail = TaskBoardFragmentDirections.actionNavTaskBoardToNavTaskDetail(taskModelFull)
         findNavController().navigate(actionDetail)
     }
 

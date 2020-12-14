@@ -1,7 +1,7 @@
 package com.issen.workerfinder.ui.misc
 
-import com.issen.workerfinder.database.models.FullUserData
+import com.issen.workerfinder.database.models.UserDataFull
 
 interface WorkerListener {
-    fun onWorkerClicked(fullUserData: FullUserData)
+    fun onWorkerClicked(userDataFull: UserDataFull)
 }

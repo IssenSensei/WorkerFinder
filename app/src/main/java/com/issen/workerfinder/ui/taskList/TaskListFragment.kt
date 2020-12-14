@@ -3,7 +3,6 @@ package com.issen.workerfinder.ui.taskList
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -13,13 +12,11 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.issen.workerfinder.R
-import com.issen.workerfinder.database.models.FullTaskModel
+import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.TaskListFilter
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
-import java.lang.reflect.Field
-import java.lang.reflect.Method
 
 
 class TaskListFragment : Fragment(), TaskListListener {
@@ -94,18 +91,18 @@ class TaskListFragment : Fragment(), TaskListListener {
         }
     }
 
-    override fun onTaskComplete(fullTask: FullTaskModel) {
-        taskListViewModel.completeTask(fullTask.task)
-        Toast.makeText(context, fullTask.task.completed, Toast.LENGTH_SHORT).show()
+    override fun onTaskComplete(taskFull: TaskModelFull) {
+        taskListViewModel.completeTask(taskFull.task)
+        Toast.makeText(context, taskFull.task.completed, Toast.LENGTH_SHORT).show()
     }
 
-    private fun abandonTask(fullTask: FullTaskModel) {
-        taskListViewModel.abandonTask(fullTask.task)
-        Toast.makeText(context, fullTask.task.completed, Toast.LENGTH_SHORT).show()
+    private fun abandonTask(taskFull: TaskModelFull) {
+        taskListViewModel.abandonTask(taskFull.task)
+        Toast.makeText(context, taskFull.task.completed, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onTaskSelected(fullTask: FullTaskModel) {
-        val actionDetail = TaskListFragmentDirections.actionNavTaskListToNavTaskDetail(fullTask)
+    override fun onTaskSelected(taskFull: TaskModelFull) {
+        val actionDetail = TaskListFragmentDirections.actionNavTaskListToNavTaskDetail(taskFull)
         findNavController().navigate(actionDetail)
     }
 

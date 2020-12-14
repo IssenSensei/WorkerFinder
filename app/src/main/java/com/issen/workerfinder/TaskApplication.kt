@@ -4,8 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
-import com.issen.workerfinder.database.models.FullUserData
-import com.issen.workerfinder.enums.CompletionTypes
+import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.enums.PriorityTypes
 
 
@@ -21,7 +20,7 @@ class TaskApplication : Application() {
 
     companion object {
 
-        var currentLoggedInFullUser: FullUserData? = null
+        var currentLoggedInUserFull: UserDataFull? = null
         var currentUserToken: String = ""
 
         lateinit var appContext: Context

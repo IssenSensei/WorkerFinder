@@ -8,7 +8,6 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.issen.workerfinder.database.models.FullUserData
 import com.issen.workerfinder.database.WorkerFinderDatabase
 import com.issen.workerfinder.database.models.UserData
 import kotlinx.android.synthetic.main.activity_register.*

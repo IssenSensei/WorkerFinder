@@ -12,8 +12,8 @@ class TaskModelRepository(
     private val commentsDao: CommentsDao
 ) {
 
-    val allTasks: LiveData<List<FullTaskModel>> = taskModelDao.getAllTasks()
-    val activeTasks: LiveData<List<FullTaskModel>> = taskModelDao.getActiveTasks()
+    val allTasks: LiveData<List<TaskModelFull>> = taskModelDao.getAllTasks()
+    val activeTasks: LiveData<List<TaskModelFull>> = taskModelDao.getActiveTasks()
 
 
     suspend fun insert(taskModel: TaskModel, photos: List<TaskModelPhotos>, repeatDays: List<TaskModelRepeatDays>) {
@@ -32,7 +32,7 @@ class TaskModelRepository(
         taskModelDao.insert(taskModel)
     }
 
-    fun getUserById(firebaseKey: String): LiveData<FullUserData> {
+    fun getUserById(firebaseKey: String): LiveData<UserDataFull> {
         return userDataDao.getUserById(firebaseKey)
     }
 

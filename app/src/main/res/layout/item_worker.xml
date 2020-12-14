@@ -5,7 +5,7 @@
 
         <variable
             name="worker"
-            type="com.issen.workerfinder.database.models.FullUserData" />
+            type="com.issen.workerfinder.database.models.UserDataFull" />
 
         <variable
             name="clickListener"

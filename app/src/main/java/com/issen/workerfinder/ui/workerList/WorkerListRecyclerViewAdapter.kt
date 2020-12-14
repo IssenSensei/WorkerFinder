@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.issen.workerfinder.database.models.FullUserData
+import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.databinding.ItemWorkerBinding
 import com.issen.workerfinder.ui.misc.WorkerListener
 
 
 class WorkerListRecyclerViewAdapter(private val workerListener: WorkerListener) :
-    ListAdapter<FullUserData, WorkerListRecyclerViewAdapter.ViewHolder>(WorkerListDiffCallback()) {
+    ListAdapter<UserDataFull, WorkerListRecyclerViewAdapter.ViewHolder>(WorkerListDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -25,7 +25,7 @@ class WorkerListRecyclerViewAdapter(private val workerListener: WorkerListener) 
 
     class ViewHolder(val binding: ItemWorkerBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: FullUserData, workerListener: WorkerListener) {
+        fun bind(item: UserDataFull, workerListener: WorkerListener) {
             binding.worker = item
             binding.clickListener = workerListener
             binding.executePendingBindings()
@@ -33,12 +33,12 @@ class WorkerListRecyclerViewAdapter(private val workerListener: WorkerListener) 
     }
 }
 
-class WorkerListDiffCallback : DiffUtil.ItemCallback<FullUserData>() {
-    override fun areItemsTheSame(oldItem: FullUserData, newItem: FullUserData): Boolean {
+class WorkerListDiffCallback : DiffUtil.ItemCallback<UserDataFull>() {
+    override fun areItemsTheSame(oldItem: UserDataFull, newItem: UserDataFull): Boolean {
         return oldItem.userData.firebaseKey == newItem.userData.firebaseKey
     }
 
-    override fun areContentsTheSame(oldItem: FullUserData, newItem: FullUserData): Boolean {
+    override fun areContentsTheSame(oldItem: UserDataFull, newItem: UserDataFull): Boolean {
         return oldItem == newItem
     }
 }

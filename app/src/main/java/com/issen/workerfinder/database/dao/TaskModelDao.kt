@@ -2,7 +2,7 @@ package com.issen.workerfinder.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.issen.workerfinder.database.models.FullTaskModel
+import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.database.models.TaskModel
 
 @Dao
@@ -25,19 +25,19 @@ interface TaskModelDao {
 
     @Transaction
     @Query("SELECT * FROM task_table")
-    fun getAllTasks(): LiveData<List<FullTaskModel>>
+    fun getAllTasks(): LiveData<List<TaskModelFull>>
 
     @Transaction
     @Query("SELECT * FROM task_table WHERE task_worker = '' AND task_completion_type = 'PENDING'")
-    fun getBoardTasks(): LiveData<List<FullTaskModel>>
+    fun getBoardTasks(): LiveData<List<TaskModelFull>>
 
     @Transaction
     @Query("SELECT * FROM task_table WHERE task_completion_type LIKE 'ACTIVE'")
-    fun getActiveTasks(): LiveData<List<FullTaskModel>>
+    fun getActiveTasks(): LiveData<List<TaskModelFull>>
 
     @Transaction
     @Query("SELECT * FROM task_table WHERE task_completion_type NOT LIKE 'ACTIVE'")
-    fun getInactiveTasks(): LiveData<List<FullTaskModel>>
+    fun getInactiveTasks(): LiveData<List<TaskModelFull>>
 
     @Query("SELECT count(*) FROM task_table where task_worker = :firebaseKey and task_completion_type = 'ACTIVE'")
     suspend fun getActiveTasksCount(firebaseKey: String): Int

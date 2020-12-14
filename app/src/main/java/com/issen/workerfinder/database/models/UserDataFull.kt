@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 import java.io.Serializable
 
-data class FullUserData(
+data class UserDataFull(
 
     @Embedded val userData: UserData,
 //    @Relation(
@@ -26,6 +26,5 @@ data class FullUserData(
         entityColumn = "commentedUserId"
     )
     val comments: List<Comments>
-
 ) : Serializable
 

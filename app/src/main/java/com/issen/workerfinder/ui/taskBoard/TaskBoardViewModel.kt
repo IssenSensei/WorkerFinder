@@ -5,13 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.issen.workerfinder.database.WorkerFinderDatabase
-import com.issen.workerfinder.database.models.FullTaskModel
+import com.issen.workerfinder.database.models.TaskModelFull
 
 class TaskBoardViewModel(application: Application) : AndroidViewModel(application) {
-    var taskList: LiveData<List<FullTaskModel>>
+    var taskListFull: LiveData<List<TaskModelFull>>
 
     init {
         val database = WorkerFinderDatabase.getDatabase(application, viewModelScope)
-        taskList = database.taskModelDao.getBoardTasks()
+        taskListFull = database.taskModelDao.getBoardTasks()
     }
 }

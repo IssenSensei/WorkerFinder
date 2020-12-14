@@ -5,7 +5,7 @@
 
         <variable
             name="user"
-            type="com.issen.workerfinder.database.models.FullUserData" />
+            type="com.issen.workerfinder.database.models.UserDataFull" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

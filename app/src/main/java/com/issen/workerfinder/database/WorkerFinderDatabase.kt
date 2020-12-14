@@ -18,7 +18,7 @@ import java.util.*
 
 @Database(
     entities = [TaskModel::class, TaskModelPhotos::class, TaskModelRepeatDays::class, UserData::class, Categories::class,
-        Comments::class, Contacts::class],
+        Comments::class, Contacts::class, DashboardNotification::class],
     version = 1,
     exportSchema = false
 )

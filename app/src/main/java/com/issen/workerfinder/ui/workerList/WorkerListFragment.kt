@@ -7,16 +7,11 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
-import com.issen.workerfinder.database.models.FullTaskModel
-import com.issen.workerfinder.database.models.FullUserData
+import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.WorkerListener
-import com.issen.workerfinder.ui.taskList.TaskListRecyclerViewAdapter
-import com.issen.workerfinder.ui.workerBoard.WorkerBoardFragmentDirections
-import kotlinx.android.synthetic.main.fragment_task_list.view.*
 import kotlinx.android.synthetic.main.fragment_worker_list.view.*
 
 class WorkerListFragment : Fragment(), WorkerListener {
@@ -79,8 +74,8 @@ class WorkerListFragment : Fragment(), WorkerListener {
         }
     }
 
-    override fun onWorkerClicked(fullUserData: FullUserData) {
-        val actionProfile = WorkerListFragmentDirections.actionNavWorkerListToNavUserProfile(fullUserData)
+    override fun onWorkerClicked(userDataFull: UserDataFull) {
+        val actionProfile = WorkerListFragmentDirections.actionNavWorkerListToNavUserProfile(userDataFull)
         findNavController().navigate(actionProfile)
     }
 

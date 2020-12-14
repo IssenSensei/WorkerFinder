@@ -13,8 +13,8 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.MainActivity
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInFullUser
-import com.issen.workerfinder.database.models.FullUserData
+import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
+import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.models.UserDataWithComments
 import com.issen.workerfinder.databinding.FragmentUserProfileBinding
 import kotlinx.android.synthetic.main.dialog_user_comments.view.*
@@ -22,12 +22,12 @@ import kotlinx.android.synthetic.main.dialog_user_comments.view.*
 class UserProfileFragment : Fragment(), UserProfileListener {
 
     private val userProfileFragmentArgs: UserProfileFragmentArgs by navArgs()
-    lateinit var fullUserData: FullUserData
+    lateinit var userDataFull: UserDataFull
 
     private val userProfileViewModel: UserProfileViewModel by viewModels {
         UserProfileViewModelFactory(
             this.requireActivity().application,
-            fullUserData
+            userDataFull
         )
     }
 
@@ -38,11 +38,11 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 
         val binding: FragmentUserProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
         val view = binding.root
-        fullUserData = userProfileFragmentArgs.fullUserData
-        Glide.with(requireContext()).load(fullUserData.userData.photo).placeholder(R.drawable.meme).into(
+        userDataFull = userProfileFragmentArgs.userDataFull
+        Glide.with(requireContext()).load(userDataFull.userData.photo).placeholder(R.drawable.meme).into(
             binding.userProfilePhoto
         )
-        binding.user = fullUserData
+        binding.user = userDataFull
         binding.clickListener = this
 
         userProfileViewModel.activeTasks.observe(viewLifecycleOwner, Observer {
@@ -67,7 +67,7 @@ class UserProfileFragment : Fragment(), UserProfileListener {
             binding.userProfileRatingWorkerBar.rating = it ?: 0f
         })
 
-        if (fullUserData.userData.firebaseKey == currentLoggedInFullUser!!.userData.firebaseKey) {
+        if (userDataFull.userData.firebaseKey == currentLoggedInUserFull!!.userData.firebaseKey) {
             binding.userProfileContactSms.visibility = View.GONE
             binding.userProfileContactEmail.visibility = View.GONE
             binding.userProfileContactCall.visibility = View.GONE
@@ -83,33 +83,33 @@ class UserProfileFragment : Fragment(), UserProfileListener {
         return view
     }
 
-    override fun onCallClicked(fullUser: FullUserData) {
+    override fun onCallClicked(userFull: UserDataFull) {
         Toast.makeText(requireContext(), "call clicked", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onChatClicked(fullUser: FullUserData) {
+    override fun onChatClicked(userFull: UserDataFull) {
         Toast.makeText(requireContext(), "chat clicked", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onEmailClicked(fullUser: FullUserData) {
+    override fun onEmailClicked(userFull: UserDataFull) {
         Toast.makeText(requireContext(), "email clicked", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onSmsClicked(fullUser: FullUserData) {
+    override fun onSmsClicked(userFull: UserDataFull) {
         Toast.makeText(requireContext(), "sms clicked", Toast.LENGTH_SHORT).show()
     }
 
     //todo add restrictions if profile is public
-    override fun onEditProfileClicked(fullUser: FullUserData) {
+    override fun onEditProfileClicked(userFull: UserDataFull) {
         findNavController().navigate(R.id.action_nav_user_profile_to_nav_user_profile_edit)
     }
 
-    override fun onDeleteAccountClicked(fullUser: FullUserData) {
+    override fun onDeleteAccountClicked(userFull: UserDataFull) {
         (this.activity as MainActivity).askUserForPassword()
     }
 
-    override fun onPublicManageClicked(fullUser: FullUserData) {
-        if (fullUser.userData.isAccountPublic) {
+    override fun onPublicManageClicked(userFull: UserDataFull) {
+        if (userFull.userData.isAccountPublic) {
             showConfirmationDialog(false)
         } else {
             if (checkValidation()) {
@@ -123,24 +123,24 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 
     //todo create solid validation
     private fun checkValidation() = when {
-        fullUserData.userData.userName == "" -> false
-        fullUserData.userData.email == "" && fullUserData.userData.phone == "" -> false
+        userDataFull.userData.userName == "" -> false
+        userDataFull.userData.email == "" && userDataFull.userData.phone == "" -> false
         else -> true
     }
 
-    override fun onContactManageClicked(fullUser: FullUserData) {
+    override fun onContactManageClicked(userFull: UserDataFull) {
         Toast.makeText(requireContext(), "addContact clicked", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onProfilePhotoClicked(fullUser: FullUserData) {
+    override fun onProfilePhotoClicked(userFull: UserDataFull) {
         Toast.makeText(requireContext(), "photo clicked", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onShowUserCommentsClicked(fullUser: FullUserData) {
+    override fun onShowUserCommentsClicked(userFull: UserDataFull) {
         showRatingDialog(userProfileViewModel.commentUser.value)
     }
 
-    override fun onShowWorkerCommentsClicked(fullUser: FullUserData) {
+    override fun onShowWorkerCommentsClicked(userFull: UserDataFull) {
         showRatingDialog(userProfileViewModel.commentWorker.value)
     }
 
@@ -168,8 +168,8 @@ class UserProfileFragment : Fragment(), UserProfileListener {
             if (goingToPublic) {
                 setMessage("Twój profil stanie się widoczny dla innych użytkowników, czy jesteś pewien?")
                 setPositiveButton("Akceptuj") { dialogInterface, i ->
-                    userProfileViewModel.setAccountPublic(fullUserData.userData.firebaseKey, goingToPublic)
-                    fullUserData.userData.isAccountPublic = goingToPublic
+                    userProfileViewModel.setAccountPublic(userDataFull.userData.firebaseKey, goingToPublic)
+                    userDataFull.userData.isAccountPublic = goingToPublic
                     Toast.makeText(requireContext(), "Twój profil jest teraz publiczny", Toast.LENGTH_SHORT).show()
                 }
             } else {
@@ -178,8 +178,8 @@ class UserProfileFragment : Fragment(), UserProfileListener {
                             "wyszukiwania, czy jesteś pewien?"
                 )
                 setPositiveButton("Akceptuj") { dialogInterface, i ->
-                    userProfileViewModel.setAccountPublic(fullUserData.userData.firebaseKey, goingToPublic)
-                    fullUserData.userData.isAccountPublic = goingToPublic
+                    userProfileViewModel.setAccountPublic(userDataFull.userData.firebaseKey, goingToPublic)
+                    userDataFull.userData.isAccountPublic = goingToPublic
                     Toast.makeText(requireContext(), "Twój profil jest teraz prywatny", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -191,15 +191,15 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 }
 
 interface UserProfileListener {
-    fun onCallClicked(fullUser: FullUserData)
-    fun onChatClicked(fullUser: FullUserData)
-    fun onEmailClicked(fullUser: FullUserData)
-    fun onSmsClicked(fullUser: FullUserData)
-    fun onEditProfileClicked(fullUser: FullUserData)
-    fun onDeleteAccountClicked(fullUser: FullUserData)
-    fun onPublicManageClicked(fullUser: FullUserData)
-    fun onContactManageClicked(fullUser: FullUserData)
-    fun onProfilePhotoClicked(fullUser: FullUserData)
-    fun onShowUserCommentsClicked(fullUser: FullUserData)
-    fun onShowWorkerCommentsClicked(fullUser: FullUserData)
+    fun onCallClicked(userFull: UserDataFull)
+    fun onChatClicked(userFull: UserDataFull)
+    fun onEmailClicked(userFull: UserDataFull)
+    fun onSmsClicked(userFull: UserDataFull)
+    fun onEditProfileClicked(userFull: UserDataFull)
+    fun onDeleteAccountClicked(userFull: UserDataFull)
+    fun onPublicManageClicked(userFull: UserDataFull)
+    fun onContactManageClicked(userFull: UserDataFull)
+    fun onProfilePhotoClicked(userFull: UserDataFull)
+    fun onShowUserCommentsClicked(userFull: UserDataFull)
+    fun onShowWorkerCommentsClicked(userFull: UserDataFull)
 }

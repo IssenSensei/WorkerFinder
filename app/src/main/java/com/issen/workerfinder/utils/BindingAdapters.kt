@@ -10,7 +10,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.R
 import com.issen.workerfinder.TaskApplication
-import com.issen.workerfinder.database.models.FullTaskModel
+import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.PriorityTypes
 
@@ -62,8 +62,8 @@ fun setCheckBoxVisibility(checkBox: CheckBox, completion: String) {
 }
 
 @BindingAdapter("cardStrokeColor")
-fun setCheckBoxTint(cardView: CardView, task: FullTaskModel) {
-    cardView.foreground = when(task.task.completed){
+fun setCheckBoxTint(cardView: CardView, taskFull: TaskModelFull) {
+    cardView.foreground = when(taskFull.task.completed){
         CompletionTypes.ABANDONED.toString() -> {
             ContextCompat.getDrawable(TaskApplication.appContext, R.drawable.rectangle_red_stroke)
         }

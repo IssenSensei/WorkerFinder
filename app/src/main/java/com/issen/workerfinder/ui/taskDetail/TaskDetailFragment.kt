@@ -26,7 +26,7 @@ class TaskDetailFragment : Fragment() {
     ): View? {
         val binding = FragmentTaskDetailBinding.inflate(inflater, container, false)
         val safeArgs: TaskDetailFragmentArgs by navArgs()
-        val task = safeArgs.fullTask
+        val task = safeArgs.taskFull
         binding.fullTask = task
 
         if(task.photos.isNotEmpty()){

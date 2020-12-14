@@ -6,14 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.issen.workerfinder.database.TaskModelRepository
-import com.issen.workerfinder.database.models.FullUserData
+import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.WorkerFinderDatabase
-import com.issen.workerfinder.database.models.Comments
 import com.issen.workerfinder.database.models.UserData
 import com.issen.workerfinder.database.models.UserDataWithComments
 import kotlinx.coroutines.launch
 
-class UserProfileViewModel(application: Application, fullUserData: FullUserData) : AndroidViewModel(application) {
+class UserProfileViewModel(application: Application, userDataFull: UserDataFull) : AndroidViewModel(application) {
 
 
     private val repository: TaskModelRepository
@@ -54,16 +53,16 @@ class UserProfileViewModel(application: Application, fullUserData: FullUserData)
         val userModelDao = database.userDataDao
         val commentsDao = database.commentsDao
         repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao, commentsDao)
-        viewModelScope.launch { _activeTasks.value = repository.getActiveTasks(fullUserData.userData.firebaseKey) }
-        viewModelScope.launch { _completedTasks.value = repository.getCompletedTasks(fullUserData.userData.firebaseKey) }
-        viewModelScope.launch { _abandonedTasks.value = repository.getAbandonedTasks(fullUserData.userData.firebaseKey) }
-        viewModelScope.launch { _ratingAsWorker.value = repository.getRatingAsWorker(fullUserData.userData.userId) }
-        viewModelScope.launch { _ratingAsUser.value = repository.getRatingAsUser(fullUserData.userData.userId) }
-        viewModelScope.launch { _commentUser.value = repository.getCommentUser(fullUserData.userData.userId) }
-        viewModelScope.launch { _commentWorker.value = repository.getCommentWorker(fullUserData.userData.userId) }
+        viewModelScope.launch { _activeTasks.value = repository.getActiveTasks(userDataFull.userData.firebaseKey) }
+        viewModelScope.launch { _completedTasks.value = repository.getCompletedTasks(userDataFull.userData.firebaseKey) }
+        viewModelScope.launch { _abandonedTasks.value = repository.getAbandonedTasks(userDataFull.userData.firebaseKey) }
+        viewModelScope.launch { _ratingAsWorker.value = repository.getRatingAsWorker(userDataFull.userData.userId) }
+        viewModelScope.launch { _ratingAsUser.value = repository.getRatingAsUser(userDataFull.userData.userId) }
+        viewModelScope.launch { _commentUser.value = repository.getCommentUser(userDataFull.userData.userId) }
+        viewModelScope.launch { _commentWorker.value = repository.getCommentWorker(userDataFull.userData.userId) }
     }
 
-    fun getUserByKey(firebaseKey: String): LiveData<FullUserData> {
+    fun getUserByKey(firebaseKey: String): LiveData<UserDataFull> {
         return repository.getUserById(firebaseKey)
     }
 
