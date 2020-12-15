@@ -23,6 +23,7 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 
     private val userProfileFragmentArgs: UserProfileFragmentArgs by navArgs()
     lateinit var userDataFull: UserDataFull
+    private var isUserInContactList: Boolean = false
 
     private val userProfileViewModel: UserProfileViewModel by viewModels {
         UserProfileViewModelFactory(
@@ -65,6 +66,16 @@ class UserProfileFragment : Fragment(), UserProfileListener {
         userProfileViewModel.ratingAsWorker.observe(viewLifecycleOwner, Observer {
             binding.userProfileRatingWorker.text = it?.toString() ?: 0.toString()
             binding.userProfileRatingWorkerBar.rating = it ?: 0f
+        })
+
+        userProfileViewModel.isUserInContactList.observe(viewLifecycleOwner, Observer {
+            if(it){
+                binding.userProfileContactManage.text = "Usuń kontakt"
+                isUserInContactList = true
+            } else {
+                binding.userProfileContactManage.text = "Nawiąż kontakt"
+                isUserInContactList = false
+            }
         })
 
         if (userDataFull.userData.userId == currentLoggedInUserFull!!.userData.userId) {
@@ -110,10 +121,10 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 
     override fun onPublicManageClicked(userFull: UserDataFull) {
         if (userFull.userData.isAccountPublic) {
-            showConfirmationDialog(false)
+            showPublicConfirmationDialog(false)
         } else {
             if (checkValidation()) {
-                showConfirmationDialog(true)
+                showPublicConfirmationDialog(true)
             } else {
                 Toast.makeText(requireContext(), "Uzupełnij wymagane dane aby móc uczynić profil publicznym!", Toast.LENGTH_SHORT).show()
             }
@@ -129,8 +140,38 @@ class UserProfileFragment : Fragment(), UserProfileListener {
     }
 
     override fun onContactManageClicked(userFull: UserDataFull) {
-        Toast.makeText(requireContext(), "addContact clicked", Toast.LENGTH_SHORT).show()
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.apply {
+            setTitle("Potwierdź decyzję")
+            if (isUserInContactList) {
+                setMessage(
+                    "Usunięcie kontaktu spowoduje brak możliwości wysyłania oraz otrzymywania zadań pomiędzy Tobą a ${
+                        userFull
+                            .userData.userName
+                    }, jednakże wciąż będziecie mieli możliwość dokończenia aktywnych zadań. Czy jesteś pewien?"
+                )
+                setPositiveButton("Akceptuj") { dialogInterface, i ->
+                    userProfileViewModel.removeContact(userDataFull)
+                    Toast.makeText(requireContext(), "Zerwałeś kontakt z użytkownikiem ${userFull.userData.userName}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } else {
+                setMessage(
+                    "Wysłać zaproszenie do użytkownika ${userFull.userData.userName}? Jeśli zaakceptuje Twoje zaproszenie, będzie możliwe" +
+                            " udostępnianie oraz wykonywanie zadań pomiędzy Wami, czy jesteś pewien?"
+                )
+                setPositiveButton("Akceptuj") { dialogInterface, i ->
+                    userProfileViewModel.addContact(userDataFull)
+                    Toast.makeText(requireContext(), "Wysłano zaproszenie do użytkownika ${userFull.userData.userName}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+            setNeutralButton("Anuluj") { dialogInterface, i -> }
+            create()
+            show()
+        }
     }
+
 
     override fun onProfilePhotoClicked(userFull: UserDataFull) {
         Toast.makeText(requireContext(), "photo clicked", Toast.LENGTH_SHORT).show()
@@ -160,7 +201,7 @@ class UserProfileFragment : Fragment(), UserProfileListener {
         }
     }
 
-    private fun showConfirmationDialog(goingToPublic: Boolean) {
+    private fun showPublicConfirmationDialog(goingToPublic: Boolean) {
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.apply {

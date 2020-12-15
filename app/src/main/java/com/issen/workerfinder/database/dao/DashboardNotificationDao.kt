@@ -19,7 +19,8 @@ interface DashboardNotificationDao {
     fun getAllNotifications(): LiveData<List<DashboardNotificationFull>>
 
     @Insert
-    suspend fun notifyOwnerOfTaskState(dashboardNotification: DashboardNotification)
+    suspend fun notify(dashboardNotification: DashboardNotification)
+
 
 
 }

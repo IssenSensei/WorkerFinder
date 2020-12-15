@@ -15,7 +15,7 @@ import com.issen.workerfinder.databinding.FragmentTaskDetailBinding
 
 class TaskDetailFragment : Fragment() {
 
-    private lateinit var tastDetailViewModel: TaskDetailViewModel
+    private lateinit var taskDetailViewModel: TaskDetailViewModel
     private lateinit var taskFull: TaskModelFull
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +76,7 @@ class TaskDetailFragment : Fragment() {
     }
 
     private fun abandonTask() {
-        tastDetailViewModel.abandonTask(taskFull)
+        taskDetailViewModel.abandonTask(taskFull)
         Toast.makeText(context, taskFull.task.completed, Toast.LENGTH_SHORT).show()
     }
 

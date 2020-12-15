@@ -54,7 +54,7 @@ class TaskListViewModel(application: Application) : AndroidViewModel(application
     fun markTaskAsPending(taskModel: TaskModel) {
         viewModelScope.launch(Dispatchers.IO) {
             taskModelRepository.markTaskAsPending(taskModel.taskId)
-            dashboardNotificationsRepository.notifyOwnerOfTaskState(
+            dashboardNotificationsRepository.notify(
                 DashboardNotification(
                     0,
                     Date().toString(),

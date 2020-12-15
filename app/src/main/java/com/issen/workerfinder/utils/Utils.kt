@@ -68,6 +68,9 @@ fun getDashboardNotificationGroup(type: String) = when(type){
     DashboardNotificationTypes.CONTACTACCEPTED.toString() -> {
         "CONTACT"
     }
+    DashboardNotificationTypes.CONTACTREMOVED.toString() -> {
+        "CONTACT"
+    }
     else -> {
         "ERROR"
     }

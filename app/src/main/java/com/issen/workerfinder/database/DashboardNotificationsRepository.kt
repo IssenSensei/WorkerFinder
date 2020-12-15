@@ -5,6 +5,6 @@ import com.issen.workerfinder.database.models.*
 
 class DashboardNotificationsRepository(private val dashboardNotificationDao: DashboardNotificationDao) {
 
-    suspend fun notifyOwnerOfTaskState(dashboardNotification: DashboardNotification) = dashboardNotificationDao.notifyOwnerOfTaskState(dashboardNotification)
+    suspend fun notify(dashboardNotification: DashboardNotification) = dashboardNotificationDao.notify(dashboardNotification)
 
 }

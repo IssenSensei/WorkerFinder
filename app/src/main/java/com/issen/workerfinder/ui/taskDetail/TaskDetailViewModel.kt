@@ -34,7 +34,7 @@ class TaskDetailViewModel(application: Application) : AndroidViewModel(applicati
     fun abandonTask(taskModel: TaskModelFull) {
         viewModelScope.launch(Dispatchers.IO) {
             taskModelRepository.abandonTask(taskModel.task.taskId)
-            dashboardNotificationsRepository.notifyOwnerOfTaskState(
+            dashboardNotificationsRepository.notify(
                 DashboardNotification(
                     0,
                     Date().toString(),

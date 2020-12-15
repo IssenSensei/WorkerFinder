@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     }
 
     fun navigateProfile(view: View) {
-        val bundle = bundleOf("fullUserData" to currentLoggedInUserFull!!)
+        val bundle = bundleOf("userDataFull" to currentLoggedInUserFull!!)
         findNavController(R.id.nav_host_fragment).navigate(R.id.nav_user_profile, bundle)
         drawer_layout.closeDrawers()
     }

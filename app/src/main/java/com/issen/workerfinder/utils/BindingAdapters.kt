@@ -95,6 +95,9 @@ fun setNotificationContactText(textView: TextView, notificationFull: DashboardNo
         DashboardNotificationTypes.CONTACTREFUSED.toString() -> {
             " odrzucił Twoje zaproszenie do kontaktów."
         }
+        DashboardNotificationTypes.CONTACTREMOVED.toString() -> {
+            " usunął Cię ze swojej listy kontaktów."
+        }
         else -> {
             "Error, no data found!"
         }

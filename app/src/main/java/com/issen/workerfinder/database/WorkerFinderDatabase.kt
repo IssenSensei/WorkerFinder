@@ -294,6 +294,15 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date().toString(),
                         userId,
                         userId,
+                        DashboardNotificationTypes.CONTACTREMOVED.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        userId,
+                        userId,
                         DashboardNotificationTypes.RATEDBYWORKER.toString(),
                         1,
                         false
