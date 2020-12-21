@@ -16,7 +16,7 @@
             android:paddingTop="@dimen/spacing_small">
 
             <LinearLayout
-                android:id="@+id/drawer_filter_task_list_main_container"
+                android:id="@+id/drawer_filter_task_board_main_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -36,7 +36,7 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/drawer_filter_task_list_toggle_filter_container"
+                            android:id="@+id/drawer_filter_task_board_toggle_filter_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/white"
@@ -59,7 +59,7 @@
                                 android:textColor="@color/grey_80" />
 
                             <ImageButton
-                                android:id="@+id/drawer_filter_task_list_toggle_filter_button"
+                                android:id="@+id/drawer_filter_task_board_toggle_filter_button"
                                 android:layout_width="?attr/actionBarSize"
                                 android:layout_height="?attr/actionBarSize"
                                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -72,38 +72,12 @@
 
 
                         <LinearLayout
-                            android:id="@+id/drawer_filter_task_list_filter_expand_container"
+                            android:id="@+id/drawer_filter_task_board_filter_expand_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:tag="filterContainer"
                             android:visibility="gone">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
-                                android:orientation="horizontal"
-                                android:tag="worker">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="1"
-                                    android:padding="@dimen/spacing_medium"
-                                    android:text="Pracownik" />
-
-                                <ImageButton
-                                    android:id="@+id/drawer_filter_task_list_filter_worker"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="?attr/selectableItemBackgroundBorderless"
-                                    android:padding="@dimen/spacing_medium"
-                                    android:src="@drawable/ic_arrow_right"
-                                    android:tint="@color/colorPrimaryDark" />
-
-                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -121,7 +95,7 @@
                                     android:text="Pracodawca" />
 
                                 <ImageButton
-                                    android:id="@+id/drawer_filter_task_list_filter_user"
+                                    android:id="@+id/drawer_filter_task_board_filter_user"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -147,7 +121,7 @@
                                     android:text="Kategoria" />
 
                                 <ImageButton
-                                    android:id="@+id/drawer_filter_task_list_filter_category"
+                                    android:id="@+id/drawer_filter_task_board_filter_category"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -173,7 +147,7 @@
                                     android:text="Cykliczność" />
 
                                 <ImageButton
-                                    android:id="@+id/drawer_filter_task_list_filter_cyclic_type"
+                                    android:id="@+id/drawer_filter_task_board_filter_cyclic_type"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -188,7 +162,7 @@
                                 android:layout_height="wrap_content"
                                 android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
                                 android:orientation="horizontal"
-                                android:tag="priority">
+                                android:tag="localization">
 
                                 <TextView
                                     android:layout_width="0dp"
@@ -196,10 +170,10 @@
                                     android:layout_gravity="center"
                                     android:layout_weight="1"
                                     android:padding="@dimen/spacing_medium"
-                                    android:text="Priorytet" />
+                                    android:text="Lokalizacja" />
 
                                 <ImageButton
-                                    android:id="@+id/drawer_filter_task_list_filter_priority"
+                                    android:id="@+id/drawer_filter_task_board_filter_localization"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -214,7 +188,7 @@
                                 android:layout_height="wrap_content"
                                 android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
                                 android:orientation="horizontal"
-                                android:tag="completion">
+                                android:tag="pay">
 
                                 <TextView
                                     android:layout_width="0dp"
@@ -222,10 +196,10 @@
                                     android:layout_gravity="center"
                                     android:layout_weight="1"
                                     android:padding="@dimen/spacing_medium"
-                                    android:text="Stan" />
+                                    android:text="Stawka" />
 
                                 <ImageButton
-                                    android:id="@+id/drawer_filter_task_list_filter_completion_type"
+                                    android:id="@+id/drawer_filter_task_board_filter_pay"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -234,6 +208,59 @@
                                     android:tint="@color/colorPrimaryDark" />
 
                             </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
+                                android:orientation="horizontal"
+                                android:tag="rating">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:padding="@dimen/spacing_medium"
+                                    android:text="Opinie" />
+
+                                <ImageButton
+                                    android:id="@+id/drawer_filter_task_board_filter_rating"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:padding="@dimen/spacing_medium"
+                                    android:src="@drawable/ic_arrow_right"
+                                    android:tint="@color/colorPrimaryDark" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{(view) -> drawerFilterClickListener.onFilterContainerClicked(view)}"
+                                android:orientation="horizontal"
+                                android:tag="dueDate">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:padding="@dimen/spacing_medium"
+                                    android:text="Termin" />
+
+                                <ImageButton
+                                    android:id="@+id/drawer_filter_task_board_filter_due_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:padding="@dimen/spacing_medium"
+                                    android:src="@drawable/ic_arrow_right"
+                                    android:tint="@color/colorPrimaryDark" />
+
+                            </LinearLayout>
+
 
                         </LinearLayout>
                     </LinearLayout>
@@ -256,7 +283,7 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/drawer_filter_task_list_toggle_sort_container"
+                            android:id="@+id/drawer_filter_task_board_toggle_sort_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/white"
@@ -279,7 +306,7 @@
                                 android:textColor="@color/grey_80" />
 
                             <ImageButton
-                                android:id="@+id/drawer_filter_task_list_toggle_sort_button"
+                                android:id="@+id/drawer_filter_task_board_toggle_sort_button"
                                 android:layout_width="?attr/actionBarSize"
                                 android:layout_height="?attr/actionBarSize"
                                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -291,7 +318,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/drawer_filter_task_list_sort_expand_container"
+                            android:id="@+id/drawer_filter_task_board_sort_expand_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -299,59 +326,35 @@
                             android:visibility="gone">
 
                             <RadioGroup
-                                android:id="@+id/drawer_filter_task_list_sort_radio"
+                                android:id="@+id/drawer_filter_task_board_sort_radio"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/spacing_large">
 
                                 <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_sort_none"
+                                    android:id="@+id/drawer_filter_task_board_sort_none"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
                                     android:text="Brak" />
 
                                 <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_sort_taskName"
+                                    android:id="@+id/drawer_filter_task_board_sort_pay"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Nazwa zadania" />
+                                    android:text="Stawka" />
 
                                 <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_sort_worker"
+                                    android:id="@+id/drawer_filter_task_board_sort_due_date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Pracownik" />
+                                    android:text="Termin" />
 
                                 <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_sort_user"
+                                    android:id="@+id/drawer_filter_task_board_sort_rating"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Pracodawca" />
-
-                                <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_sort_category"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Kategoria" />
-
-                                <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_sort_next_date"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Termin wykonania" />
-
-                                <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_sort_priority"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Priorytet" />
-
-                                <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_sort_completion_date"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Data zakończenia" />
+                                    android:text="Opinie" />
 
                             </RadioGroup>
 
@@ -361,7 +364,7 @@
                                 android:paddingBottom="@dimen/spacing_medium">
 
                                 <TextView
-                                    android:id="@+id/drawer_filter_task_list_sort_desc"
+                                    android:id="@+id/drawer_filter_task_board_sort_desc"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -372,14 +375,14 @@
                                     android:text="Malejąco" />
 
                                 <androidx.appcompat.widget.SwitchCompat
-                                    android:id="@+id/drawer_filter_task_list_sort_switch"
+                                    android:id="@+id/drawer_filter_task_board_sort_switch"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:gravity="center" />
 
                                 <TextView
-                                    android:id="@+id/drawer_filter_task_list_sort_asc"
+                                    android:id="@+id/drawer_filter_task_board_sort_asc"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -413,7 +416,7 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/drawer_filter_task_list_toggle_group_container"
+                            android:id="@+id/drawer_filter_task_board_toggle_group_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/white"
@@ -436,7 +439,7 @@
                                 android:textColor="@color/grey_80" />
 
                             <ImageButton
-                                android:id="@+id/drawer_filter_task_list_toggle_group_button"
+                                android:id="@+id/drawer_filter_task_board_toggle_group_button"
                                 android:layout_width="?attr/actionBarSize"
                                 android:layout_height="?attr/actionBarSize"
                                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -448,7 +451,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/drawer_filter_task_list_group_expand_container"
+                            android:id="@+id/drawer_filter_task_board_group_expand_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -456,53 +459,29 @@
                             android:visibility="gone">
 
                             <RadioGroup
-                                android:id="@+id/drawer_filter_task_list_group_radio"
+                                android:id="@+id/drawer_filter_task_board_group_radio"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/spacing_large">
 
                                 <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_group_none"
+                                    android:id="@+id/drawer_filter_task_board_group_none"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
                                     android:text="Brak" />
 
                                 <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_group_worker"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Pracownik" />
-
-                                <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_group_user"
+                                    android:id="@+id/drawer_filter_task_board_group_user"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Pracodawca" />
 
                                 <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_group_category"
+                                    android:id="@+id/drawer_filter_task_board_group_localization"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Kategoria" />
-
-                                <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_group_cyclic_type"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Cykliczność" />
-
-                                <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_group_priority"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Priorytet" />
-
-                                <RadioButton
-                                    android:id="@+id/drawer_filter_task_list_group_completed"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Stan" />
+                                    android:text="Lokalizacja" />
 
                             </RadioGroup>
                         </LinearLayout>
@@ -526,7 +505,7 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:id="@+id/drawer_filter_task_list_toggle_active_container"
+                            android:id="@+id/drawer_filter_task_board_toggle_active_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/white"
@@ -549,7 +528,7 @@
                                 android:textColor="@color/grey_80" />
 
                             <ImageButton
-                                android:id="@+id/drawer_filter_task_list_toggle_active_button"
+                                android:id="@+id/drawer_filter_task_board_toggle_active_button"
                                 android:layout_width="?attr/actionBarSize"
                                 android:layout_height="?attr/actionBarSize"
                                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -561,7 +540,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/drawer_filter_task_list_active_expand_container"
+                            android:id="@+id/drawer_filter_task_board_active_expand_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -580,87 +559,99 @@
 
             </LinearLayout>
 
-
             <LinearLayout
-                android:id="@+id/drawer_filter_task_list_worker_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:tag="workerContainer"
-                android:visibility="gone">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/drawer_filter_task_list_worker_container_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/drawer_filter_task_list_user_container"
+                android:id="@+id/drawer_filter_task_board_user_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:tag="userContainer"
                 android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/drawer_filter_task_list_user_container_recycler"
+                    android:id="@+id/drawer_filter_task_board_user_container_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/drawer_filter_task_list_category_container"
+                android:id="@+id/drawer_filter_task_board_category_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:tag="categoryContainer"
                 android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/drawer_filter_task_list_category_container_recycler"
+                    android:id="@+id/drawer_filter_task_board_category_container_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/drawer_filter_task_list_cyclic_container"
+                android:id="@+id/drawer_filter_task_board_cyclic_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:tag="cyclicContainer"
                 android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/drawer_filter_task_list_cyclic_container_recycler"
+                    android:id="@+id/drawer_filter_task_board_cyclic_container_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/drawer_filter_task_list_priority_container"
+                android:id="@+id/drawer_filter_task_board_localization_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:tag="priorityContainer"
+                android:tag="localizationContainer"
                 android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/drawer_filter_task_list_priority_container_recycler"
+                    android:id="@+id/drawer_filter_task_board_localization_container_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/drawer_filter_task_list_completion_container"
+                android:id="@+id/drawer_filter_task_board_pay_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:tag="completionContainer"
+                android:tag="payContainer"
                 android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/drawer_filter_task_list_completion_container_recycler"
+                    android:id="@+id/drawer_filter_task_board_pay_container_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/drawer_filter_task_board_rating_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="ratingContainer"
+                android:visibility="gone">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/drawer_filter_task_board_rating_container_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/drawer_filter_task_board_due_date_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="dueDateContainer"
+                android:visibility="gone">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/drawer_filter_task_board_due_date_container_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

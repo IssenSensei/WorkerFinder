@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <data>
@@ -75,9 +75,130 @@
             app:menu="@menu/activity_main_drawer"
             tools:visibility="gone" />
 
-        <include layout="@layout/drawer_content_task_list"
-            android:id="@+id/drawer_content_task_list"
-            bind:drawerFilterClickListener="@{drawerFilterClickListener}"/>
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/drawer_filter_navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:fitsSystemWindows="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey_5"
+                android:orientation="vertical">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/drawer_filter_appBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@android:color/white"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/drawer_filter_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:onClick="@{() -> drawerFilterClickListener.onBackClicked()}"
+                            android:padding="@dimen/spacing_medium"
+                            android:src="@drawable/ic_arrow_left"
+                            android:tint="@color/colorPrimaryDark"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/spacing_large"
+                            android:gravity="center"
+                            android:padding="@dimen/spacing_medium"
+                            android:text="Dostosuj"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                            android:textColor="@color/colorPrimaryDark"
+                            app:fontFamily="sans-serif-medium" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageButton
+                            android:id="@+id/drawer_filter_cancel_button"
+                            android:layout_width="?attr/actionBarSize"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:onClick="@{() -> drawerFilterClickListener.onCancelClicked()}"
+                            android:tint="@color/red_500"
+                            app:srcCompat="@drawable/clear_smallest_black" />
+                    </LinearLayout>
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/drawer_filter_nested_scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                    <androidx.coordinatorlayout.widget.CoordinatorLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            android:id="@+id/drawer_content_task_list"
+                            layout="@layout/drawer_content_task_list"
+                            android:visibility="gone"
+                            bind:drawerFilterClickListener="@{drawerFilterClickListener}" />
+
+                        <include
+                            android:id="@+id/drawer_content_task_board"
+                            layout="@layout/drawer_content_task_board"
+                            android:visibility="gone"
+                            bind:drawerFilterClickListener="@{drawerFilterClickListener}" />
+
+                    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                </androidx.core.widget.NestedScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/drawer_filter_clear"
+                        style="@style/Widget.AppCompat.ImageButton"
+                        android:layout_width="0dp"
+                        android:layout_height="?actionBarSize"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/clear_smallest_black"
+                        android:drawableTint="@color/blue_600"
+                        android:onClick="@{() -> drawerFilterClickListener.onClearClicked()}"
+                        android:shadowRadius="3"
+                        android:text="Wyczyść" />
+
+                    <Button
+                        android:id="@+id/drawer_filter_accept"
+                        style="@style/Widget.AppCompat.ImageButton"
+                        android:layout_width="0dp"
+                        android:layout_height="?actionBarSize"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_done"
+                        android:drawableTint="@color/green_600"
+                        android:onClick="@{() -> drawerFilterClickListener.onAcceptClicked()}"
+                        android:shadowRadius="3"
+                        android:text="Zatwierdź" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
