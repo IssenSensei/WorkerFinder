@@ -2,6 +2,7 @@ package com.issen.workerfinder.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.database.models.TaskModel
 
@@ -56,4 +57,7 @@ interface TaskModelDao {
 
     @Query("UPDATE task_table set task_completion_type = 'ABANDONED' where taskId = :taskId")
     suspend fun abandonTask(taskId: Int)
+
+    @RawQuery
+    fun getTasksQueried(query: SimpleSQLiteQuery): LiveData<List<TaskModelFull>>
 }

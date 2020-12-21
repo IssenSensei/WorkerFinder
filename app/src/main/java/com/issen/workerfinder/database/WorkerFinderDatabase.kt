@@ -98,7 +98,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
     fun populateDbCreate(coroutineScope: CoroutineScope) {
         populateUsers(coroutineScope)
-        populateTasks(coroutineScope)
+//        populateTasks(coroutineScope)
         populatePhotos(coroutineScope)
         populateRepeatDays(coroutineScope)
     }

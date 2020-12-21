@@ -112,6 +112,6 @@ class TaskListFragment : Fragment(), TaskListListener {
     }
 
     fun onAcceptClicked(selectedTaskListFilter: TaskListFilter) {
-        taskListViewModel.queryDesc()
+        taskListViewModel.requery(selectedTaskListFilter)
     }
 }

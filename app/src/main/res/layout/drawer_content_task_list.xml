@@ -5,6 +5,9 @@
     <data>
 
         <variable
+            name="drawerFilterSelectionListener"
+            type="com.issen.workerfinder.ui.misc.OnFilterSelectionListener" />
+        <variable
             name="drawerFilterClickListener"
             type="com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener" />
 
@@ -687,7 +690,7 @@
 
                     <LinearLayout
                         android:id="@+id/drawer_filter_category_container"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:tag="categoryContainer"
                         android:visibility="gone">
@@ -701,44 +704,21 @@
 
                     <LinearLayout
                         android:id="@+id/drawer_filter_cyclic_container"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:tag="cyclicContainer"
                         android:visibility="gone">
 
-                        <RadioGroup
-                            android:id="@+id/drawer_filter_cyclic_radio"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/drawer_filter_cyclic_container_recycler"
                             android:layout_width="match_parent"
-                            android:layout_margin="@dimen/spacing_medium"
-                            android:layout_height="wrap_content">
-
-                            <RadioButton
-                                android:id="@+id/drawer_filter_cyclic_radio_both"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:text="Wszystkie" />
-
-                            <RadioButton
-                                android:id="@+id/drawer_filter_cyclic_radio_single"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:text="Tylko jednorazowe" />
-
-                            <RadioButton
-                                android:id="@+id/drawer_filter_cyclic_radio_cyclic"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:text="Tylko cykliczne" />
-
-                        </RadioGroup>
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/drawer_filter_priority_container"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:tag="priorityContainer"
                         android:visibility="gone">
@@ -753,7 +733,7 @@
 
                     <LinearLayout
                         android:id="@+id/drawer_filter_completion_container"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:tag="completionContainer"
                         android:visibility="gone">

@@ -21,6 +21,4 @@ interface DashboardNotificationDao {
     @Insert
     suspend fun notify(dashboardNotification: DashboardNotification)
 
-
-
 }

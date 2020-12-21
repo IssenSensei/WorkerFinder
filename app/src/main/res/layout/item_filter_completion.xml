@@ -4,6 +4,9 @@
 
     <data>
         <variable
+            name="completionType"
+            type="com.issen.workerfinder.enums.CompletionTypes" />
+        <variable
             name="clickListener"
             type="com.issen.workerfinder.ui.misc.OnFilterSelectionListener" />
     </data>
@@ -15,27 +18,30 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="@{() -> clickListener.onFilterSelected()}"
+            android:onClick="@{(view) -> clickListener.onFilterCompletionChanged(completionType, view)}"
             android:padding="@dimen/spacing_large">
 
             <CheckBox
-                android:id="@+id/filter_checkbox"
+                android:id="@+id/filter_completion_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                app:layout_constraintBottom_toBottomOf="@id/filter_title"
+                android:tag="checkbox"
+                android:clickable="false"
+                app:layout_constraintBottom_toBottomOf="@id/filter_completion_title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/filter_title" />
+                app:layout_constraintTop_toTopOf="@id/filter_completion_title" />
 
             <TextView
-                android:id="@+id/filter_title"
+                android:id="@+id/filter_completion_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:text="@{completionType.toString()}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/filter_checkbox"
+                app:layout_constraintStart_toEndOf="@id/filter_completion_checkbox"
                 app:layout_constraintTop_toTopOf="parent"/>
 
 

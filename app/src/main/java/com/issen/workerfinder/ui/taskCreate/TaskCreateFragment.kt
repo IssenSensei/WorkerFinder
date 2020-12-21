@@ -23,7 +23,6 @@ import com.issen.workerfinder.database.models.TaskModel
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
 import com.issen.workerfinder.enums.PriorityTypes
-import com.issen.workerfinder.ui.misc.PrioritySpinnerAdapter
 import kotlinx.android.synthetic.main.dialog_calendarview_picker.view.*
 import kotlinx.android.synthetic.main.dialog_day_interval_picker.view.*
 import kotlinx.android.synthetic.main.fragment_task_create.*

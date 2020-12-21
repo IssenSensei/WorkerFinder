@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.RadioButton
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -35,12 +32,15 @@ import com.issen.workerfinder.database.WorkerFinderDatabase
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.databinding.ActivityMainBinding
 import com.issen.workerfinder.databinding.NavHeaderMainBinding
-import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
-import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
-import com.issen.workerfinder.ui.misc.TaskListFilter
-import com.issen.workerfinder.ui.misc.WorkerListener
+import com.issen.workerfinder.enums.CompletionTypes
+import com.issen.workerfinder.enums.CyclicTypes
+import com.issen.workerfinder.enums.PriorityTypes
+import com.issen.workerfinder.ui.filters.CompletionFilterAdapter
+import com.issen.workerfinder.ui.filters.CyclicFilterAdapter
+import com.issen.workerfinder.ui.filters.PriorityFilterAdapter
+import com.issen.workerfinder.ui.filters.UserListRecyclerViewAdapter
+import com.issen.workerfinder.ui.misc.*
 import com.issen.workerfinder.ui.taskList.TaskListFragment
-import com.issen.workerfinder.ui.workerList.WorkerListRecyclerViewAdapter
 import com.issen.workerfinder.utils.ViewAnimation
 import com.issen.workerfinder.utils.hideAnimated
 import com.issen.workerfinder.utils.nestedScrollTo
@@ -52,14 +52,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDrawerListener, WorkerListener {
+class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDrawerListener, OnFilterSelectionListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var auth = FirebaseAuth.getInstance()
     private var doubleBackToExitPressedOnce = false
-
-    private var currentTaskListFilter = TaskListFilter()
-    private var selectedTaskListFilter: TaskListFilter = currentTaskListFilter
     private lateinit var mainActivityViewModel: MainActivityViewModel
+
+    private lateinit var priorityAdapter: PriorityFilterAdapter
+    private lateinit var cyclicAdapter: CyclicFilterAdapter
+    private lateinit var completionAdapter: CompletionFilterAdapter
+    private lateinit var userAdapter: UserListRecyclerViewAdapter
+    private lateinit var workerAdapter: UserListRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,7 +120,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
 
     private fun prepareFilterContent() {
-        val workerAdapter = WorkerListRecyclerViewAdapter(this)
+        workerAdapter = UserListRecyclerViewAdapter(this, true, mainActivityViewModel.currentTaskListFilter.filterByWorker)
         mainActivityViewModel.workerList.observe(this, Observer {
             it?.let {
                 workerAdapter.submitList(it)
@@ -125,7 +128,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         })
         drawer_filter_worker_container_recycler.adapter = workerAdapter
 
-        val userAdapter = WorkerListRecyclerViewAdapter(this)
+        userAdapter = UserListRecyclerViewAdapter(this, false, mainActivityViewModel.currentTaskListFilter.filterByUser)
         mainActivityViewModel.userListFull.observe(this, Observer {
             it?.let {
                 userAdapter.submitList(it)
@@ -133,8 +136,15 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         })
         drawer_filter_user_container_recycler.adapter = userAdapter
 
-    }
+        priorityAdapter = PriorityFilterAdapter(this, PriorityTypes.values(), mainActivityViewModel.currentTaskListFilter.filterByPriority)
+        drawer_filter_priority_container_recycler.adapter = priorityAdapter
 
+        cyclicAdapter = CyclicFilterAdapter(this, CyclicTypes.values(), mainActivityViewModel.currentTaskListFilter.filterByCyclic)
+        drawer_filter_cyclic_container_recycler.adapter = cyclicAdapter
+
+        completionAdapter = CompletionFilterAdapter(this, CompletionTypes.values(), mainActivityViewModel.currentTaskListFilter.filterByCompletionType)
+        drawer_filter_completion_container_recycler.adapter = completionAdapter
+    }
 
     private fun setupNavigationMenu(navController: NavController) {
         val sideNavView = findViewById<NavigationView>(R.id.nav_view)
@@ -153,7 +163,6 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     ) {
         setupActionBarWithNavController(navController, appBarConfig)
     }
-
 
     private fun logout() {
         Firebase.auth.signOut()
@@ -242,41 +251,58 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         drawer_filter_back.visibility = View.VISIBLE
         (drawer_filter_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(view.tag.toString() + "Container").visibility =
             View.VISIBLE
-
-//        when (view.tag.toString()) {
-//            "worker" -> {
-//
-//            }
-//        }
     }
 
+    override fun onUserFilterSelected(userDataFull: UserDataFull, isWorker: Boolean, view: View) {
+        if(isWorker) {
+            mainActivityViewModel.setFilter(userDataFull.userData.userId, mainActivityViewModel.selectedTaskListFilter.filterByWorker)
+        } else {
+            mainActivityViewModel.setFilter(userDataFull.userData.userId, mainActivityViewModel.selectedTaskListFilter.filterByUser)
+        }
+        view.findViewWithTag<CheckBox>("checkbox").isChecked = !view.findViewWithTag<CheckBox>("checkbox").isChecked
+    }
+
+    override fun onFilterPriorityChanged(priorityTypes: PriorityTypes, view: View) {
+        mainActivityViewModel.setFilter(priorityTypes.name, mainActivityViewModel.selectedTaskListFilter.filterByPriority)
+        view.findViewWithTag<CheckBox>("checkbox").isChecked = !view.findViewWithTag<CheckBox>("checkbox").isChecked
+    }
+
+    override fun onFilterCompletionChanged(completionTypes: CompletionTypes, view: View) {
+        mainActivityViewModel.setFilter(completionTypes.name, mainActivityViewModel.selectedTaskListFilter.filterByCompletionType)
+        view.findViewWithTag<CheckBox>("checkbox").isChecked = !view.findViewWithTag<CheckBox>("checkbox").isChecked
+    }
+
+    override fun onFilterCyclicChanged(cyclicTypes: CyclicTypes, view: View) {
+        mainActivityViewModel.setFilter(cyclicTypes.name, mainActivityViewModel.selectedTaskListFilter.filterByCyclic)
+        view.findViewWithTag<CheckBox>("checkbox").isChecked = !view.findViewWithTag<CheckBox>("checkbox").isChecked
+    }
+
+
     override fun onAcceptClicked() {
-        Toast.makeText(this, "onAcceptClicked", Toast.LENGTH_SHORT).show()
         when (val currentFragment = getCurrentlyDisplayedFragment()) {
             is TaskListFragment -> {
-                currentFragment.onAcceptClicked(selectedTaskListFilter)
-                currentTaskListFilter = selectedTaskListFilter
+                mainActivityViewModel.applyFilters()
+                currentFragment.onAcceptClicked(mainActivityViewModel.currentTaskListFilter)
             }
             else -> {
                 Toast.makeText(this, "Error closing drawer!", Toast.LENGTH_SHORT).show()
             }
         }
+        drawer_layout.closeDrawer(GravityCompat.END)
     }
 
     override fun onCancelClicked() {
         drawer_layout.closeDrawer(GravityCompat.END)
-        Toast.makeText(this, "onCancelClicked!!", Toast.LENGTH_SHORT).show()
 
         //todo add sharedprefs
         //todo clear filters
-        selectedTaskListFilter = currentTaskListFilter
+        mainActivityViewModel.clearSelectedFilters()
         drawer_filter_group_radio.check(R.id.drawer_filter_group_none)
         drawer_filter_sort_radio.check(R.id.drawer_filter_sort_none)
     }
 
     override fun onBackClicked() {
-        Toast.makeText(this, "onBackClicked!!", Toast.LENGTH_SHORT).show()
-        selectedTaskListFilter = currentTaskListFilter
+        mainActivityViewModel.selectedTaskListFilter = mainActivityViewModel.currentTaskListFilter
         drawer_filter_worker_container.visibility = View.GONE
         drawer_filter_user_container.visibility = View.GONE
         drawer_filter_category_container.visibility = View.GONE
@@ -288,30 +314,32 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     }
 
     override fun onClearClicked() {
-        selectedTaskListFilter = TaskListFilter()
-        //todo clear filters
+        mainActivityViewModel.selectedTaskListFilter = TaskListFilter()
+
         drawer_filter_group_radio.check(R.id.drawer_filter_group_none)
         drawer_filter_sort_radio.check(R.id.drawer_filter_sort_none)
         drawer_filter_sort_switch.isChecked = false
+
+        completionAdapter.clearValues()
+        cyclicAdapter.clearValues()
+        priorityAdapter.clearValues()
+        userAdapter.clearValues()
+        workerAdapter.clearValues()
     }
 
     override fun onOrderSwitched(view: View) {
-        selectedTaskListFilter.orderBy = view.tag.toString()
-        drawer_filter_sort_switch.isChecked = view.tag == "asc"
+        mainActivityViewModel.setOrder(drawer_filter_sort_switch.isChecked)
     }
 
     private fun prepareDrawer() {
-
         drawer_filter_sort_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
             val radio = radioGroup.findViewById<RadioButton>(checkedId)
-            selectedTaskListFilter.sortBy = getSelectedSortValue(radio)
-            Toast.makeText(this, radio.text, Toast.LENGTH_SHORT).show()
+            mainActivityViewModel.setSort(getSelectedSortValue(radio))
         }
 
         drawer_filter_group_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
             val radio = radioGroup.findViewById<RadioButton>(checkedId)
-            selectedTaskListFilter.groupBy = getSelectedGroupValue(radio)
-            Toast.makeText(this, radio.text, Toast.LENGTH_SHORT).show()
+            mainActivityViewModel.setGroup(getSelectedGroupValue(radio))
         }
     }
 
@@ -413,7 +441,4 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         }
     }
 
-    override fun onWorkerClicked(userDataFull: UserDataFull) {
-        TODO("Not yet implemented")
-    }
 }
