@@ -42,6 +42,7 @@ import com.issen.workerfinder.ui.filters.UserListRecyclerViewAdapter
 import com.issen.workerfinder.ui.misc.*
 import com.issen.workerfinder.ui.taskBoard.TaskBoardFragment
 import com.issen.workerfinder.ui.taskList.TaskListFragment
+import com.issen.workerfinder.ui.workerBoard.WorkerBoardFragment
 import com.issen.workerfinder.utils.ViewAnimation
 import com.issen.workerfinder.utils.hideAnimated
 import com.issen.workerfinder.utils.nestedScrollTo
@@ -411,10 +412,17 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
             is TaskListFragment -> {
                 drawer_content_task_list.visibility = View.VISIBLE
                 drawer_content_task_board.visibility = View.GONE
+                drawer_content_worker_board.visibility = View.GONE
             }
             is TaskBoardFragment -> {
                 drawer_content_task_list.visibility = View.GONE
                 drawer_content_task_board.visibility = View.VISIBLE
+                drawer_content_worker_board.visibility = View.GONE
+            }
+            is WorkerBoardFragment -> {
+                drawer_content_task_list.visibility = View.GONE
+                drawer_content_task_board.visibility = View.GONE
+                drawer_content_worker_board.visibility = View.VISIBLE
             }
         }
     }
