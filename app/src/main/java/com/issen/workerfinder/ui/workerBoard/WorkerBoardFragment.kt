@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
 import com.issen.workerfinder.database.models.UserDataFull
+import com.issen.workerfinder.ui.filters.FilterContainer
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.WorkerListener
 import kotlinx.android.synthetic.main.fragment_worker_board.view.*
@@ -28,7 +29,7 @@ class WorkerBoardFragment : Fragment(), WorkerListener {
 
         val adapter = WorkerBoardRecyclerViewAdapter(this)
 
-        workerBoardViewModel.workerList.observe(viewLifecycleOwner, Observer {
+        workerBoardViewModel.mediatorLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
@@ -77,6 +78,10 @@ class WorkerBoardFragment : Fragment(), WorkerListener {
     override fun onWorkerClicked(userDataFull: UserDataFull) {
         val actionProfile = WorkerBoardFragmentDirections.actionNavWorkerBoardToNavUserProfile(userDataFull)
         findNavController().navigate(actionProfile)
+    }
+
+    fun onAcceptClicked(filterContainer: FilterContainer) {
+        workerBoardViewModel.requery(filterContainer)
     }
 
 }

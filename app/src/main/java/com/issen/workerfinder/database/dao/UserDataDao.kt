@@ -2,6 +2,8 @@ package com.issen.workerfinder.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
+import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.models.UserData
 import com.issen.workerfinder.database.models.UserDataWithComments
@@ -60,4 +62,7 @@ interface UserDataDao {
                 "where commentedUserId = :userId and commentByWorker = 1"
     )
     suspend fun getCommentWorker(userId: String): List<UserDataWithComments>?
+
+    @RawQuery
+    fun getUsersQueried(query: SimpleSQLiteQuery): LiveData<List<UserDataFull>>
 }

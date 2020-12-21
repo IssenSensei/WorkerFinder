@@ -1,5 +1,6 @@
 package com.issen.workerfinder.database
 
+import android.os.UserManager
 import androidx.lifecycle.LiveData
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.issen.workerfinder.database.dao.*
@@ -37,6 +38,7 @@ class TaskModelRepository(
     }
 
     fun getTasksQueried(query: SimpleSQLiteQuery): LiveData<List<TaskModelFull>> = taskModelDao.getTasksQueried(query)
+    fun getUsersQueried(query: SimpleSQLiteQuery): LiveData<List<UserDataFull>> = userDataDao.getUsersQueried(query)
 
     suspend fun getCompletedTasks(firebaseKey: String): Int = taskModelDao.getCompletedTasksCount(firebaseKey)
     suspend fun getActiveTasks(firebaseKey: String): Int = taskModelDao.getActiveTasksCount(firebaseKey)

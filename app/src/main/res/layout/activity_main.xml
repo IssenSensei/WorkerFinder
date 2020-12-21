@@ -132,7 +132,7 @@
                             android:layout_width="?attr/actionBarSize"
                             android:layout_height="?attr/actionBarSize"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            android:onClick="@{() -> drawerFilterClickListener.onCancelClicked()}"
+                            android:onClick="@{() -> drawerFilterClickListener.onCloseClicked()}"
                             android:tint="@color/red_500"
                             app:srcCompat="@drawable/clear_smallest_black" />
                     </LinearLayout>

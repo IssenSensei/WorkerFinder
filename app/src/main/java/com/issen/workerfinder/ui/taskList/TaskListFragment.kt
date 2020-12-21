@@ -16,7 +16,7 @@ import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
-import com.issen.workerfinder.ui.misc.TaskListFilter
+import com.issen.workerfinder.ui.filters.FilterContainer
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 
@@ -111,7 +111,7 @@ class TaskListFragment : Fragment(), TaskListListener {
         findNavController().navigate(actionDetail)
     }
 
-    fun onAcceptClicked(selectedTaskListFilter: TaskListFilter) {
-        taskListViewModel.requery(selectedTaskListFilter)
+    fun onAcceptClicked(selectedFilterContainer: FilterContainer) {
+        taskListViewModel.requery(selectedFilterContainer)
     }
 }

@@ -309,48 +309,56 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
+                                    android:tag=""
                                     android:text="Brak" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_sort_taskName"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_title"
                                     android:text="Nazwa zadania" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_sort_worker"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_worker"
                                     android:text="Pracownik" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_sort_user"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_user"
                                     android:text="Pracodawca" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_sort_category"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_category"
                                     android:text="Kategoria" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_sort_next_date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_next_completion_date"
                                     android:text="Termin wykonania" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_sort_priority"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_priority_type"
                                     android:text="Priorytet" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_sort_completion_date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_completion_date"
                                     android:text="Data zakończenia" />
 
                             </RadioGroup>
@@ -466,42 +474,49 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
+                                    android:tag=""
                                     android:text="Brak" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_group_worker"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_worker"
                                     android:text="Pracownik" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_group_user"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_user"
                                     android:text="Pracodawca" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_group_category"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_category"
                                     android:text="Kategoria" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_group_cyclic_type"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_cyclic_type"
                                     android:text="Cykliczność" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_group_priority"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_priority_type"
                                     android:text="Priorytet" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_list_group_completed"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_completion_type"
                                     android:text="Stan" />
 
                             </RadioGroup>

@@ -1,8 +1,8 @@
-package com.issen.workerfinder.ui.misc
+package com.issen.workerfinder.ui.filters
 
 import java.io.Serializable
 
-data class TaskListFilter(
+data class FilterContainer(
 
     var orderAscending: Boolean = false,
     var sortBy: String = "none",
@@ -12,7 +12,11 @@ data class TaskListFilter(
     var filterByCategory: MutableList<String> = mutableListOf(),
     var filterByCyclic: MutableList<String> = mutableListOf(),
     var filterByPriority: MutableList<String> = mutableListOf(),
-    var filterByCompletionType: MutableList<String> = mutableListOf()
+    var filterByCompletionType: MutableList<String> = mutableListOf(),
+    var filterByRating: MutableList<String> = mutableListOf(),
+    var filterByLocalization: MutableList<String> = mutableListOf(),
+    var filterByPay: MutableList<String> = mutableListOf(),
+    var filterDueDate: MutableList<String> = mutableListOf()
 
 ) : Serializable
 

@@ -336,24 +336,28 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
+                                    android:tag=""
                                     android:text="Brak" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_board_sort_pay"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="pay"
                                     android:text="Stawka" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_board_sort_due_date"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_next_completion_date"
                                     android:text="Termin" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_board_sort_rating"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="rating"
                                     android:text="Opinie" />
 
                             </RadioGroup>
@@ -469,18 +473,21 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
+                                    android:tag=""
                                     android:text="Brak" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_board_group_user"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="task_user_id"
                                     android:text="Pracodawca" />
 
                                 <RadioButton
                                     android:id="@+id/drawer_filter_task_board_group_localization"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:tag="localization"
                                     android:text="Lokalizacja" />
 
                             </RadioGroup>

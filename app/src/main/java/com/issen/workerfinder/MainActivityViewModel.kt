@@ -7,13 +7,19 @@ import androidx.lifecycle.viewModelScope
 import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.WorkerFinderDatabase
 import com.issen.workerfinder.database.models.UserDataFull
-import com.issen.workerfinder.ui.misc.TaskListFilter
+import com.issen.workerfinder.ui.filters.FilterContainer
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
     //todo get data from shared prefs on start and read to learn about possible better ways to do this
-    var currentTaskListFilter = TaskListFilter()
-    var selectedTaskListFilter: TaskListFilter = currentTaskListFilter
+    var currentTaskListFilter = FilterContainer()
+    var selectedTaskListFilter: FilterContainer = currentTaskListFilter
+
+    var currentWorkerBoardFilter = FilterContainer()
+    var selectedWorkerBoardFilter: FilterContainer = currentWorkerBoardFilter
+
+    var currentTaskBoardFilter = FilterContainer()
+    var selectedTaskBoardFilter: FilterContainer = currentTaskBoardFilter
 
     var workerList: LiveData<List<UserDataFull>>
     var userListFull: LiveData<List<UserDataFull>>
@@ -32,25 +38,40 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun setOrder(orderAscending: Boolean) {
-        selectedTaskListFilter.orderAscending = orderAscending
+    fun setOrder(orderAscending: Boolean, filterContainer: FilterContainer) {
+        filterContainer.orderAscending = orderAscending
     }
 
-    fun setSort(selectedSortValue: String) {
-        selectedTaskListFilter.sortBy = selectedSortValue
+    fun setSort(selectedSortValue: String, filterContainer: FilterContainer) {
+        filterContainer.sortBy = selectedSortValue
     }
 
-    fun setGroup(selectedGroupValue: String) {
-        selectedTaskListFilter.groupBy = selectedGroupValue
+    fun setGroup(selectedGroupValue: String, filterContainer: FilterContainer) {
+        filterContainer.groupBy = selectedGroupValue
     }
 
-    fun applyFilters(){
+    fun applyTaskListFilters(){
         currentTaskListFilter = selectedTaskListFilter
     }
 
-    fun clearSelectedFilters() {
+    fun clearSelectedTaskListFilters() {
         selectedTaskListFilter = currentTaskListFilter
     }
 
+    fun applyTaskBoardFilters(){
+        currentTaskBoardFilter = selectedTaskBoardFilter
+    }
+
+    fun clearSelectedTaskBoardFilters() {
+        selectedTaskBoardFilter = currentTaskBoardFilter
+    }
+
+    fun applyWorkerBoardFilters(){
+        currentWorkerBoardFilter = selectedWorkerBoardFilter
+    }
+
+    fun clearSelectedWorkerBoardFilters() {
+        selectedWorkerBoardFilter = currentWorkerBoardFilter
+    }
 
 }
