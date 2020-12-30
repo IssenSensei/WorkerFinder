@@ -1,29 +1,27 @@
 package com.issen.workerfinder.ui.userProfile
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
-import com.issen.workerfinder.database.ContactRepository
-import com.issen.workerfinder.database.DashboardNotificationsRepository
-import com.issen.workerfinder.database.TaskModelRepository
-import com.issen.workerfinder.database.models.UserDataFull
-import com.issen.workerfinder.database.WorkerFinderDatabase
+import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.DashboardNotification
 import com.issen.workerfinder.database.models.UserData
+import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.models.UserDataWithComments
+import com.issen.workerfinder.database.repositories.*
 import com.issen.workerfinder.enums.DashboardNotificationTypes
 import kotlinx.coroutines.launch
 import java.util.*
 
-class UserProfileViewModel(application: Application, userDataFull: UserDataFull) : AndroidViewModel(application) {
-
-
-    private val taskModelRepository: TaskModelRepository
-    private val contactRepository: ContactRepository
-    private val dashboardNotificationsRepository: DashboardNotificationsRepository
+class UserProfileViewModel(
+    private val taskRepository: TaskRepository,
+    private val commentRepository: CommentRepository,
+    private val userRepository: UserRepository,
+    private val contactRepository: ContactRepository,
+    private val dashboardNotificationRepository: DashboardNotificationRepository,
+    userDataFull: UserDataFull
+) : ViewModel() {
 
     private val _activeTasks = MutableLiveData<Int>()
     val activeTasks: LiveData<Int>
@@ -58,24 +56,13 @@ class UserProfileViewModel(application: Application, userDataFull: UserDataFull)
         get() = _isUserInContactList
 
     init {
-        val database = WorkerFinderDatabase.getDatabase(application, viewModelScope)
-        val taskModelDao = database.taskModelDao
-        val taskPhotosDao = database.taskPhotosDao
-        val taskRepeatDaysDao = database.taskRepeatDaysDao
-        val userModelDao = database.userDataDao
-        val commentsDao = database.commentsDao
-        val contactsDao = database.contactsDao
-        val dashboardNotificationDao = database.dashboardNotificationDao
-        taskModelRepository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao, commentsDao)
-        contactRepository = ContactRepository(contactsDao)
-        dashboardNotificationsRepository = DashboardNotificationsRepository(dashboardNotificationDao)
-        viewModelScope.launch { _activeTasks.value = taskModelRepository.getActiveTasks(userDataFull.userData.userId) }
-        viewModelScope.launch { _completedTasks.value = taskModelRepository.getCompletedTasks(userDataFull.userData.userId) }
-        viewModelScope.launch { _abandonedTasks.value = taskModelRepository.getAbandonedTasks(userDataFull.userData.userId) }
-        viewModelScope.launch { _ratingAsWorker.value = taskModelRepository.getRatingAsWorker(userDataFull.userData.userId) }
-        viewModelScope.launch { _ratingAsUser.value = taskModelRepository.getRatingAsUser(userDataFull.userData.userId) }
-        viewModelScope.launch { _commentUser.value = taskModelRepository.getCommentUser(userDataFull.userData.userId) }
-        viewModelScope.launch { _commentWorker.value = taskModelRepository.getCommentWorker(userDataFull.userData.userId) }
+        viewModelScope.launch { _activeTasks.value = taskRepository.getActiveTasks(userDataFull.userData.userId) }
+        viewModelScope.launch { _completedTasks.value = taskRepository.getCompletedTasks(userDataFull.userData.userId) }
+        viewModelScope.launch { _abandonedTasks.value = taskRepository.getAbandonedTasks(userDataFull.userData.userId) }
+        viewModelScope.launch { _ratingAsWorker.value = commentRepository.getRatingAsWorker(userDataFull.userData.userId) }
+        viewModelScope.launch { _ratingAsUser.value = commentRepository.getRatingAsUser(userDataFull.userData.userId) }
+        viewModelScope.launch { _commentUser.value = userRepository.getCommentUser(userDataFull.userData.userId) }
+        viewModelScope.launch { _commentWorker.value = userRepository.getCommentWorker(userDataFull.userData.userId) }
         viewModelScope.launch {
             _isUserInContactList.value = contactRepository.checkIfIsOnContactList(
                 userDataFull.userData.userId,
@@ -84,24 +71,20 @@ class UserProfileViewModel(application: Application, userDataFull: UserDataFull)
         }
     }
 
-    fun getUserByKey(firebaseKey: String): LiveData<UserDataFull> {
-        return taskModelRepository.getUserById(firebaseKey)
-    }
-
     fun updateUser(userData: UserData) {
-        taskModelRepository.updateUser(userData)
+        userRepository.updateUser(userData)
     }
 
     fun setAccountPublic(firebaseKey: String, isPublic: Boolean) {
         viewModelScope.launch {
-            taskModelRepository.setAccountPublic(firebaseKey, isPublic)
+            userRepository.setAccountPublic(firebaseKey, isPublic)
         }
     }
 
     fun removeContact(userDataFull: UserDataFull) {
         viewModelScope.launch {
             contactRepository.removeContact(userDataFull.userData.userId, currentLoggedInUserFull!!.userData.userId)
-            dashboardNotificationsRepository.notify(
+            dashboardNotificationRepository.notify(
                 DashboardNotification(
                     0,
                     Date().toString(),
@@ -117,7 +100,7 @@ class UserProfileViewModel(application: Application, userDataFull: UserDataFull)
 
     fun addContact(userDataFull: UserDataFull) {
         viewModelScope.launch {
-            dashboardNotificationsRepository.notify(
+            dashboardNotificationRepository.notify(
                 DashboardNotification(
                     0,
                     Date().toString(),
@@ -128,6 +111,18 @@ class UserProfileViewModel(application: Application, userDataFull: UserDataFull)
                     false
                 )
             )
+            dashboardNotificationRepository.notify(
+                DashboardNotification(
+                    0,
+                    Date().toString(),
+                    currentLoggedInUserFull!!.userData.userId,
+                    userDataFull.userData.userId,
+                    DashboardNotificationTypes.CONTACTPENDING.toString(),
+                    0,
+                    false
+                )
+            )
+
         }
     }
 }

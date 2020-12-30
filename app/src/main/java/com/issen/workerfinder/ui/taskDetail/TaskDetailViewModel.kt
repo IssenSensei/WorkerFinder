@@ -1,45 +1,31 @@
 package com.issen.workerfinder.ui.taskDetail
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.issen.workerfinder.TaskApplication
-import com.issen.workerfinder.database.DashboardNotificationsRepository
-import com.issen.workerfinder.database.TaskModelRepository
-import com.issen.workerfinder.database.WorkerFinderDatabase
+import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.DashboardNotification
 import com.issen.workerfinder.database.models.TaskModelFull
+import com.issen.workerfinder.database.repositories.DashboardNotificationRepository
+import com.issen.workerfinder.database.repositories.TaskRepository
 import com.issen.workerfinder.enums.DashboardNotificationTypes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class TaskDetailViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val taskModelRepository: TaskModelRepository
-    private val dashboardNotificationsRepository: DashboardNotificationsRepository
-
-    init {
-        val database = WorkerFinderDatabase.getDatabase(application, viewModelScope)
-        val taskModelDao = database.taskModelDao
-        val taskPhotosDao = database.taskPhotosDao
-        val taskRepeatDaysDao = database.taskRepeatDaysDao
-        val userModelDao = database.userDataDao
-        val commentsDao = database.commentsDao
-        val dashboardNotificationDao = database.dashboardNotificationDao
-        taskModelRepository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao, commentsDao)
-        dashboardNotificationsRepository = DashboardNotificationsRepository(dashboardNotificationDao)
-    }
+class TaskDetailViewModel(
+    private val taskRepository: TaskRepository,
+    private val dashboardNotificationRepository: DashboardNotificationRepository
+) : ViewModel() {
 
     fun abandonTask(taskModel: TaskModelFull) {
         viewModelScope.launch(Dispatchers.IO) {
-            taskModelRepository.abandonTask(taskModel.task.taskId)
-            dashboardNotificationsRepository.notify(
+            taskRepository.abandonTask(taskModel.task.taskId)
+            dashboardNotificationRepository.notify(
                 DashboardNotification(
                     0,
                     Date().toString(),
                     taskModel.task.userFirebaseKey,
-                    TaskApplication.currentLoggedInUserFull!!.userData.userId,
+                    WorkerFinderApplication.currentLoggedInUserFull!!.userData.userId,
                     DashboardNotificationTypes.TASKABANDONED.toString(),
                     taskModel.task.taskId,
                     false

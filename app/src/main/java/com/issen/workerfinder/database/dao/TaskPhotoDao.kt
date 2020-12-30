@@ -6,7 +6,7 @@ import androidx.room.Query
 import com.issen.workerfinder.database.models.TaskModelPhotos
 
 @Dao
-interface TaskPhotosDao {
+interface TaskPhotoDao {
 
     @Insert
     suspend fun insert(taskModelPhotos: TaskModelPhotos)

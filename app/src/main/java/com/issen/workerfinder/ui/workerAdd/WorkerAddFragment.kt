@@ -5,20 +5,21 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.issen.workerfinder.R
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 
 class WorkerAddFragment : Fragment() {
 
     private lateinit var onDrawerRequestListener: OnDrawerRequestListener
-    private lateinit var workerAddViewModel: WorkerAddViewModel
+    private val workerAddViewModel: WorkerAddViewModel by viewModels {
+        WorkerAddViewModelFactory()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        workerAddViewModel = ViewModelProvider(this).get(WorkerAddViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_worker_add, container, false)
         return root
     }

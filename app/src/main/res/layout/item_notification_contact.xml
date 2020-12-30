@@ -9,6 +9,9 @@
         <variable
             name="notificationData"
             type="com.issen.workerfinder.database.models.DashboardNotificationFull" />
+        <variable
+            name="clickListener"
+            type="com.issen.workerfinder.ui.dashboard.DashboardListener" />
 
     </data>
 
@@ -50,9 +53,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_small"
+            android:layout_margin="@dimen/spacing_x_small"
             android:layout_weight="9"
-            app:cardCornerRadius="@dimen/spacing_large"
+            app:cardCornerRadius="@dimen/spacing_x_small"
             app:cardElevation="@dimen/spacing_small">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,6 +99,7 @@
                     android:drawableTint="@color/green_600"
                     android:shadowRadius="3"
                     android:text="Przyjmij"
+                    android:onClick="@{() -> clickListener.onContactAccept(notificationData)}"
                     android:visibility="@{notificationData.notification.dashboardNotificationType.equals(DashboardNotificationTypes.CONTACTINVITED.toString()) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/item_notification_contact_refuse"
@@ -113,6 +117,7 @@
                     android:drawableTint="@color/red_600"
                     android:shadowRadius="3"
                     android:text="Odrzuć"
+                    android:onClick="@{() -> clickListener.onContactRefuse(notificationData)}"
                     android:visibility="@{notificationData.notification.dashboardNotificationType.equals(DashboardNotificationTypes.CONTACTINVITED.toString()) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

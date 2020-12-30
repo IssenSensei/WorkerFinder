@@ -1,14 +1,12 @@
 package com.issen.workerfinder.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.issen.workerfinder.database.models.Contacts
-import com.issen.workerfinder.database.models.UserDataFull
 
 @Dao
-interface ContactsDao {
+interface ContactDao {
 
     @Insert
     suspend fun insert(mutableListOf: MutableList<Contacts>)

@@ -71,6 +71,9 @@ fun getDashboardNotificationGroup(type: String) = when(type){
     DashboardNotificationTypes.CONTACTREMOVED.toString() -> {
         "CONTACT"
     }
+    DashboardNotificationTypes.CONTACTPENDING.toString() -> {
+        "CONTACT"
+    }
     else -> {
         "ERROR"
     }

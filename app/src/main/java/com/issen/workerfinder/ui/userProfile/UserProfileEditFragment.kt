@@ -8,17 +8,22 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
+import com.issen.workerfinder.WorkerFinderApplication
+import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.UserData
 import com.issen.workerfinder.databinding.FragmentUserProfileEditBindingImpl
 import kotlinx.android.synthetic.main.fragment_user_profile_edit.*
 
 class UserProfileEditFragment : Fragment() {
 
-    val userProfileEditFragmentArgs: UserProfileEditFragmentArgs by navArgs()
-    val userProfileViewModel: UserProfileViewModel by viewModels {
+    private val userProfileEditFragmentArgs: UserProfileEditFragmentArgs by navArgs()
+    private val userProfileViewModel: UserProfileViewModel by viewModels {
         UserProfileViewModelFactory(
-            this.requireActivity().application,
+            (requireActivity().application as WorkerFinderApplication).taskRepository,
+            (requireActivity().application as WorkerFinderApplication).commentRepository,
+            (requireActivity().application as WorkerFinderApplication).userRepository,
+            (requireActivity().application as WorkerFinderApplication).contactRepository,
+            (requireActivity().application as WorkerFinderApplication).dashboardNotificationRepository,
             userProfileEditFragmentArgs.userDataFull
         )
     }
@@ -33,7 +38,8 @@ class UserProfileEditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding: FragmentUserProfileEditBindingImpl = DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile_edit, container, false)
+        val binding: FragmentUserProfileEditBindingImpl =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile_edit, container, false)
         val view = binding.root
 
 //        binding.userProfileName.text = if (currentLoggedInUser.userName != "") currentLoggedInUser.userName else "No data"

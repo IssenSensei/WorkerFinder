@@ -21,7 +21,7 @@
         android:layout_marginStart="@dimen/spacing_small"
         android:layout_marginTop="@dimen/spacing_small"
         android:layout_marginEnd="@dimen/spacing_small"
-        app:cardCornerRadius="@dimen/spacing_medium"
+        app:cardCornerRadius="@dimen/spacing_x_small"
         app:cardElevation="@dimen/spacing_medium">
 
         <FrameLayout

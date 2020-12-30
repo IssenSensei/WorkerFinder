@@ -3,9 +3,8 @@ package com.issen.workerfinder.database.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.issen.workerfinder.database.models.TaskModelFull
-import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.models.UserData
+import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.models.UserDataWithComments
 
 @Dao
@@ -23,16 +22,15 @@ interface UserDataDao {
     @Delete
     fun delete(userData: UserData)
 
+    @Query("DELETE FROM user_table WHERE userId = :userId")
+    fun delete(userId: String)
+
     @Query("DELETE FROM user_table")
     suspend fun deleteAll()
 
     @Transaction
     @Query("SELECT * FROM user_table where userId = :userId")
-    fun getUserByFirebaseKey(userId: String): UserDataFull
-
-    @Transaction
-    @Query("SELECT * FROM user_table where userId = :userId")
-    fun getUserById(userId: String): LiveData<UserDataFull>
+    suspend fun getUserByFirebaseKey(userId: String): UserDataFull
 
     @Query("UPDATE user_table SET isAccountPublic = :public WHERE userId = :userId")
     suspend fun setAccountPublic(userId: String, public: Boolean)

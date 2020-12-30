@@ -4,11 +4,10 @@ import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.issen.workerfinder.TaskApplication
+import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.databinding.ItemFilterPriorityBinding
 import com.issen.workerfinder.enums.PriorityTypes
 import com.issen.workerfinder.ui.misc.OnFilterSelectionListener
-import kotlinx.android.synthetic.main.item_priority.view.*
 
 class PriorityFilterAdapter(
     private val onFilterSelectionListener: OnFilterSelectionListener, private val values: Array<PriorityTypes>,
@@ -43,7 +42,7 @@ class PriorityFilterAdapter(
         ) {
             binding.clickListener = onFilterSelectionListener
             binding.priorityItem = priorityItem
-            val color = TaskApplication.getPriorityIndicatorColor(priorityItem.toString())
+            val color = WorkerFinderApplication.getPriorityIndicatorColor(priorityItem.toString())
             binding.filterPriorityIndicator.setColorFilter(color, PorterDuff.Mode.SRC_IN)
             binding.filterPriorityCheckbox.isChecked = activeFilters.contains(priorityItem.toString())
             binding.executePendingBindings()

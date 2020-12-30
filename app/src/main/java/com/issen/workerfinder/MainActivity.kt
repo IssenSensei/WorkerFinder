@@ -2,9 +2,9 @@ package com.issen.workerfinder
 
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -13,8 +13,6 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -27,8 +25,7 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
-import com.issen.workerfinder.database.WorkerFinderDatabase
+import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.databinding.ActivityMainBinding
 import com.issen.workerfinder.databinding.NavHeaderMainBinding
@@ -36,7 +33,9 @@ import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
 import com.issen.workerfinder.enums.PriorityTypes
 import com.issen.workerfinder.ui.filters.*
-import com.issen.workerfinder.ui.misc.*
+import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
+import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
+import com.issen.workerfinder.ui.misc.OnFilterSelectionListener
 import com.issen.workerfinder.ui.taskBoard.TaskBoardFragment
 import com.issen.workerfinder.ui.taskList.TaskListFragment
 import com.issen.workerfinder.ui.workerBoard.WorkerBoardFragment
@@ -48,9 +47,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.drawer_content_task_board.*
 import kotlinx.android.synthetic.main.drawer_content_task_list.*
-import kotlinx.android.synthetic.main.drawer_content_task_list.drawer_filter_task_list_sort_switch
 import kotlinx.android.synthetic.main.drawer_content_worker_board.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -58,7 +55,12 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var auth = FirebaseAuth.getInstance()
     private var doubleBackToExitPressedOnce = false
-    private lateinit var mainActivityViewModel: MainActivityViewModel
+    private val mainActivityViewModel: MainActivityViewModel by viewModels {
+        MainActivityViewModelFactory(
+            (application as WorkerFinderApplication).userRepository,
+            (application as WorkerFinderApplication).database
+        )
+    }
 
     private lateinit var priorityAdapter: PriorityFilterAdapter
     private lateinit var cyclicAdapter: CyclicFilterAdapter
@@ -76,30 +78,14 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         mainBinding.root.nav_view.addHeaderView(navHeaderBinding.root)
 
         main_loading.showAnimated()
-        MainScope().launch(Dispatchers.IO) {
-            currentLoggedInUserFull = WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope)
-                .userDataDao
-                .getUserByFirebaseKey(auth.currentUser!!.uid)
-        }.invokeOnCompletion {
+        MainScope().launch {
+            currentLoggedInUserFull = (application as WorkerFinderApplication).userRepository.getUserByFirebaseKey(auth.currentUser!!.uid)
             navHeaderBinding.user = currentLoggedInUserFull
             main_loading.hideAnimated()
-            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateComments(
-                lifecycleScope, currentLoggedInUserFull
-                !!.userData.userId
-            )
-            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateContacts(
-                lifecycleScope, currentLoggedInUserFull
-                !!.userData.userId
-            )
-            WorkerFinderDatabase.getDatabase(applicationContext, lifecycleScope).populateNotificationsOpen(
-                lifecycleScope, currentLoggedInUserFull
-                !!.userData.userId
-            )
-            mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+            prepareFilterContent()
         }
         prepareDrawer()
         handleUI()
-        prepareFilterContent()
     }
 
     private fun handleUI() {
@@ -171,6 +157,27 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         Firebase.auth.signOut()
         setResult(RESULT_CANCELED)
         finish()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_database, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.action_populateDb -> {
+                populateDb()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun populateDb() {
+        mainActivityViewModel.populateDb()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -259,12 +266,14 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
             is TaskBoardFragment -> {
                 drawer_filter_task_board_main_container.visibility = View.GONE
                 (drawer_filter_task_board_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(
-                    view.tag.toString() + "Container").visibility = View.VISIBLE
+                    view.tag.toString() + "Container"
+                ).visibility = View.VISIBLE
             }
             is WorkerBoardFragment -> {
                 drawer_filter_worker_board_main_container.visibility = View.GONE
                 (drawer_filter_worker_board_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(
-                    view.tag.toString() + "Container").visibility = View . VISIBLE
+                    view.tag.toString() + "Container"
+                ).visibility = View.VISIBLE
             }
         }
         drawer_filter_back.visibility = View.VISIBLE

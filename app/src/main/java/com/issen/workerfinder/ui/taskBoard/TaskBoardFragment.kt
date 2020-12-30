@@ -1,14 +1,15 @@
 package com.issen.workerfinder.ui.taskBoard
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
+import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.ui.filters.FilterContainer
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
@@ -16,14 +17,17 @@ import kotlinx.android.synthetic.main.fragment_task_board.view.*
 
 class TaskBoardFragment : Fragment(), TaskBoardListener {
 
-    private lateinit var taskBoardViewModel: TaskBoardViewModel
+    private val taskBoardViewModel: TaskBoardViewModel by viewModels {
+        TaskBoardViewModelFactory(
+            (requireActivity().application as WorkerFinderApplication).taskRepository
+        )
+    }
     private lateinit var onDrawerRequestListener: OnDrawerRequestListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        taskBoardViewModel = ViewModelProvider(this).get(TaskBoardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_task_board, container, false)
 
         val adapter = TaskBoardRecyclerViewAdapter(this)

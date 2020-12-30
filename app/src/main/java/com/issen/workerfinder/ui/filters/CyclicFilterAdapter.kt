@@ -1,18 +1,11 @@
 package com.issen.workerfinder.ui.filters
 
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.issen.workerfinder.TaskApplication
-import com.issen.workerfinder.databinding.ItemFilterCompletionBinding
 import com.issen.workerfinder.databinding.ItemFilterCyclicBinding
-import com.issen.workerfinder.databinding.ItemFilterPriorityBinding
-import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
-import com.issen.workerfinder.enums.PriorityTypes
 import com.issen.workerfinder.ui.misc.OnFilterSelectionListener
-import kotlinx.android.synthetic.main.item_priority.view.*
 
 class CyclicFilterAdapter(
     private val onFilterSelectionListener: OnFilterSelectionListener, private val values: Array<CyclicTypes>,

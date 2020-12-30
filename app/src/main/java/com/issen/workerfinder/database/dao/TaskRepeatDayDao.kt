@@ -6,7 +6,7 @@ import androidx.room.Query
 import com.issen.workerfinder.database.models.TaskModelRepeatDays
 
 @Dao
-interface TaskRepeatDaysDao {
+interface TaskRepeatDayDao {
 
     @Insert
     suspend fun insert(taskModelRepeatDays: TaskModelRepeatDays)

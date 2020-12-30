@@ -15,10 +15,11 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
+import com.issen.workerfinder.WorkerFinderApplication
+import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.TaskModel
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
@@ -38,7 +39,13 @@ class TaskCreateFragment : Fragment() {
     private val CAMERA_CODE = 0
     private val GALLERY_CODE = 1
 
-    private lateinit var taskCreateViewModel: TaskCreateViewModel
+    private val taskCreateViewModel: TaskCreateViewModel by viewModels {
+        TaskCreateViewModelFactory(
+            (requireActivity().application as WorkerFinderApplication).taskRepository,
+            (requireActivity().application as WorkerFinderApplication).taskPhotoRepository,
+            (requireActivity().application as WorkerFinderApplication).taskRepeatDayRepository
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +58,6 @@ class TaskCreateFragment : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_task_create, container, false)
-        taskCreateViewModel = ViewModelProvider(this).get(TaskCreateViewModel::class.java)
 
         val tempModel = taskCreateViewModel.generateMockupModel()
         root.new_task_title.setText(tempModel.taskTitle)

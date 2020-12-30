@@ -6,24 +6,33 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
+import com.issen.workerfinder.WorkerFinderApplication
+import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.filters.FilterContainer
+import com.issen.workerfinder.ui.workerBoard.WorkerBoardViewModel
+import com.issen.workerfinder.ui.workerBoard.WorkerBoardViewModelFactory
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 
 class TaskListFragment : Fragment(), TaskListListener {
     private var auth = FirebaseAuth.getInstance()
 
-    private lateinit var taskListViewModel: TaskListViewModel
+    private val taskListViewModel: TaskListViewModel by viewModels {
+        TaskListViewModelFactory(
+            (requireActivity().application as WorkerFinderApplication).taskRepository,
+            (requireActivity().application as WorkerFinderApplication).dashboardNotificationRepository
+        )
+    }
     private lateinit var onDrawerRequestListener: OnDrawerRequestListener
     private lateinit var onCustomizeDrawerListener: OnCustomizeDrawerListener
 
@@ -32,8 +41,6 @@ class TaskListFragment : Fragment(), TaskListListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        taskListViewModel =
-            ViewModelProvider(this).get(TaskListViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_task_list, container, false)
         val adapter = TaskListRecyclerViewAdapter(this, requireContext())
 

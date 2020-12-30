@@ -43,16 +43,16 @@ class DashboardRecyclerViewAdapter(private val dashboardListener: DashboardListe
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder){
             is ContactViewHolder -> {
-                holder.bind(getItem(position)!!)
+                holder.bind(getItem(position)!!, dashboardListener)
             }
             is RatingViewHolder -> {
-                holder.bind(getItem(position)!!)
+                holder.bind(getItem(position)!!, dashboardListener)
             }
             is TaskViewHolder -> {
-                holder.bind(getItem(position)!!)
+                holder.bind(getItem(position)!!, dashboardListener)
             }
             is WorkViewHolder -> {
-                holder.bind(getItem(position)!!)
+                holder.bind(getItem(position)!!, dashboardListener)
             }
         }
     }
@@ -79,7 +79,8 @@ class DashboardRecyclerViewAdapter(private val dashboardListener: DashboardListe
 
     class ContactViewHolder(val binding: ItemNotificationContactBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DashboardNotificationFull) {
+        fun bind(item: DashboardNotificationFull, dashboardListener: DashboardListener) {
+            binding.clickListener = dashboardListener
             binding.notificationData = item
             binding.executePendingBindings()
         }
@@ -87,7 +88,8 @@ class DashboardRecyclerViewAdapter(private val dashboardListener: DashboardListe
 
     class RatingViewHolder(val binding: ItemNotificationRatingBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DashboardNotificationFull) {
+        fun bind(item: DashboardNotificationFull, dashboardListener: DashboardListener) {
+            binding.clickListener = dashboardListener
             binding.notificationData = item
             binding.executePendingBindings()
         }
@@ -95,7 +97,8 @@ class DashboardRecyclerViewAdapter(private val dashboardListener: DashboardListe
 
     class TaskViewHolder(val binding: ItemNotificationTaskBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DashboardNotificationFull) {
+        fun bind(item: DashboardNotificationFull, dashboardListener: DashboardListener) {
+            binding.clickListener = dashboardListener
             binding.notificationData = item
             binding.executePendingBindings()
         }
@@ -103,7 +106,8 @@ class DashboardRecyclerViewAdapter(private val dashboardListener: DashboardListe
 
     class WorkViewHolder(val binding: ItemNotificationWorkBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DashboardNotificationFull) {
+        fun bind(item: DashboardNotificationFull, dashboardListener: DashboardListener) {
+            binding.clickListener = dashboardListener
             binding.notificationData = item
             binding.executePendingBindings()
         }
@@ -122,5 +126,14 @@ class DashboardDiffCallback : DiffUtil.ItemCallback<DashboardNotificationFull>()
 }
 
 interface DashboardListener {
-
+    fun onContactAccept(dashboardNotificationFull: DashboardNotificationFull)
+    fun onContactRefuse(dashboardNotificationFull: DashboardNotificationFull)
+    fun onCheckProfile()
+    fun onCheckRating()
+    fun onCreateTask()
+    fun onChatWithUser()
+    fun onTaskAccept()
+    fun onTaskRefuse()
+    fun onCheckTaskDetails()
+    fun onTaskEdit()
 }

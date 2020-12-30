@@ -1,21 +1,13 @@
 package com.issen.workerfinder.ui.workerList
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
-import com.issen.workerfinder.database.WorkerFinderDatabase
+import androidx.lifecycle.ViewModel
+import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.UserDataFull
+import com.issen.workerfinder.database.repositories.UserRepository
 
-class WorkerListViewModel(application: Application) : AndroidViewModel(application) {
+class WorkerListViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    var workerList: LiveData<List<UserDataFull>>
-
-    init {
-        val database = WorkerFinderDatabase.getDatabase(application, viewModelScope)
-//        workerList = database.contactsDao.getUserWorkers(currentLoggedInFullUser!!.userData.userId)
-        workerList = database.userDataDao.getUserWorkers(currentLoggedInUserFull!!.userData.userId)
-    }
+    var workerList: LiveData<List<UserDataFull>> = userRepository.getUserWorkers(currentLoggedInUserFull!!.userData.userId)
 
 }

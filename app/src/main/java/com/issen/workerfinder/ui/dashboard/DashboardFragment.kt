@@ -1,34 +1,86 @@
 package com.issen.workerfinder.ui.dashboard
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.issen.workerfinder.R
-import kotlinx.android.synthetic.main.fragment_dashboard.*
+import com.issen.workerfinder.WorkerFinderApplication
+import com.issen.workerfinder.database.models.DashboardNotificationFull
 import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 
 class DashboardFragment : Fragment(), DashboardListener {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private val dashboardViewModel: DashboardViewModel by viewModels {
+        WordViewModelFactory(
+            (requireActivity().application as WorkerFinderApplication).dashboardNotificationRepository,
+            (requireActivity().application as WorkerFinderApplication).contactRepository
+        )
+    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
         val adapter = DashboardRecyclerViewAdapter(this, requireContext())
 
-        dashboardViewModel.dashboardNotificationsList.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
+        dashboardViewModel.dashboardNotificationsList.observe(viewLifecycleOwner, Observer {notifications ->
+            notifications?.let {
+                adapter.submitList(it)
+            }
         })
 
         view.dashboard_recycler_list.adapter = adapter
 
         return view
+    }
+
+    override fun onContactAccept(dashboardNotificationFull: DashboardNotificationFull) {
+        dashboardViewModel.acceptContact(dashboardNotificationFull)
+        Toast.makeText(requireContext(), "Accepted", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onContactRefuse(dashboardNotificationFull: DashboardNotificationFull) {
+        dashboardViewModel.refuseContact(dashboardNotificationFull)
+        Toast.makeText(requireContext(), "Refused", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCheckProfile() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCheckRating() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCreateTask() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onChatWithUser() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onTaskAccept() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onTaskRefuse() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCheckTaskDetails() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onTaskEdit() {
+        TODO("Not yet implemented")
     }
 
 }

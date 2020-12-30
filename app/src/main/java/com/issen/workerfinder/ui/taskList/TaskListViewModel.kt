@@ -1,39 +1,33 @@
 package com.issen.workerfinder.ui.taskList
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.issen.workerfinder.TaskApplication
-import com.issen.workerfinder.database.DashboardNotificationsRepository
-import com.issen.workerfinder.database.models.TaskModelFull
-import com.issen.workerfinder.database.models.TaskModel
-import com.issen.workerfinder.database.TaskModelRepository
-import com.issen.workerfinder.database.WorkerFinderDatabase
+import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.DashboardNotification
+import com.issen.workerfinder.database.models.TaskModel
+import com.issen.workerfinder.database.models.TaskModelFull
+import com.issen.workerfinder.database.repositories.DashboardNotificationRepository
+import com.issen.workerfinder.database.repositories.TaskRepository
 import com.issen.workerfinder.enums.DashboardNotificationTypes
 import com.issen.workerfinder.ui.filters.FilterContainer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class TaskListViewModel(application: Application) : AndroidViewModel(application) {
+class TaskListViewModel(
+    private val taskRepository: TaskRepository,
+    private val dashboardNotificationRepository: DashboardNotificationRepository
+) : ViewModel() {
 
-    private val taskModelRepository: TaskModelRepository
-    private val dashboardNotificationsRepository: DashboardNotificationsRepository
-//    var taskList: LiveData<List<FullTaskModel>>
+    //    var taskList: LiveData<List<FullTaskModel>>
     var source: LiveData<List<TaskModelFull>>
     val mediatorLiveData: MediatorLiveData<List<TaskModelFull>> = MediatorLiveData()
+
     init {
-        val database = WorkerFinderDatabase.getDatabase(application, viewModelScope)
-        val taskModelDao = database.taskModelDao
-        val taskPhotosDao = database.taskPhotosDao
-        val taskRepeatDaysDao = database.taskRepeatDaysDao
-        val userModelDao = database.userDataDao
-        val commentsDao = database.commentsDao
-        val dashboardNotificationDao = database.dashboardNotificationDao
-        taskModelRepository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao, commentsDao)
-        dashboardNotificationsRepository = DashboardNotificationsRepository(dashboardNotificationDao)
-        source = taskModelRepository.allTasks
+        source = taskRepository.allTasks
         mediatorLiveData.addSource(source) {
             mediatorLiveData.setValue(
                 it
@@ -44,24 +38,24 @@ class TaskListViewModel(application: Application) : AndroidViewModel(application
 
 
     fun insert(taskModel: TaskModel) = viewModelScope.launch(Dispatchers.IO) {
-        taskModelRepository.insert(taskModel)
+        taskRepository.insert(taskModel)
     }
 
     fun markTaskAsCompleted(taskModel: TaskModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            taskModelRepository.markTaskAsCompleted(taskModel.taskId)
+            taskRepository.markTaskAsCompleted(taskModel.taskId)
         }
     }
 
     fun markTaskAsPending(taskModel: TaskModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            taskModelRepository.markTaskAsPending(taskModel.taskId)
-            dashboardNotificationsRepository.notify(
+            taskRepository.markTaskAsPending(taskModel.taskId)
+            dashboardNotificationRepository.notify(
                 DashboardNotification(
                     0,
                     Date().toString(),
                     taskModel.userFirebaseKey,
-                    TaskApplication.currentLoggedInUserFull!!.userData.userId,
+                    WorkerFinderApplication.currentLoggedInUserFull!!.userData.userId,
                     DashboardNotificationTypes.TASKCOMPLETED.toString(),
                     taskModel.taskId,
                     false
@@ -72,7 +66,7 @@ class TaskListViewModel(application: Application) : AndroidViewModel(application
 
     fun requery(selectedFilterContainer: FilterContainer) {
         mediatorLiveData.removeSource(source)
-        source = taskModelRepository.getTasksQueried(setQuerySource(selectedFilterContainer))
+        source = taskRepository.getTasksQueried(setQuerySource(selectedFilterContainer))
         mediatorLiveData.addSource(source) {
             mediatorLiveData.setValue(
                 it
@@ -85,63 +79,62 @@ class TaskListViewModel(application: Application) : AndroidViewModel(application
         var queryArgs = arrayListOf<Any>()
         var shouldAddAnd = false
 
-        if(selectedFilterContainer.filterByWorker.isNotEmpty()){
+        if (selectedFilterContainer.filterByWorker.isNotEmpty()) {
             queryString += " WHERE task_worker_id IN ("
             selectedFilterContainer.filterByWorker.forEachIndexed { index, item ->
-                queryString += if(index == 0) "? " else ", ?"
+                queryString += if (index == 0) "? " else ", ?"
                 queryArgs.add(item)
             }
             queryString += ")"
             shouldAddAnd = true
         }
-        if(selectedFilterContainer.filterByUser.isNotEmpty()){
-            queryString += if(shouldAddAnd) " and" else " WHERE"
+        if (selectedFilterContainer.filterByUser.isNotEmpty()) {
+            queryString += if (shouldAddAnd) " and" else " WHERE"
             queryString += " task_user_id IN ("
             selectedFilterContainer.filterByUser.forEachIndexed { index, item ->
-                queryString += if(index == 0) "? " else ", ?"
+                queryString += if (index == 0) "? " else ", ?"
                 queryArgs.add(item)
             }
             queryString += ")"
             shouldAddAnd = true
         }
-        if(selectedFilterContainer.filterByCyclic.isNotEmpty()){
-            queryString += if(shouldAddAnd) " and" else " WHERE"
+        if (selectedFilterContainer.filterByCyclic.isNotEmpty()) {
+            queryString += if (shouldAddAnd) " and" else " WHERE"
             queryString += " task_cyclic_type IN ("
             selectedFilterContainer.filterByCyclic.forEachIndexed { index, item ->
-                queryString += if(index == 0) "? " else ", ?"
+                queryString += if (index == 0) "? " else ", ?"
                 queryArgs.add(item)
             }
             queryString += ")"
             shouldAddAnd = true
         }
-        if(selectedFilterContainer.filterByPriority.isNotEmpty()){
-            queryString += if(shouldAddAnd) " and" else " WHERE"
+        if (selectedFilterContainer.filterByPriority.isNotEmpty()) {
+            queryString += if (shouldAddAnd) " and" else " WHERE"
             queryString += " task_priority_type IN ("
             selectedFilterContainer.filterByPriority.forEachIndexed { index, item ->
-                queryString += if(index == 0) "? " else ", ?"
+                queryString += if (index == 0) "? " else ", ?"
                 queryArgs.add(item)
             }
             queryString += ")"
             shouldAddAnd = true
         }
-        if(selectedFilterContainer.filterByCompletionType.isNotEmpty()){
-            queryString += if(shouldAddAnd) " and" else " WHERE"
+        if (selectedFilterContainer.filterByCompletionType.isNotEmpty()) {
+            queryString += if (shouldAddAnd) " and" else " WHERE"
             queryString += " task_completion_type IN ("
             selectedFilterContainer.filterByCompletionType.forEachIndexed { index, item ->
-                queryString += if(index == 0) "? " else ", ?"
+                queryString += if (index == 0) "? " else ", ?"
                 queryArgs.add(item)
             }
             queryString += ")"
         }
-        if(selectedFilterContainer.sortBy != "none"){
-            queryString += " order by ?" + if(selectedFilterContainer.orderAscending) " asc" else " desc"
+        if (selectedFilterContainer.sortBy != "none") {
+            queryString += " order by ?" + if (selectedFilterContainer.orderAscending) " asc" else " desc"
             queryArgs.add(selectedFilterContainer.sortBy)
         }
 
 
         return SimpleSQLiteQuery(queryString, queryArgs.toArray())
     }
-
 
 
 }

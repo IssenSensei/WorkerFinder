@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication
+import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.DashboardNotificationFull
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.enums.CompletionTypes
@@ -98,6 +98,9 @@ fun setNotificationContactText(textView: TextView, notificationFull: DashboardNo
         DashboardNotificationTypes.CONTACTREMOVED.toString() -> {
             " usunął Cię ze swojej listy kontaktów."
         }
+        DashboardNotificationTypes.CONTACTPENDING.toString() -> {
+            " otrzymał Twoje zaproszenie do kontaktów."
+        }
         else -> {
             "Error, no data found!"
         }
@@ -112,23 +115,23 @@ fun setCheckBoxTint(checkBox: CheckBox, priority: String) {
     when (priority) {
         PriorityTypes.URGENT.toString() -> {
             checkBox.buttonTintList =
-                ColorStateList(states, intArrayOf(ContextCompat.getColor(TaskApplication.appContext, R.color.colorUrgent)))
+                ColorStateList(states, intArrayOf(ContextCompat.getColor(WorkerFinderApplication.appContext, R.color.colorUrgent)))
         }
         PriorityTypes.HIGH.toString() -> {
             checkBox.buttonTintList =
-                ColorStateList(states, intArrayOf(ContextCompat.getColor(TaskApplication.appContext, R.color.colorHigh)))
+                ColorStateList(states, intArrayOf(ContextCompat.getColor(WorkerFinderApplication.appContext, R.color.colorHigh)))
         }
         PriorityTypes.NORMAL.toString() -> {
             checkBox.buttonTintList =
-                ColorStateList(states, intArrayOf(ContextCompat.getColor(TaskApplication.appContext, R.color.colorNormal)))
+                ColorStateList(states, intArrayOf(ContextCompat.getColor(WorkerFinderApplication.appContext, R.color.colorNormal)))
         }
         PriorityTypes.LOW.toString() -> {
             checkBox.buttonTintList =
-                ColorStateList(states, intArrayOf(ContextCompat.getColor(TaskApplication.appContext, R.color.colorLow)))
+                ColorStateList(states, intArrayOf(ContextCompat.getColor(WorkerFinderApplication.appContext, R.color.colorLow)))
         }
         PriorityTypes.OTHER.toString() -> {
             checkBox.buttonTintList =
-                ColorStateList(states, intArrayOf(ContextCompat.getColor(TaskApplication.appContext, R.color.colorOther)))
+                ColorStateList(states, intArrayOf(ContextCompat.getColor(WorkerFinderApplication.appContext, R.color.colorOther)))
         }
         else -> {
             0
@@ -149,19 +152,19 @@ fun setCheckBoxVisibility(checkBox: CheckBox, completion: String) {
 fun setCheckBoxTint(cardView: CardView, taskFull: TaskModelFull) {
     cardView.foreground = when (taskFull.task.completed) {
         CompletionTypes.ABANDONED.toString() -> {
-            ContextCompat.getDrawable(TaskApplication.appContext, R.drawable.rectangle_red_stroke)
+            ContextCompat.getDrawable(WorkerFinderApplication.appContext, R.drawable.rectangle_red_stroke)
         }
         CompletionTypes.COMPLETED.toString() -> {
-            ContextCompat.getDrawable(TaskApplication.appContext, R.drawable.rectangle_green_stroke)
+            ContextCompat.getDrawable(WorkerFinderApplication.appContext, R.drawable.rectangle_green_stroke)
         }
         CompletionTypes.ACTIVE.toString() -> {
-            ContextCompat.getDrawable(TaskApplication.appContext, R.drawable.rectangle_blue_stroke)
+            ContextCompat.getDrawable(WorkerFinderApplication.appContext, R.drawable.rectangle_blue_stroke)
         }
         CompletionTypes.PENDING.toString() -> {
-            ContextCompat.getDrawable(TaskApplication.appContext, R.drawable.rectangle_yellow_stroke)
+            ContextCompat.getDrawable(WorkerFinderApplication.appContext, R.drawable.rectangle_yellow_stroke)
         }
         else -> {
-            ContextCompat.getDrawable(TaskApplication.appContext, R.drawable.rectangle_no_stroke)
+            ContextCompat.getDrawable(WorkerFinderApplication.appContext, R.drawable.rectangle_no_stroke)
         }
     }
 }

@@ -3,11 +3,14 @@ package com.issen.workerfinder.ui.taskEdit
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.issen.workerfinder.R
 
 class TaskEditFragment : Fragment() {
 
-    private lateinit var taskEditViewModel: TaskEditViewModel
+    private val taskEditViewModel: TaskEditViewModel by viewModels {
+        TaskEditViewModelFactory()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

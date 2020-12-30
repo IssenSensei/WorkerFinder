@@ -21,7 +21,7 @@
         android:layout_marginEnd="@dimen/spacing_small"
         android:background="@drawable/roundedblock"
         android:onClick="@{() -> clickListener.onWorkerClicked(worker)}"
-        app:cardCornerRadius="@dimen/spacing_large"
+        app:cardCornerRadius="@dimen/spacing_x_small"
         app:cardElevation="@dimen/spacing_medium">
 
         <androidx.constraintlayout.widget.ConstraintLayout

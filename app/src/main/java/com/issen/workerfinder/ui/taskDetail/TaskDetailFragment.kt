@@ -6,16 +6,25 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.R
+import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.databinding.FragmentTaskDetailBinding
+import com.issen.workerfinder.ui.workerBoard.WorkerBoardViewModel
+import com.issen.workerfinder.ui.workerBoard.WorkerBoardViewModelFactory
 
 class TaskDetailFragment : Fragment() {
 
-    private lateinit var taskDetailViewModel: TaskDetailViewModel
+    private val taskDetailViewModel: TaskDetailViewModel by viewModels {
+        TaskDetailViewModelFactory(
+            (requireActivity().application as WorkerFinderApplication).taskRepository,
+            (requireActivity().application as WorkerFinderApplication).dashboardNotificationRepository
+        )
+    }
     private lateinit var taskFull: TaskModelFull
 
     override fun onCreate(savedInstanceState: Bundle?) {

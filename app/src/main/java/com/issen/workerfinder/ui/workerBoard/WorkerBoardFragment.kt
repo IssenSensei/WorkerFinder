@@ -5,27 +5,34 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
+import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.ui.filters.FilterContainer
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.WorkerListener
+import com.issen.workerfinder.ui.workerList.WorkerListViewModel
+import com.issen.workerfinder.ui.workerList.WorkerListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_worker_board.view.*
 
 class WorkerBoardFragment : Fragment(), WorkerListener {
 
-    private lateinit var workerBoardViewModel: WorkerBoardViewModel
+    private val workerBoardViewModel: WorkerBoardViewModel by viewModels {
+        WorkerBoardViewModelFactory(
+            (requireActivity().application as WorkerFinderApplication).userRepository
+        )
+    }
     private lateinit var onDrawerRequestListener: OnDrawerRequestListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        workerBoardViewModel = ViewModelProvider(this).get(WorkerBoardViewModel::class.java)
-        val root =  inflater.inflate(R.layout.fragment_worker_board, container, false)
+        val root = inflater.inflate(R.layout.fragment_worker_board, container, false)
 
         val adapter = WorkerBoardRecyclerViewAdapter(this)
 

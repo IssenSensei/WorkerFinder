@@ -27,12 +27,12 @@ import java.util.*
 abstract class WorkerFinderDatabase : RoomDatabase() {
 
     abstract val taskModelDao: TaskModelDao
-    abstract val taskPhotosDao: TaskPhotosDao
-    abstract val taskRepeatDaysDao: TaskRepeatDaysDao
+    abstract val taskPhotoDao: TaskPhotoDao
+    abstract val taskRepeatDayDao: TaskRepeatDayDao
     abstract val userDataDao: UserDataDao
-    abstract val categoriesDao: CategoriesDao
-    abstract val commentsDao: CommentsDao
-    abstract val contactsDao: ContactsDao
+    abstract val categoryDao: CategoryDao
+    abstract val commentDao: CommentDao
+    abstract val contactDao: ContactDao
     abstract val dashboardNotificationDao: DashboardNotificationDao
 
     private class WorkerFinderDatabaseCallback(private val scope: CoroutineScope) :
@@ -70,7 +70,6 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
 
     companion object {
-
         @Volatile
         private var INSTANCE: WorkerFinderDatabase? = null
 
@@ -105,8 +104,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
     private fun populateRepeatDays(coroutineScope: CoroutineScope) {
         coroutineScope.launch {
-            taskRepeatDaysDao.deleteAll()
-            taskRepeatDaysDao.insert(
+            taskRepeatDayDao.deleteAll()
+            taskRepeatDayDao.insert(
                 mutableListOf(
                     TaskModelRepeatDays(0, 2, "aaaaa"),
                     TaskModelRepeatDays(0, 1, "bbbb"),
@@ -120,8 +119,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
     private fun populatePhotos(coroutineScope: CoroutineScope) {
         coroutineScope.launch {
-            taskPhotosDao.deleteAll()
-            taskPhotosDao.insert(
+            taskPhotoDao.deleteAll()
+            taskPhotoDao.insert(
                 mutableListOf(
                     TaskModelPhotos(0, 1, "https://i.imgflip.com/15l4w6.jpg"),
                     TaskModelPhotos(0, 1, "https://i.imgflip.com/15l4w6.jpg"),
@@ -257,7 +256,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.CONTACTACCEPTED.toString(),
                         1,
                         false
@@ -266,7 +265,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.CONTACTCANCELED.toString(),
                         1,
                         false
@@ -275,7 +274,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.CONTACTREFUSED.toString(),
                         1,
                         false
@@ -284,7 +283,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.CONTACTINVITED.toString(),
                         1,
                         false
@@ -293,7 +292,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.CONTACTREMOVED.toString(),
                         1,
                         false
@@ -302,7 +301,16 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
+                        "aaaaaaaaaaaaaaaaaa",
+                        DashboardNotificationTypes.CONTACTPENDING.toString(),
+                        1,
+                        false
+                    ),
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
                         userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.RATEDBYWORKER.toString(),
                         1,
                         false
@@ -311,7 +319,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.RATEDBYUSER.toString(),
                         1,
                         false
@@ -320,7 +328,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.TASKREJECTED.toString(),
                         1,
                         false
@@ -329,7 +337,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.TASKCOMPLETED.toString(),
                         1,
                         false
@@ -338,7 +346,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.TASKABANDONED.toString(),
                         1,
                         false
@@ -347,7 +355,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.TASKACCEPTED.toString(),
                         1,
                         false
@@ -356,7 +364,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.WORKCANCELED.toString(),
                         1,
                         false
@@ -365,7 +373,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.WORKREFUSED.toString(),
                         1,
                         false
@@ -374,7 +382,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.WORKOFFERED.toString(),
                         1,
                         false
@@ -383,7 +391,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         0,
                         Date().toString(),
                         userId,
-                        userId,
+                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.WORKACCEPTED.toString(),
                         1,
                         false
@@ -396,8 +404,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
     fun populateComments(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
-            commentsDao.deleteAll()
-            commentsDao.insert(
+            commentDao.deleteAll()
+            commentDao.insert(
                 mutableListOf(
                     Comments(0, userId, "adwadawdawdwa", 4.5f, "Było w porządeczku", true),
                     Comments(0, userId, "adwadawdawdwa", 4.8f, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true),
@@ -421,7 +429,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
     fun populateContacts(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
-            contactsDao.insert(
+            contactDao.insert(
                 mutableListOf(
                     Contacts(0, userId, "adwawd"),
                     Contacts(0, userId, "qqqdaw"),

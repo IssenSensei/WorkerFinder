@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication.Companion.getPriorityIndicatorColor
+import com.issen.workerfinder.WorkerFinderApplication.Companion.getPriorityIndicatorColor
 //import com.issen.workerfinder.TaskApplication.Companion.getPriorityIndicatorColor
 import com.issen.workerfinder.enums.PriorityTypes
 import kotlinx.android.synthetic.main.item_priority.view.*

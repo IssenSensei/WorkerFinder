@@ -4,11 +4,26 @@ import android.app.Application
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.issen.workerfinder.database.WorkerFinderDatabase
 import com.issen.workerfinder.database.models.UserDataFull
+import com.issen.workerfinder.database.repositories.*
 import com.issen.workerfinder.enums.PriorityTypes
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
 
-class TaskApplication : Application() {
+class WorkerFinderApplication : Application() {
+
+    private val applicationScope = CoroutineScope(SupervisorJob())
+    val database by lazy {WorkerFinderDatabase.getDatabase(this, applicationScope)}
+    val categoryRepository by lazy {CategoryRepository(database.categoryDao)}
+    val commentRepository by lazy {CommentRepository(database.commentDao)}
+    val contactRepository by lazy {ContactRepository(database.contactDao)}
+    val dashboardNotificationRepository by lazy {DashboardNotificationRepository(database.dashboardNotificationDao)}
+    val taskPhotoRepository by lazy {TaskPhotoRepository(database.taskPhotoDao)}
+    val taskRepeatDayRepository by lazy {TaskRepeatDayRepository(database.taskRepeatDayDao)}
+    val taskRepository by lazy {TaskRepository(database.taskModelDao)}
+    val userRepository by lazy {UserRepository(database.userDataDao)}
 
     override fun onCreate() {
         super.onCreate()

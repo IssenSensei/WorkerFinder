@@ -13,7 +13,8 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.MainActivity
 import com.issen.workerfinder.R
-import com.issen.workerfinder.TaskApplication.Companion.currentLoggedInUserFull
+import com.issen.workerfinder.WorkerFinderApplication
+import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.models.UserDataWithComments
 import com.issen.workerfinder.databinding.FragmentUserProfileBinding
@@ -27,7 +28,11 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 
     private val userProfileViewModel: UserProfileViewModel by viewModels {
         UserProfileViewModelFactory(
-            this.requireActivity().application,
+            (requireActivity().application as WorkerFinderApplication).taskRepository,
+            (requireActivity().application as WorkerFinderApplication).commentRepository,
+            (requireActivity().application as WorkerFinderApplication).userRepository,
+            (requireActivity().application as WorkerFinderApplication).contactRepository,
+            (requireActivity().application as WorkerFinderApplication).dashboardNotificationRepository,
             userDataFull
         )
     }

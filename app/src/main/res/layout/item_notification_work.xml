@@ -10,7 +10,9 @@
         <variable
             name="notificationData"
             type="com.issen.workerfinder.database.models.DashboardNotificationFull" />
-
+        <variable
+            name="clickListener"
+            type="com.issen.workerfinder.ui.dashboard.DashboardListener" />
     </data>
 
     <LinearLayout
@@ -51,9 +53,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_small"
+            android:layout_margin="@dimen/spacing_x_small"
             android:layout_weight="9"
-            app:cardCornerRadius="@dimen/spacing_large"
+            app:cardCornerRadius="@dimen/spacing_x_small"
             app:cardElevation="@dimen/spacing_small">
 
             <androidx.constraintlayout.widget.ConstraintLayout

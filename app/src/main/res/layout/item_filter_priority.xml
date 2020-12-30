@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="@{(view) -> clickListener.onFilterPriorityChanged(priorityItem, view)}"
-            android:padding="@dimen/spacing_large">
+            android:padding="@dimen/spacing_medium">
 
             <CheckBox
                 android:id="@+id/filter_priority_checkbox"
@@ -35,8 +35,8 @@
 
             <ImageView
                 android:id="@+id/filter_priority_indicator"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 app:tint="@color/colorSecondary"
                 android:src="@drawable/indicator"
                 app:layout_constraintBottom_toBottomOf="parent"

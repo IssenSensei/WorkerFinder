@@ -1,33 +1,27 @@
 package com.issen.workerfinder.ui.taskCreate
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.issen.workerfinder.database.*
 import com.issen.workerfinder.database.models.TaskModel
 import com.issen.workerfinder.database.models.TaskModelPhotos
 import com.issen.workerfinder.database.models.TaskModelRepeatDays
+import com.issen.workerfinder.database.repositories.TaskPhotoRepository
+import com.issen.workerfinder.database.repositories.TaskRepeatDayRepository
+import com.issen.workerfinder.database.repositories.TaskRepository
 import com.issen.workerfinder.enums.PriorityTypes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TaskCreateViewModel(application: Application) : AndroidViewModel(application) {
+class TaskCreateViewModel(
+    private val taskRepository: TaskRepository,
+    private val taskPhotoRepository: TaskPhotoRepository,
+    private val taskRepeatDayRepository: TaskRepeatDayRepository
+) : ViewModel() {
 
     private val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
 
-    private val repository: TaskModelRepository
     val repeatDays = mutableListOf<TaskModelRepeatDays>()
     val photos = mutableListOf<TaskModelPhotos>()
-
-    init {
-        val database = WorkerFinderDatabase.getDatabase(application, viewModelScope)
-        val taskModelDao = database.taskModelDao
-        val taskPhotosDao = database.taskPhotosDao
-        val taskRepeatDaysDao = database.taskRepeatDaysDao
-        val userModelDao = database.userDataDao
-        val commentsDao = database.commentsDao
-        repository = TaskModelRepository(taskModelDao, taskPhotosDao, taskRepeatDaysDao, userModelDao, commentsDao)
-    }
 
 //    fun insert(taskModel: TaskModel, photos: TaskModelPhotos, repeatDays: TaskModelRepeatDays) {
 //        viewModelScope.launch(Dispatchers.IO) {
@@ -37,7 +31,15 @@ class TaskCreateViewModel(application: Application) : AndroidViewModel(applicati
 
     fun insert(taskModel: TaskModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insert(taskModel, photos, repeatDays)
+            val id: Long = taskRepository.insert(taskModel)
+            photos.forEach {
+                it.taskId = id.toInt()
+            }
+            repeatDays.forEach {
+                it.taskId = id.toInt()
+            }
+            taskPhotoRepository.insert(photos)
+            taskRepeatDayRepository.insert(repeatDays)
         }
     }
 
