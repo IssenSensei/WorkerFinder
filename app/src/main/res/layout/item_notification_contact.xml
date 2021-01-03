@@ -39,7 +39,7 @@
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
                 app:tint="@color/colorAccent"
-                android:src="@drawable/my_workers_smallest_black" />
+                android:src="@drawable/contact_list_smallest_black" />
 
             <View
                 android:layout_width="2dp"

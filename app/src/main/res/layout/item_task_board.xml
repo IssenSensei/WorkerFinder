@@ -38,19 +38,6 @@
                     android:layout_height="match_parent"
                     android:padding="@dimen/spacing_large">
 
-                    <ImageView
-                        android:id="@+id/task_priority_indicator"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center_vertical"
-                        android:adjustViewBounds="true"
-                        android:contentDescription="@string/description_task_more"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/indicator"
-                        app:tint="@color/grey_3" />
-
-
                     <TextView
                         android:id="@+id/task_title"
                         android:layout_width="0dp"
@@ -58,7 +45,7 @@
                         android:layout_marginStart="4dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/task_priority_indicator"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="@{fullTask.task.taskTitle}" />
 
@@ -69,7 +56,7 @@
                         android:layout_marginStart="4dp"
                         android:text="@{fullTask.taskWorker.userName}"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/task_priority_indicator"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/task_title" />
 
                     <TextView
@@ -79,7 +66,7 @@
                         android:layout_marginStart="4dp"
                         android:text="@{fullTask.task.nextCompletionDate}"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/task_priority_indicator"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/task_worker" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

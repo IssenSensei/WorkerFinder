@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.databinding.ItemTaskBinding
 import com.issen.workerfinder.databinding.ItemTaskBoardBinding
-import com.issen.workerfinder.databinding.ItemWorkerBinding
 
 
 class TaskBoardRecyclerViewAdapter(private val taskBoardListener: TaskBoardListener) :

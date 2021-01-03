@@ -21,4 +21,15 @@ interface DashboardNotificationDao {
     @Insert
     suspend fun notify(dashboardNotification: DashboardNotification)
 
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTCANCELED' WHERE notificationOwnerId = " +
+            ":notificationOwner AND notificationCausedByUserId = :notificationCausedBy")
+    suspend fun cancelNotification(notificationOwner: String, notificationCausedBy: String)
+
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTACCEPTED' WHERE id = :id")
+    suspend fun acceptContact(id: Int)
+
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTREFUSED' WHERE id = :id")
+    suspend fun refuseContact(id: Int)
+
+
 }

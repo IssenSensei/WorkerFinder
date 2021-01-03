@@ -1,4 +1,4 @@
-package com.issen.workerfinder.ui.contact
+package com.issen.workerfinder.ui.contactWithAdmin
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
-import kotlinx.android.synthetic.main.fragment_contact.*
-import kotlinx.android.synthetic.main.fragment_contact.view.*
+import kotlinx.android.synthetic.main.fragment_contact_with_admin.*
+import kotlinx.android.synthetic.main.fragment_contact_with_admin.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -20,7 +20,7 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 
-class ContactFragment : Fragment() {
+class ContactWithAdminFragment : Fragment() {
 
     private var contact = arrayListOf<String>()
     override fun onCreateView(
@@ -28,7 +28,7 @@ class ContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_contact, container, false)
+        val root = inflater.inflate(R.layout.fragment_contact_with_admin, container, false)
 
         contact = arrayListOf("Error", "Idea", "Other")
         val contactSpinnerAdapter = ArrayAdapter<String>(requireContext(), R.layout.item_contact_dropdown, contact)

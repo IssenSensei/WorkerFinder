@@ -9,7 +9,7 @@
 
         <variable
             name="clickListener"
-            type="com.issen.workerfinder.ui.misc.WorkerListener" />
+            type="com.issen.workerfinder.ui.misc.ContactListener" />
 
     </data>
 
@@ -20,7 +20,7 @@
         android:layout_marginTop="@dimen/spacing_small"
         android:layout_marginEnd="@dimen/spacing_small"
         android:background="@drawable/roundedblock"
-        android:onClick="@{() -> clickListener.onWorkerClicked(worker)}"
+        android:onClick="@{() -> clickListener.onContactClicked(worker)}"
         app:cardCornerRadius="@dimen/spacing_x_small"
         app:cardElevation="@dimen/spacing_medium">
 
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content">
 
             <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/worker_profile_photo"
+                android:id="@+id/item_contact_list_profile_photo"
                 photo="@{worker.userData.photo}"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
@@ -42,14 +42,24 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/worker_name"
+                android:id="@+id/item_contact_list_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{worker.userData.userName}"
                 android:layout_margin="@dimen/spacing_medium"
                 style="@style/TextAppearance.AppCompat.Subhead"
-                app:layout_constraintStart_toEndOf="@id/worker_profile_photo"
+                app:layout_constraintStart_toEndOf="@id/item_contact_list_profile_photo"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/item_contact_list_open"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{worker.userData.openForWork == true ? `Otwarty na zlecenia` : ``}"
+                android:layout_margin="@dimen/spacing_medium"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                app:layout_constraintStart_toEndOf="@id/item_contact_list_profile_photo"
+                app:layout_constraintTop_toBottomOf="@id/item_contact_list_name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

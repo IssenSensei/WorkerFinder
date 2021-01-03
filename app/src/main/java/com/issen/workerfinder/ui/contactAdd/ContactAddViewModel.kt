@@ -1,4 +1,4 @@
-package com.issen.workerfinder.ui.workerList
+package com.issen.workerfinder.ui.contactAdd
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -6,8 +6,8 @@ import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInU
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.repositories.UserRepository
 
-class WorkerListViewModel(private val userRepository: UserRepository) : ViewModel() {
+class ContactAddViewModel(private val userRepository: UserRepository) : ViewModel() {
 
-    var workerList: LiveData<List<UserDataFull>> = userRepository.getUserWorkers(currentLoggedInUserFull!!.userData.userId)
+    val usersList: LiveData<List<UserDataFull>> = userRepository.getUsersList(currentLoggedInUserFull!!.userData.userId)
 
 }

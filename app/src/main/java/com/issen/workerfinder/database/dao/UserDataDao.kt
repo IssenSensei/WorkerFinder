@@ -36,6 +36,22 @@ interface UserDataDao {
     suspend fun setAccountPublic(userId: String, public: Boolean)
 
     @Transaction
+    @Query("SELECT DISTINCT * FROM user_table WHERE userId not in (SELECT contactId from contact_table where userId = :userId) and userId" +
+            " not in (SELECT userId from contact_table where contactId = :userId) and userId not like :userId and isAccountPublic = 1 and" +
+            " isOpenForWork = 1")
+    fun getUsersList(userId: String): LiveData<List<UserDataFull>>
+
+    @Transaction
+    @Query("SELECT DISTINCT * FROM user_table WHERE userId in (SELECT contactId from contact_table where userId = :userId) OR userId in " +
+            "(SELECT userId from contact_table where contactId = :userId)")
+    fun getUserContacts(userId: String): LiveData<List<UserDataFull>>
+
+    @Transaction
+    @Query("SELECT DISTINCT * FROM user_table WHERE userId in (SELECT notificationOwnerId from dashboard_notifications_table where notificationCausedByUserId =" +
+            " :userId AND dashboardNotificationType = 'CONTACTINVITED')")
+    fun gerUserInvitations(userId: String): LiveData<List<UserDataFull>>
+
+    @Transaction
     @Query("SELECT * FROM user_table WHERE userId in (SELECT contactId from contact_table where userId = :userId)")
     fun getUserWorkers(userId: String): LiveData<List<UserDataFull>>
 
@@ -63,4 +79,8 @@ interface UserDataDao {
 
     @RawQuery
     fun getUsersQueried(query: SimpleSQLiteQuery): LiveData<List<UserDataFull>>
+
+
+
+
 }

@@ -5,7 +5,11 @@ import com.issen.workerfinder.database.models.DashboardNotification
 
 class DashboardNotificationRepository(private val dashboardNotificationDao: DashboardNotificationDao) {
 
-    suspend fun notify(dashboardNotification: DashboardNotification) = dashboardNotificationDao.notify(dashboardNotification)
     fun getAllNotifications() = dashboardNotificationDao.getAllNotifications()
+
+    suspend fun notify(dashboardNotification: DashboardNotification) = dashboardNotificationDao.notify(dashboardNotification)
+    suspend fun cancelNotification(notificationOwner: String, notificationCausedBy: String) = dashboardNotificationDao.cancelNotification(notificationOwner, notificationCausedBy)
+    suspend fun acceptContact(id: Int) = dashboardNotificationDao.acceptContact(id)
+    suspend fun refuseContact(id: Int) = dashboardNotificationDao.refuseContact(id)
 
 }

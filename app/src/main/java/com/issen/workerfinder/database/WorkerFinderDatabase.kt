@@ -302,15 +302,6 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date().toString(),
                         userId,
                         "aaaaaaaaaaaaaaaaaa",
-                        DashboardNotificationTypes.CONTACTPENDING.toString(),
-                        1,
-                        false
-                    ),
-                    DashboardNotification(
-                        0,
-                        Date().toString(),
-                        userId,
-                        "aaaaaaaaaaaaaaaaaa",
                         DashboardNotificationTypes.RATEDBYWORKER.toString(),
                         1,
                         false

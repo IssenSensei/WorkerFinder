@@ -11,6 +11,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
+import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.DashboardNotificationFull
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.enums.CompletionTypes
@@ -23,6 +24,8 @@ fun setPhoto(imageView: ImageView, photo: String?) {
         .into(imageView)
 }
 
+
+//todo use string resources instead
 @BindingAdapter("notificationWorkText")
 fun setNotificationWorkText(textView: TextView, notificationFull: DashboardNotificationFull) {
     textView.text = "Użytkownik ${notificationFull.userData?.userName}" + when (notificationFull.notification.dashboardNotificationType) {
@@ -84,22 +87,39 @@ fun setNotificationTaskText(textView: TextView, notificationFull: DashboardNotif
 fun setNotificationContactText(textView: TextView, notificationFull: DashboardNotificationFull) {
     textView.text = "Użytkownik " + notificationFull.userData?.userName + when (notificationFull.notification.dashboardNotificationType) {
         DashboardNotificationTypes.CONTACTACCEPTED.toString() -> {
-            " przyjął Twoje zaproszenie do kontaktów."
+            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+                " otrzymał Twoją akceptację przyjęcia do kontaktów."
+            } else {
+                " przyjął Twoje zaproszenie do kontaktów."
+            }
         }
         DashboardNotificationTypes.CONTACTCANCELED.toString() -> {
-            " anulował zaproszenie do kontaktów."
+            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+                " otrzymał informację o wycofaniu propozycji przyjęcia do kontaktów."
+            } else {
+                " anulował zaproszenie do kontaktów."
+            }
         }
         DashboardNotificationTypes.CONTACTINVITED.toString() -> {
-            " chce nawiązać z Tobą kontakt."
+            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+                " otrzymał informację o Twojej chęci przyjęcia do kontaktów."
+            } else {
+                " chce nawiązać z Tobą kontakt."
+            }
         }
         DashboardNotificationTypes.CONTACTREFUSED.toString() -> {
-            " odrzucił Twoje zaproszenie do kontaktów."
+            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+                " otrzymał Twoją odmowę przyjęcia do kontaktów."
+            } else {
+                " odrzucił Twoje zaproszenie do kontaktów."
+            }
         }
         DashboardNotificationTypes.CONTACTREMOVED.toString() -> {
-            " usunął Cię ze swojej listy kontaktów."
-        }
-        DashboardNotificationTypes.CONTACTPENDING.toString() -> {
-            " otrzymał Twoje zaproszenie do kontaktów."
+            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+                " został usunięty z Twojej listy kontaktów."
+            } else {
+                " usunął Cię ze swojej listy kontaktów."
+            }
         }
         else -> {
             "Error, no data found!"

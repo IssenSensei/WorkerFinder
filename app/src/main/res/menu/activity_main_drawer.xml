@@ -9,6 +9,10 @@
             android:icon="@drawable/tasks_smallest_black"
             android:title="@string/menu_dashboard" />
         <item
+            android:id="@+id/nav_invitations"
+            android:icon="@drawable/tasks_smallest_black"
+            android:title="@string/menu_invitations" />
+        <item
             android:id="@+id/nav_task_menu_title"
             android:title="Zadania">
             <menu>
@@ -28,20 +32,24 @@
         </item>
         <item
             android:id="@+id/nav_worker_menu_title"
-            android:title="Pracownicy">
+            android:title="Kontakty">
             <menu>
                 <item
-                    android:id="@+id/nav_worker_list"
-                    android:icon="@drawable/my_workers_smallest_black"
-                    android:title="@string/menu_workers" />
+                    android:id="@+id/nav_contact_list"
+                    android:icon="@drawable/contact_list_smallest_black"
+                    android:title="@string/menu_contact_list" />
                 <item
-                    android:id="@+id/nav_new_worker"
-                    android:icon="@drawable/new_worker_smallest_black"
-                    android:title="@string/menu_newWorker" />
+                    android:id="@+id/nav_contact_add"
+                    android:icon="@drawable/contact_add_smallest_black"
+                    android:title="@string/menu_contact_add" />
                 <item
-                    android:id="@+id/nav_worker_board"
-                    android:icon="@drawable/new_worker_smallest_black"
-                    android:title="@string/menu_worker_board" />
+                    android:id="@+id/nav_contact_chat"
+                    android:icon="@drawable/contact_add_smallest_black"
+                    android:title="@string/menu_contact_chat" />
+                <item
+                    android:id="@+id/nav_contact_board"
+                    android:icon="@drawable/contact_add_smallest_black"
+                    android:title="@string/menu_contact_board" />
             </menu>
         </item>
         <item

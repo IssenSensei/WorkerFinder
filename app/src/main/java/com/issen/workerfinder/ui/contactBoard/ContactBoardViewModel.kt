@@ -1,4 +1,4 @@
-package com.issen.workerfinder.ui.workerBoard
+package com.issen.workerfinder.ui.contactBoard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -8,7 +8,7 @@ import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.repositories.UserRepository
 import com.issen.workerfinder.ui.filters.FilterContainer
 
-class WorkerBoardViewModel(private val userRepository: UserRepository) : ViewModel() {
+class ContactBoardViewModel(private val userRepository: UserRepository) : ViewModel() {
 
     var source: LiveData<List<UserDataFull>>
     val mediatorLiveData: MediatorLiveData<List<UserDataFull>> = MediatorLiveData()

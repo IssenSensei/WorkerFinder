@@ -1,4 +1,4 @@
-package com.issen.workerfinder.ui.workerList
+package com.issen.workerfinder.ui.contactList
 
 import android.content.Context
 import android.os.Bundle
@@ -11,14 +11,14 @@ import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.UserDataFull
+import com.issen.workerfinder.ui.misc.ContactListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
-import com.issen.workerfinder.ui.misc.WorkerListener
-import kotlinx.android.synthetic.main.fragment_worker_list.view.*
+import kotlinx.android.synthetic.main.fragment_contact_list.view.*
 
-class WorkerListFragment : Fragment(), WorkerListener {
+class ContactListFragment : Fragment(), ContactListener {
 
-    private val workerListViewModel: WorkerListViewModel by viewModels {
-        WorkerListViewModelFactory((requireActivity().application as WorkerFinderApplication).userRepository)
+    private val contactListViewModel: ContactListViewModel by viewModels {
+        ContactListViewModelFactory((requireActivity().application as WorkerFinderApplication).userRepository)
     }
     private lateinit var onDrawerRequestListener: OnDrawerRequestListener
 
@@ -26,16 +26,16 @@ class WorkerListFragment : Fragment(), WorkerListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_worker_list, container, false)
+        val root = inflater.inflate(R.layout.fragment_contact_list, container, false)
 
-        val adapter = WorkerListRecyclerViewAdapter(this)
+        val adapter = ContactListRecyclerViewAdapter(this)
 
-        workerListViewModel.workerList.observe(viewLifecycleOwner, Observer {
+        contactListViewModel.contactList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
-        root.worker_recycler_list.adapter = adapter
+        root.contact_recycler_list.adapter = adapter
 
         return root
     }
@@ -76,8 +76,8 @@ class WorkerListFragment : Fragment(), WorkerListener {
         }
     }
 
-    override fun onWorkerClicked(userDataFull: UserDataFull) {
-        val actionProfile = WorkerListFragmentDirections.actionNavWorkerListToNavUserProfile(userDataFull)
+    override fun onContactClicked(userDataFull: UserDataFull) {
+        val actionProfile = ContactListFragmentDirections.actionNavContactListToNavUserProfile(userDataFull)
         findNavController().navigate(actionProfile)
     }
 

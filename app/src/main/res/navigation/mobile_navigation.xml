@@ -17,7 +17,7 @@
             android:id="@+id/action_nav_task_list_to_nav_task_detail"
             app:destination="@id/nav_task_detail" />
         <action
-            android:id="@+id/action_nav_task_list_to_nav_user_profile2"
+            android:id="@+id/action_nav_task_list_to_nav_user_profile"
             app:destination="@id/nav_user_profile" />
     </fragment>
 
@@ -28,9 +28,9 @@
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/nav_contact"
-        android:name="com.issen.workerfinder.ui.contact.ContactFragment"
+        android:name="com.issen.workerfinder.ui.contactWithAdmin.ContactWithAdminFragment"
         android:label="@string/menu_contact"
-        tools:layout="@layout/fragment_contact" />
+        tools:layout="@layout/fragment_contact_with_admin" />
     <fragment
         android:id="@+id/nav_info"
         android:name="com.issen.workerfinder.ui.info.InfoFragment"
@@ -48,21 +48,21 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/nav_new_worker"
-        android:name="com.issen.workerfinder.ui.workerAdd.WorkerAddFragment"
-        android:label="@string/menu_newWorker"
-        tools:layout="@layout/fragment_worker_add">
+        android:id="@+id/nav_contact_add"
+        android:name="com.issen.workerfinder.ui.contactAdd.ContactAddFragment"
+        android:label="@string/menu_contact_add"
+        tools:layout="@layout/fragment_contact_add">
         <action
-            android:id="@+id/action_nav_new_worker_to_nav_user_profile"
+            android:id="@+id/action_nav_contact_add_to_nav_user_profile"
             app:destination="@id/nav_user_profile" />
     </fragment>
     <fragment
-        android:id="@+id/nav_worker_list"
-        android:name="com.issen.workerfinder.ui.workerList.WorkerListFragment"
-        android:label="@string/menu_workers"
-        tools:layout="@layout/fragment_worker_list">
+        android:id="@+id/nav_contact_list"
+        android:name="com.issen.workerfinder.ui.contactList.ContactListFragment"
+        android:label="@string/menu_contact_list"
+        tools:layout="@layout/fragment_contact_list">
         <action
-            android:id="@+id/action_nav_worker_list_to_nav_user_profile"
+            android:id="@+id/action_nav_contact_list_to_nav_user_profile"
             app:destination="@id/nav_user_profile" />
     </fragment>
     <fragment
@@ -120,12 +120,12 @@
             app:destination="@id/nav_task_detail" />
     </fragment>
     <fragment
-        android:id="@+id/nav_worker_board"
-        android:name="com.issen.workerfinder.ui.workerBoard.WorkerBoardFragment"
-        android:label="@string/menu_worker_board"
-        tools:layout="@layout/fragment_worker_board">
+        android:id="@+id/nav_contact_board"
+        android:name="com.issen.workerfinder.ui.contactBoard.ContactBoardFragment"
+        android:label="@string/menu_contact_board"
+        tools:layout="@layout/fragment_contact_board">
         <action
-            android:id="@+id/action_nav_worker_board_to_nav_user_profile"
+            android:id="@+id/action_nav_contact_board_to_nav_user_profile"
             app:destination="@id/nav_user_profile" />
     </fragment>
     <fragment
@@ -133,5 +133,19 @@
         android:name="com.issen.workerfinder.ui.dashboard.DashboardFragment"
         android:label="@string/menu_dashboard"
         tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/nav_contact_chat"
+        android:name="com.issen.workerfinder.ui.contactChat.ContactChatFragment"
+        android:label="@string/menu_contact_chat"
+        tools:layout="@layout/fragment_contact_chat"/>
+    <fragment
+        android:id="@+id/nav_invitations"
+        android:name="com.issen.workerfinder.ui.invitations.InvitationFragment"
+        android:label="@string/menu_invitations"
+        tools:layout="@layout/fragment_invitation">
+        <action
+            android:id="@+id/action_nav_invitations_to_nav_user_profile"
+            app:destination="@id/nav_user_profile" />
+    </fragment>
 
 </navigation>

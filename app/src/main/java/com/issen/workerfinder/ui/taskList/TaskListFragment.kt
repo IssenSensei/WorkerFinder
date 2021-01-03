@@ -8,7 +8,6 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -19,8 +18,6 @@ import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.filters.FilterContainer
-import com.issen.workerfinder.ui.workerBoard.WorkerBoardViewModel
-import com.issen.workerfinder.ui.workerBoard.WorkerBoardViewModelFactory
 import kotlinx.android.synthetic.main.fragment_task_list.view.*
 
 

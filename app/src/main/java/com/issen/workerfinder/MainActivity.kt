@@ -32,13 +32,13 @@ import com.issen.workerfinder.databinding.NavHeaderMainBinding
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
 import com.issen.workerfinder.enums.PriorityTypes
+import com.issen.workerfinder.ui.contactBoard.ContactBoardFragment
 import com.issen.workerfinder.ui.filters.*
 import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.OnFilterSelectionListener
 import com.issen.workerfinder.ui.taskBoard.TaskBoardFragment
 import com.issen.workerfinder.ui.taskList.TaskListFragment
-import com.issen.workerfinder.ui.workerBoard.WorkerBoardFragment
 import com.issen.workerfinder.utils.ViewAnimation
 import com.issen.workerfinder.utils.hideAnimated
 import com.issen.workerfinder.utils.nestedScrollTo
@@ -97,8 +97,8 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_dashboard, R.id.nav_task_list, R.id.nav_task_board, R.id.nav_worker_board,
-                R.id.nav_worker_list
+                R.id.nav_dashboard, R.id.nav_task_list, R.id.nav_task_board, R.id.nav_contact_board,
+                R.id.nav_contact_list
             ), drawerLayout
         )
 
@@ -269,7 +269,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                     view.tag.toString() + "Container"
                 ).visibility = View.VISIBLE
             }
-            is WorkerBoardFragment -> {
+            is ContactBoardFragment -> {
                 drawer_filter_worker_board_main_container.visibility = View.GONE
                 (drawer_filter_worker_board_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(
                     view.tag.toString() + "Container"
@@ -333,7 +333,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 mainActivityViewModel.applyTaskBoardFilters()
                 currentFragment.onAcceptClicked(mainActivityViewModel.currentTaskBoardFilter)
             }
-            is WorkerBoardFragment -> {
+            is ContactBoardFragment -> {
                 mainActivityViewModel.applyWorkerBoardFilters()
                 currentFragment.onAcceptClicked(mainActivityViewModel.currentWorkerBoardFilter)
             }
@@ -368,7 +368,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 drawer_filter_task_board_due_date_container.visibility = View.GONE
                 drawer_filter_task_board_main_container.visibility = View.VISIBLE
             }
-            is WorkerBoardFragment -> {
+            is ContactBoardFragment -> {
                 mainActivityViewModel.clearSelectedWorkerBoardFilters()
                 drawer_filter_worker_board_category_container.visibility = View.GONE
                 drawer_filter_worker_board_localization_container.visibility = View.GONE
@@ -407,7 +407,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 userAdapter.clearValues()
                 workerAdapter.clearValues()
             }
-            is WorkerBoardFragment -> {
+            is ContactBoardFragment -> {
                 mainActivityViewModel.selectedWorkerBoardFilter = FilterContainer()
 
                 drawer_filter_worker_board_sort_radio.check(R.id.drawer_filter_worker_board_sort_none)
@@ -433,7 +433,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                     mainActivityViewModel.selectedTaskBoardFilter
                 )
             }
-            is WorkerBoardFragment -> {
+            is ContactBoardFragment -> {
                 mainActivityViewModel.setOrder(
                     drawer_filter_worker_board_sort_switch.isChecked,
                     mainActivityViewModel.selectedWorkerBoardFilter
@@ -482,7 +482,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 drawer_content_task_board.visibility = View.VISIBLE
                 drawer_content_worker_board.visibility = View.GONE
             }
-            is WorkerBoardFragment -> {
+            is ContactBoardFragment -> {
                 drawer_content_task_list.visibility = View.GONE
                 drawer_content_task_board.visibility = View.GONE
                 drawer_content_worker_board.visibility = View.VISIBLE

@@ -1,14 +1,14 @@
-package com.issen.workerfinder.ui.workerAdd
+package com.issen.workerfinder.ui.contactChat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class WorkerAddViewModelFactory() :
+class ContactChatViewModelFactory() :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(WorkerAddViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(ContactChatViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return WorkerAddViewModel() as T
+            return ContactChatViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

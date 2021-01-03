@@ -95,6 +95,17 @@ class UserProfileViewModel(
                     false
                 )
             )
+            dashboardNotificationRepository.notify(
+                DashboardNotification(
+                    0,
+                    Date().toString(),
+                    currentLoggedInUserFull!!.userData.userId,
+                    userDataFull.userData.userId,
+                    DashboardNotificationTypes.CONTACTREMOVED.toString(),
+                    0,
+                    false
+                )
+            )
         }
     }
 
@@ -111,18 +122,6 @@ class UserProfileViewModel(
                     false
                 )
             )
-            dashboardNotificationRepository.notify(
-                DashboardNotification(
-                    0,
-                    Date().toString(),
-                    currentLoggedInUserFull!!.userData.userId,
-                    userDataFull.userData.userId,
-                    DashboardNotificationTypes.CONTACTPENDING.toString(),
-                    0,
-                    false
-                )
-            )
-
         }
     }
 }
