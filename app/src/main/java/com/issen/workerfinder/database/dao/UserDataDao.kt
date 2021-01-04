@@ -28,6 +28,9 @@ interface UserDataDao {
     @Query("DELETE FROM user_table")
     suspend fun deleteAll()
 
+    @Query("DELETE FROM user_table WHERE userId <> :userId")
+    fun deleteAllExcept(userId: String)
+
     @Transaction
     @Query("SELECT * FROM user_table where userId = :userId")
     suspend fun getUserByFirebaseKey(userId: String): UserDataFull
@@ -79,8 +82,6 @@ interface UserDataDao {
 
     @RawQuery
     fun getUsersQueried(query: SimpleSQLiteQuery): LiveData<List<UserDataFull>>
-
-
 
 
 }

@@ -23,7 +23,7 @@ class UserRepository(private val userDataDao: UserDataDao){
     fun updateUser(userData: UserData) = userDataDao.update(userData)
 
     suspend fun getUserByFirebaseKey(userId: String): UserDataFull  = userDataDao.getUserByFirebaseKey(userId)
-
+    suspend fun insert(userData: UserData) = userDataDao.insert(userData)
 
 
 }

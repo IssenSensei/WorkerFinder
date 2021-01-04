@@ -47,5 +47,8 @@ interface DashboardNotificationDao {
             ":modifiedRecordId AND notificationCausedByUserId = :notificationCausedBy")
     suspend fun cancelNotification(modifiedRecordId: Int, notificationCausedBy: String)
 
+    @Query("DELETE FROM dashboard_notifications_table")
+    suspend fun deleteAll()
+
 
 }

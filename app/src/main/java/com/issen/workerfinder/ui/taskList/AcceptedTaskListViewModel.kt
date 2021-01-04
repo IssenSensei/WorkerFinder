@@ -51,8 +51,7 @@ class AcceptedTaskListViewModel(
                     taskModel.userFirebaseKey,
                     currentLoggedInUserFull!!.userData.userId,
                     DashboardNotificationTypes.TASKCOMPLETED.toString(),
-                    taskModel.taskId,
-                    false
+                    taskModel.taskId
                 )
             )
         }

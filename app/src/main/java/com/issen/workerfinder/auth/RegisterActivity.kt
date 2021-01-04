@@ -1,16 +1,16 @@
 package com.issen.workerfinder.auth
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.issen.workerfinder.MainActivity
 import com.issen.workerfinder.R
-import com.issen.workerfinder.database.WorkerFinderDatabase
+import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.UserData
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.coroutines.MainScope
@@ -31,20 +31,19 @@ class RegisterActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     MainScope().launch {
-                        WorkerFinderDatabase.getDatabase(applicationContext, this)
-                            .userDataDao
-                            .insert(
-                                UserData(
-                                    auth.currentUser!!.uid,
-                                    activity_register_user_name.text.toString(),
-                                    "",
-                                    activity_register_email.text.toString(),
-                                    activity_register_phone.text.toString(),
-                                    "",
-                                    false,
-                                    false
-                                )
+                        (application as WorkerFinderApplication).userRepository.insert(
+                            UserData(
+                                auth.currentUser!!.uid,
+                                activity_register_user_name.text.toString(),
+                                "",
+                                activity_register_email.text.toString(),
+                                activity_register_phone.text.toString(),
+                                "",
+                                "",
+                                false,
+                                false
                             )
+                        )
                     }.invokeOnCompletion {
                         navigateMain()
                     }

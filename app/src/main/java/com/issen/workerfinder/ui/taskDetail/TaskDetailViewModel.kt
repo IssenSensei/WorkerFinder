@@ -33,8 +33,7 @@ class TaskDetailViewModel(
                     currentLoggedInUserFull!!.userData.userId,
                     taskModel.task.userFirebaseKey,
                     DashboardNotificationTypes.TASKABANDONED.toString(),
-                    taskModel.task.taskId,
-                    false
+                    taskModel.task.taskId
                 )
             )
         }
@@ -50,8 +49,7 @@ class TaskDetailViewModel(
                     taskModel.task.userFirebaseKey,
                     currentLoggedInUserFull!!.userData.userId,
                     DashboardNotificationTypes.TASKABANDONED.toString(),
-                    taskModel.task.taskId,
-                    false
+                    taskModel.task.taskId
                 )
             )
         }

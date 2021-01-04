@@ -1,6 +1,8 @@
 package com.issen.workerfinder.database.models
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Junction
+import androidx.room.Relation
 import java.io.Serializable
 
 data class TaskModelFull(
@@ -17,6 +19,13 @@ data class TaskModelFull(
         entityColumn = "taskId"
     )
     val repeatDays: List<TaskModelRepeatDays>,
+
+    @Relation(
+        parentColumn = "taskId",
+        entityColumn = "categoryId",
+        associateBy = Junction(TasksCategoryCrossRef::class)
+    )
+    val categories: List<Categories>,
 
     @Relation(
         parentColumn = "task_user_id",

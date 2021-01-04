@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
@@ -18,6 +19,7 @@ import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.DashboardNotificationTypes
 import com.issen.workerfinder.enums.PriorityTypes
+private var auth = FirebaseAuth.getInstance()
 
 @BindingAdapter("photo")
 fun setPhoto(imageView: ImageView, photo: String?) {
@@ -162,7 +164,7 @@ fun setCheckBoxTint(checkBox: CheckBox, priority: String) {
 
 @BindingAdapter("checkButtonVisibility")
 fun setCheckBoxVisibility(checkBox: CheckBox, task: TaskModel) {
-    if (task.completed == CompletionTypes.ACTIVE.toString() && task.workerFirebaseKey == currentLoggedInUserFull!!.userData.userId) {
+    if (task.completed == CompletionTypes.ACTIVE.toString() && task.workerFirebaseKey == auth.currentUser!!.uid) {
         checkBox.visibility = View.VISIBLE
     } else {
         checkBox.visibility = View.INVISIBLE

@@ -8,14 +8,11 @@ import com.issen.workerfinder.database.WorkerFinderDatabase
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.repositories.*
 import com.issen.workerfinder.enums.PriorityTypes
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 
 
 class WorkerFinderApplication : Application() {
 
-    private val applicationScope = CoroutineScope(SupervisorJob())
-    val database by lazy {WorkerFinderDatabase.getDatabase(this, applicationScope)}
+    val database by lazy {WorkerFinderDatabase.getDatabase(this)}
     val categoryRepository by lazy {CategoryRepository(database.categoryDao)}
     val commentRepository by lazy {CommentRepository(database.commentDao)}
     val contactRepository by lazy {ContactRepository(database.contactDao)}
@@ -24,6 +21,8 @@ class WorkerFinderApplication : Application() {
     val taskRepeatDayRepository by lazy {TaskRepeatDayRepository(database.taskRepeatDayDao)}
     val taskRepository by lazy {TaskRepository(database.taskModelDao)}
     val userRepository by lazy {UserRepository(database.userDataDao)}
+    val tasksCategoryCrossRefRepository by lazy {TasksCategoryCrossRefRepository(database.tasksCategoryCrossRefDao)}
+    val userCategoryCrossRefRepository by lazy {UserCategoryCrossRefRepository(database.userCategoryCrossRefDao)}
 
     override fun onCreate() {
         super.onCreate()

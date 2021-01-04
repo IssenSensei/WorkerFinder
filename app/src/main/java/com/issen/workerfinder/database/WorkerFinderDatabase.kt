@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.issen.workerfinder.database.dao.*
 import com.issen.workerfinder.database.models.*
 import com.issen.workerfinder.enums.CompletionTypes
@@ -19,7 +18,7 @@ import java.util.*
 
 @Database(
     entities = [TaskModel::class, TaskModelPhotos::class, TaskModelRepeatDays::class, UserData::class, Categories::class,
-        Comments::class, Contacts::class, DashboardNotification::class],
+        Comments::class, Contacts::class, DashboardNotification::class, TasksCategoryCrossRef::class, UserCategoryCrossRef::class],
     version = 1,
     exportSchema = false
 )
@@ -34,46 +33,14 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
     abstract val commentDao: CommentDao
     abstract val contactDao: ContactDao
     abstract val dashboardNotificationDao: DashboardNotificationDao
-
-    private class WorkerFinderDatabaseCallback(private val scope: CoroutineScope) :
-        RoomDatabase.Callback() {
-        override fun onOpen(db: SupportSQLiteDatabase) {
-            super.onOpen(db)
-            INSTANCE?.let {
-                scope.launch {
-                    it.populateDbOpen(this)
-                }
-            }
-        }
-
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            INSTANCE?.let {
-                scope.launch {
-                    it.populateDbCreate(this)
-                }
-                //                scope.launch {
-//                    val userModelDao = it.userModelDao
-//                    userModelDao.insert(
-//                        mutableListOf(
-//                            FullUserData(1, "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "111111111", "aaaaa1", false),
-//                            FullUserData(0, "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "222222222", "aaaaaa2", false),
-//                            FullUserData(0, "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "333333333", "aaaaaa3", false)
-//                        )
-//                    )
-
-//                }
-
-            }
-        }
-    }
-
+    abstract val tasksCategoryCrossRefDao: TasksCategoryCrossRefDao
+    abstract val userCategoryCrossRefDao: UserCategoryCrossRefDao
 
     companion object {
         @Volatile
         private var INSTANCE: WorkerFinderDatabase? = null
 
-        fun getDatabase(context: Context, scope: CoroutineScope): WorkerFinderDatabase {
+        fun getDatabase(context: Context): WorkerFinderDatabase {
 
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -82,7 +49,6 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     "worker_finder_database"
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(WorkerFinderDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 instance
@@ -91,15 +57,81 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
         }
     }
 
-    fun populateDbOpen(coroutineScope: CoroutineScope) {
-        populateTasksOpen(coroutineScope)
+    fun populateDb(coroutineScope: CoroutineScope, userId: String) {
+        populateUsers(coroutineScope, userId)
+        populateRepeatDays(coroutineScope)
+        populatePhotos(coroutineScope)
+        populateTasksOpen(coroutineScope, userId)
+        populateComments(coroutineScope, userId)
+        populateContacts(coroutineScope, userId)
+        populateNotificationsOpen(coroutineScope, userId)
+        populateCategories(coroutineScope)
+        populateUserCategories(coroutineScope, userId)
+        populateTaskCategories(coroutineScope, userId)
     }
 
-    fun populateDbCreate(coroutineScope: CoroutineScope) {
-        populateUsers(coroutineScope)
-//        populateTasks(coroutineScope)
-        populatePhotos(coroutineScope)
-        populateRepeatDays(coroutineScope)
+    private fun populateUsers(coroutineScope: CoroutineScope, userId: String) {
+        coroutineScope.launch {
+            userDataDao.deleteAllExcept(userId)
+            userDataDao.insert(
+                mutableListOf(
+                    UserData(
+                        "a1", "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "0000000", "aaaaa", "Lublin", false, true
+                    ),
+                    UserData(
+                        "a2", "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "11111111", "aaaaaa1", "Wrocław", false, true
+                    ),
+                    UserData(
+                        "a3", "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "2222222222", "aaaaaa2", "Kraśnik", true, true
+                    ),
+                    UserData(
+                        "a4", "name3 lastName3", "https://i.imgflip.com/15l4w6.jpg", "email3", "3333333333", "aaaaaa3", "Warszawa", false, true
+                    ),
+                    UserData(
+                        "a5", "name4 lastName4", "https://i.imgflip.com/15l4w6.jpg", "email4", "44444444444", "aaaaaa4", "Lublin", true, true
+                    ),
+                    UserData(
+                        "a6", "name5 lastName5", "https://i.imgflip.com/15l4w6.jpg", "email5", "555555555", "aaaaaa5", "Gdańsk", true, true
+                    ),
+                    UserData(
+                        "a7", "name6 lastName6", "https://i.imgflip.com/15l4w6.jpg", "email6", "6666666666", "aaaaaa6", "Lublin", false, false
+                    ),
+                    UserData(
+                        "a8", "name7 lastName7", "https://i.imgflip.com/15l4w6.jpg", "email7", "777777777", "aaaaaa7", "Lublin", false, false
+                    ),
+                    UserData(
+                        "a9", "name8 lastName8", "https://i.imgflip.com/15l4w6.jpg", "email8", "88888888", "aaaaaa8", "Lublin", false, false
+                    ),
+                    UserData(
+                        "a10", "name9 lastName9", "https://i.imgflip.com/15l4w6.jpg", "email89", "88888888", "aaaaaa8", "Lublin", false, false
+                    ),
+                    UserData(
+                        "a11", "name10 lastName10", "https://i.imgflip.com/15l4w6.jpg", "email10", "88888888", "aaaaaa8", "Lublin", false, false
+                    ),
+                    UserData(
+                        "a12", "name11 lastName11", "https://i.imgflip.com/15l4w6.jpg", "email11", "88888888", "aaaaaa8", "Lublin", true, false
+                    ),
+                    UserData(
+                        "a13", "name12 lastName12", "https://i.imgflip.com/15l4w6.jpg", "email12", "88888888", "aaaaaa8", "Lublin", false, false
+                    ),
+                    UserData(
+                        "a14", "name13 lastName13", "https://i.imgflip.com/15l4w6.jpg", "email13", "88888888", "aaaaaa8", "Lublin", true, true
+                    ),
+                    UserData(
+                        "a15", "name14 lastName14", "https://i.imgflip.com/15l4w6.jpg", "email14", "88888888", "aaaaaa8", "Lublin", true, true
+                    ),
+                    UserData(
+                        "a16", "name14 lastName14", "https://i.imgflip.com/15l4w6.jpg", "email14", "88888888", "aaaaaa8", "Lublin", true, true
+                    ),
+                    UserData(
+                        "a17", "name14 lastName14", "https://i.imgflip.com/15l4w6.jpg", "email14", "88888888", "aaaaaa8", "Lublin", true, true
+                    ),
+                    UserData(
+                        "a18", "name14 lastName14", "https://i.imgflip.com/15l4w6.jpg", "email14", "88888888", "aaaaaa8", "Lublin", true, true
+                    )
+                )
+            )
+        }
     }
 
     private fun populateRepeatDays(coroutineScope: CoroutineScope) {
@@ -107,11 +139,11 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
             taskRepeatDayDao.deleteAll()
             taskRepeatDayDao.insert(
                 mutableListOf(
-                    TaskModelRepeatDays(0, 2, "aaaaa"),
-                    TaskModelRepeatDays(0, 1, "bbbb"),
-                    TaskModelRepeatDays(0, 2, "ccccc"),
-                    TaskModelRepeatDays(0, 1, "ddddd"),
-                    TaskModelRepeatDays(0, 2, "eeeeeeee")
+                    TaskModelRepeatDays(1, 2, "aaaaa"),
+                    TaskModelRepeatDays(2, 1, "bbbb"),
+                    TaskModelRepeatDays(3, 2, "ccccc"),
+                    TaskModelRepeatDays(4, 1, "ddddd"),
+                    TaskModelRepeatDays(5, 2, "eeeeeeee")
                 )
             )
         }
@@ -122,21 +154,22 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
             taskPhotoDao.deleteAll()
             taskPhotoDao.insert(
                 mutableListOf(
-                    TaskModelPhotos(0, 1, "https://i.imgflip.com/15l4w6.jpg"),
-                    TaskModelPhotos(0, 1, "https://i.imgflip.com/15l4w6.jpg"),
-                    TaskModelPhotos(0, 2, "https://i.imgflip.com/15l4w6.jpg"),
-                    TaskModelPhotos(0, 2, "https://i.imgflip.com/15l4w6.jpg"),
-                    TaskModelPhotos(0, 3, "https://i.imgflip.com/15l4w6.jpg"),
-                    TaskModelPhotos(0, 2, "https://i.imgflip.com/15l4w6.jpg"),
-                    TaskModelPhotos(0, 5, "https://i.imgflip.com/15l4w6.jpg"),
-                    TaskModelPhotos(0, 2, "https://i.imgflip.com/15l4w6.jpg"),
-                    TaskModelPhotos(0, 7, "https://i.imgflip.com/15l4w6.jpg")
+                    TaskModelPhotos(1, 1, "https://i.imgflip.com/15l4w6.jpg"),
+                    TaskModelPhotos(2, 1, "https://i.imgflip.com/15l4w6.jpg"),
+                    TaskModelPhotos(3, 2, "https://i.imgflip.com/15l4w6.jpg"),
+                    TaskModelPhotos(4, 2, "https://i.imgflip.com/15l4w6.jpg"),
+                    TaskModelPhotos(5, 3, "https://i.imgflip.com/15l4w6.jpg"),
+                    TaskModelPhotos(6, 2, "https://i.imgflip.com/15l4w6.jpg"),
+                    TaskModelPhotos(7, 5, "https://i.imgflip.com/15l4w6.jpg"),
+                    TaskModelPhotos(8, 2, "https://i.imgflip.com/15l4w6.jpg"),
+                    TaskModelPhotos(9, 7, "https://i.imgflip.com/15l4w6.jpg")
                 )
             )
         }
     }
 
-    private fun populateTasks(coroutineScope: CoroutineScope) {
+
+    private fun populateTasksOpen(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
             taskModelDao.deleteAll()
             taskModelDao.insert(
@@ -145,21 +178,21 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         1,
                         "Odśnieżanie",
                         "Należy odśnieżyć całą posesję",
-                        "aaaaaaa",
-                        "aaaaaaa",
+                        userId,
+                        "a1",
                         "22-12-2020",
                         CyclicTypes.NONE.toString(),
                         Date(),
                         PriorityTypes.URGENT.toString(),
-                        CompletionTypes.ACTIVE.toString(),
+                        CompletionTypes.ABANDONED.toString(),
                         "completion"
                     ),
                     TaskModel(
                         2,
                         "Pomoc na budowie",
                         "Potrzebny pomocnik na budowie",
-                        "aaaaaaa",
-                        "aaaaaaa",
+                        userId,
+                        "a2",
                         "01-01-2020",
                         CyclicTypes.MONTHDAY.toString(),
                         Date(),
@@ -171,57 +204,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         3,
                         "Klaun na urodzinach online",
                         "Najlepiej jakiś rudy",
-                        "aaaaaaa",
-                        "aaaaaaa",
-                        "03-02-2021",
-                        CyclicTypes.NONE.toString(),
-                        Date(),
-                        PriorityTypes.LOW.toString(),
-                        CompletionTypes.ACTIVE.toString(),
-                        "completion"
-                    )
-                )
-
-            )
-        }
-    }
-
-    private fun populateTasksOpen(coroutineScope: CoroutineScope) {
-        coroutineScope.launch {
-            taskModelDao.insert(
-                mutableListOf(
-                    TaskModel(
-                        0,
-                        "Odśnieżanie",
-                        "Należy odśnieżyć całą posesję",
-                        "user",
-                        "Zbysiu Zbyś",
-                        "22-12-2020",
-                        CyclicTypes.NONE.toString(),
-                        Date(),
-                        PriorityTypes.URGENT.toString(),
-                        CompletionTypes.ABANDONED.toString(),
-                        "completion"
-                    ),
-                    TaskModel(
-                        0,
-                        "Pomoc na budowie",
-                        "Potrzebny pomocnik na budowie",
-                        "user2",
-                        "",
-                        "01-01-2020",
-                        CyclicTypes.MONTHDAY.toString(),
-                        Date(),
-                        PriorityTypes.NORMAL.toString(),
-                        CompletionTypes.COMPLETED.toString(),
-                        "completion"
-                    ),
-                    TaskModel(
-                        0,
-                        "Klaun na urodzinach online",
-                        "Najlepiej jakiś rudy",
-                        "user",
-                        "",
+                        userId,
+                        "a3",
                         "03-02-2021",
                         CyclicTypes.NONE.toString(),
                         Date(),
@@ -230,72 +214,11 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "completion"
                     ),
                     TaskModel(
-                        0,
-                        "Zadanie testowe oznaczone jako active",
-                        "opisu brak",
-                        "user",
-                        "",
-                        "03-02-2021",
-                        CyclicTypes.NONE.toString(),
-                        Date(),
-                        PriorityTypes.URGENT.toString(),
-                        CompletionTypes.ACTIVE.toString(),
-                        "completion"
-                    )
-                )
-            )
-        }
-    }
-
-    fun populateTasksOpen(coroutineScope: CoroutineScope, userId: String) {
-        coroutineScope.launch {
-            taskModelDao.insert(
-                mutableListOf(
-                    TaskModel(
-                        0,
-                        "Odśnieżanie",
-                        "Należy odśnieżyć całą posesję",
-                        userId,
-                        "Zbysiu Zbyś",
-                        "22-12-2020",
-                        CyclicTypes.NONE.toString(),
-                        Date(),
-                        PriorityTypes.URGENT.toString(),
-                        CompletionTypes.ABANDONED.toString(),
-                        "completion"
-                    ),
-                    TaskModel(
-                        0,
-                        "Pomoc na budowie",
-                        "Potrzebny pomocnik na budowie",
-                        userId,
-                        "",
-                        "01-01-2020",
-                        CyclicTypes.MONTHDAY.toString(),
-                        Date(),
-                        PriorityTypes.NORMAL.toString(),
-                        CompletionTypes.COMPLETED.toString(),
-                        "completion"
-                    ),
-                    TaskModel(
-                        0,
-                        "Klaun na urodzinach online",
-                        "Najlepiej jakiś rudy",
-                        userId,
-                        "",
-                        "03-02-2021",
-                        CyclicTypes.NONE.toString(),
-                        Date(),
-                        PriorityTypes.LOW.toString(),
-                        CompletionTypes.PENDING.toString(),
-                        "completion"
-                    ),
-                    TaskModel(
-                        0,
+                        4,
                         "Zadanie testowe oznaczone jako active",
                         "opisu brak",
                         userId,
-                        "",
+                        "a4",
                         "03-02-2021",
                         CyclicTypes.NONE.toString(),
                         Date(),
@@ -304,7 +227,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "completion"
                     ),
                     TaskModel(
-                        0,
+                        5,
                         "Odśnieżanie",
                         "Należy odśnieżyć całą posesję",
                         userId,
@@ -317,7 +240,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "completion"
                     ),
                     TaskModel(
-                        0,
+                        6,
                         "Pomoc na budowie",
                         "Potrzebny pomocnik na budowie",
                         userId,
@@ -330,7 +253,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "completion"
                     ),
                     TaskModel(
-                        0,
+                        7,
                         "Klaun na urodzinach online",
                         "Najlepiej jakiś rudy",
                         userId,
@@ -343,7 +266,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "completion"
                     ),
                     TaskModel(
-                        0,
+                        8,
                         "Zadanie testowe oznaczone jako active",
                         "opisu brak",
                         userId,
@@ -356,10 +279,10 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "completion"
                     ),
                     TaskModel(
-                        0,
+                        9,
                         "Odśnieżanie",
                         "Należy odśnieżyć całą posesję",
-                        "Zbysiu Zbyś",
+                        "a5",
                         userId,
                         "22-12-2020",
                         CyclicTypes.NONE.toString(),
@@ -369,10 +292,10 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "completion"
                     ),
                     TaskModel(
-                        0,
+                        10,
                         "Pomoc na budowie",
                         "Potrzebny pomocnik na budowie",
-                        "Zbysiu Zbyś",
+                        "a6",
                         userId,
                         "01-01-2020",
                         CyclicTypes.MONTHDAY.toString(),
@@ -382,10 +305,10 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "completion"
                     ),
                     TaskModel(
-                        0,
+                        11,
                         "Klaun na urodzinach online",
                         "Najlepiej jakiś rudy",
-                        "Zbysiu Zbyś",
+                        "a7",
                         userId,
                         "03-02-2021",
                         CyclicTypes.NONE.toString(),
@@ -395,10 +318,10 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "completion"
                     ),
                     TaskModel(
-                        0,
+                        12,
                         "Zadanie testowe oznaczone jako active",
                         "opisu brak",
-                        "Zbysiu Zbyś",
+                        "a8",
                         userId,
                         "03-02-2021",
                         CyclicTypes.NONE.toString(),
@@ -412,144 +335,155 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
         }
     }
 
-    fun populateNotificationsOpen(coroutineScope: CoroutineScope, userId: String) {
+
+    private fun populateNotificationsOpen(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
+            dashboardNotificationDao.deleteAll()
             dashboardNotificationDao.insert(
                 mutableListOf(
                     DashboardNotification(
-                        0,
+                        1,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a1",
                         DashboardNotificationTypes.CONTACTACCEPTED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        2,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a2",
                         DashboardNotificationTypes.CONTACTCANCELED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        3,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a3",
                         DashboardNotificationTypes.CONTACTREFUSED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        4,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a4",
                         DashboardNotificationTypes.CONTACTINVITED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        16,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a16",
+                        DashboardNotificationTypes.CONTACTINVITED.toString(),
+                        1
+                    ),
+                    DashboardNotification(
+                        5,
+                        Date().toString(),
+                        userId,
+                        "a5",
                         DashboardNotificationTypes.CONTACTREMOVED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        6,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a6",
                         DashboardNotificationTypes.RATEDBYWORKER.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        7,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a7",
                         DashboardNotificationTypes.RATEDBYUSER.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        8,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a8",
                         DashboardNotificationTypes.TASKREJECTED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        9,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a9",
                         DashboardNotificationTypes.TASKCOMPLETED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        17,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a17",
+                        DashboardNotificationTypes.TASKCOMPLETED.toString(),
+                        1
+                    ),
+                    DashboardNotification(
+                        10,
+                        Date().toString(),
+                        userId,
+                        "a10",
                         DashboardNotificationTypes.TASKABANDONED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        11,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a11",
                         DashboardNotificationTypes.TASKACCEPTED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        12,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a12",
                         DashboardNotificationTypes.WORKCANCELED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        13,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a13",
                         DashboardNotificationTypes.WORKREFUSED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        14,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a14",
                         DashboardNotificationTypes.WORKOFFERED.toString(),
-                        1,
-                        false
+                        1
                     ),
                     DashboardNotification(
-                        0,
+                        18,
                         Date().toString(),
                         userId,
-                        "aaaaaaaaaaaaaaaaaa",
+                        "a18",
+                        DashboardNotificationTypes.WORKOFFERED.toString(),
+                        1
+                    ),
+                    DashboardNotification(
+                        15,
+                        Date().toString(),
+                        userId,
+                        "a15",
                         DashboardNotificationTypes.WORKACCEPTED.toString(),
-                        1,
-                        false
+                        1
                     )
                 )
             )
@@ -557,77 +491,109 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
 
     }
 
-    fun populateComments(coroutineScope: CoroutineScope, userId: String) {
+    private fun populateComments(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
             commentDao.deleteAll()
             commentDao.insert(
                 mutableListOf(
-                    Comments(0, userId, "adwadawdawdwa", 4.5f, "Było w porządeczku", true),
-                    Comments(0, userId, "adwadawdawdwa", 4.8f, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true),
-                    Comments(0, userId, "adagduawwddyga", 2f, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true),
-                    Comments(0, userId, "adagduaawdwdyga", 4f, "cccccccccccccccccccccccccccccccc", true),
-                    Comments(0, userId, "adagduadawawdyga", 0f, "dddddddddddddddddddddddddddddddddddddddd", false),
-                    Comments(0, userId, "adagduefawdyga", 1f, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true),
-                    Comments(0, userId, "adagdueqwawdyga", 3f, "ffffffffffffffffffffffffffffffffffff", false),
-                    Comments(0, userId, "adagdeqwuawdyga", 5f, "gggggggggggggggggggggggggggg", true),
-                    Comments(0, userId, "adagduawdfqyga", 2f, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", true),
-                    Comments(0, userId, "adagdusefawdyga", 3f, "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", false),
-                    Comments(0, userId, "adagduawsefdyga", 3.5f, "jjjjjjjjjjjjjjjjjjjjjjjjjjjjj", true),
-                    Comments(0, userId, "adagduawdyga", 4.9f, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkk", false),
-                    Comments(0, userId, "adagduawdyga", 4.1f, "llllllllllllllllllllllllllllllllllllllllllllllllllllllll", true),
+                    Comments(1, userId, "a8", 4.5f, "Było w porządeczku", true),
+                    Comments(2, userId, "a6", 4.8f, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", true),
+                    Comments(3, userId, "a9", 2f, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true),
+                    Comments(4, userId, "a5", 4f, "cccccccccccccccccccccccccccccccc", true),
+                    Comments(5, userId, "a6", 0f, "dddddddddddddddddddddddddddddddddddddddd", false),
+                    Comments(6, userId, "a6", 1f, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true),
+                    Comments(7, userId, "a7", 3f, "ffffffffffffffffffffffffffffffffffff", false),
+                    Comments(8, userId, "a5", 5f, "gggggggggggggggggggggggggggg", true),
+                    Comments(9, userId, "a8", 2f, "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", true),
+                    Comments(10, userId, "a3", 3f, "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", false),
+                    Comments(11, userId, "a5", 3.5f, "jjjjjjjjjjjjjjjjjjjjjjjjjjjjj", true),
+                    Comments(12, userId, "a8", 4.9f, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkk", false),
+                    Comments(13, userId, "a9", 4.1f, "llllllllllllllllllllllllllllllllllllllllllllllllllllllll", true),
                     Comments(
-                        0, userId, "adagduawdyga", 3.3f, " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz ", true
+                        14, userId, "a6", 3.3f, " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz ", true
                     )
                 )
             )
         }
     }
 
-    fun populateContacts(coroutineScope: CoroutineScope, userId: String) {
+    private fun populateContacts(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
+            contactDao.deleteAll()
             contactDao.insert(
                 mutableListOf(
-                    Contacts(0, userId, "adwawd"),
-                    Contacts(0, userId, "qqqdaw"),
-                    Contacts(0, userId, "vsevesc"),
-                    Contacts(0, userId, "grgsfe")
+                    Contacts(0, userId, "a1"),
+                    Contacts(0, userId, "a8"),
+                    Contacts(0, userId, "a7"),
+                    Contacts(0, userId, "a9")
                 )
             )
         }
     }
 
-    private fun populateUsers(coroutineScope: CoroutineScope) {
+    private fun populateCategories(coroutineScope: CoroutineScope) {
         coroutineScope.launch {
-//            userDataDao.deleteAll()
-            userDataDao.insert(
+            categoryDao.deleteAll()
+            categoryDao.insert(
                 mutableListOf(
-                    UserData(
-                        "aaaaaaa", "name lastName", "https://i.imgflip.com/15l4w6.jpg", "email", "0000000", "aaaaa", false, true
-                    ),
-                    UserData(
-                        "aaaaaaa1", "name1 lastName1", "https://i.imgflip.com/15l4w6.jpg", "email1", "11111111", "aaaaaa1", false, true
-                    ),
-                    UserData(
-                        "aaaaaaa2", "name2 lastName2", "https://i.imgflip.com/15l4w6.jpg", "email2", "2222222222", "aaaaaa2", true, true
-                    ),
-                    UserData(
-                        "aaaaaaa3", "name3 lastName3", "https://i.imgflip.com/15l4w6.jpg", "email3", "3333333333", "aaaaaa3", false, true
-                    ),
-                    UserData(
-                        "aaaaaaa4", "name4 lastName4", "https://i.imgflip.com/15l4w6.jpg", "email4", "44444444444", "aaaaaa4", true, true
-                    ),
-                    UserData(
-                        "aaaaaaa5", "name5 lastName5", "https://i.imgflip.com/15l4w6.jpg", "email5", "555555555", "aaaaaa5", true, true
-                    ),
-                    UserData(
-                        "aaaaaaa6", "name6 lastName6", "https://i.imgflip.com/15l4w6.jpg", "email6", "6666666666", "aaaaaa6", false, false
-                    ),
-                    UserData(
-                        "aaaaaaa7", "name7 lastName7", "https://i.imgflip.com/15l4w6.jpg", "email7", "777777777", "aaaaaa7", false, false
-                    ),
-                    UserData(
-                        "aaaaaaa8", "name8 lastName8", "https://i.imgflip.com/15l4w6.jpg", "email8", "88888888", "aaaaaa8", false, false
-                    )
+                    Categories(1, "IT"),
+                    Categories(2, "Magazynier"),
+                    Categories(3, "Ochrona"),
+                    Categories(4, "Budowa"),
+                    Categories(5, "Kasjer"),
+                    Categories(6, "Java"),
+                    Categories(7, "Android"),
+                    Categories(8, "TuMożeByćCokolwiek"),
+                    Categories(9, "Unity")
+                )
+            )
+        }
+    }
+
+    private fun populateTaskCategories(coroutineScope: CoroutineScope, userId: String) {
+        coroutineScope.launch {
+            tasksCategoryCrossRefDao.deleteAll()
+            tasksCategoryCrossRefDao.insert(
+                mutableListOf(
+                    TasksCategoryCrossRef(2, 1),
+                    TasksCategoryCrossRef(2, 9),
+                    TasksCategoryCrossRef(4, 2),
+                    TasksCategoryCrossRef(4, 3),
+                    TasksCategoryCrossRef(6, 4),
+                    TasksCategoryCrossRef(6, 5),
+                    TasksCategoryCrossRef(8, 6),
+                    TasksCategoryCrossRef(8, 7),
+                    TasksCategoryCrossRef(10, 8),
+                    TasksCategoryCrossRef(10, 9),
+                    TasksCategoryCrossRef(12, 1),
+                    TasksCategoryCrossRef(12, 2)
+                )
+            )
+        }
+    }
+
+    private fun populateUserCategories(coroutineScope: CoroutineScope, userId: String) {
+        coroutineScope.launch {
+            userCategoryCrossRefDao.deleteAll()
+            userCategoryCrossRefDao.insert(
+                mutableListOf(
+                    UserCategoryCrossRef(userId, 1),
+                    UserCategoryCrossRef(userId, 9),
+                    UserCategoryCrossRef(userId, 7),
+                    UserCategoryCrossRef("a1", 1),
+                    UserCategoryCrossRef("a2", 8),
+                    UserCategoryCrossRef("a4", 6),
+                    UserCategoryCrossRef("a3", 7),
+                    UserCategoryCrossRef("a5", 8),
+                    UserCategoryCrossRef("a6", 9),
+                    UserCategoryCrossRef("a7", 1),
+                    UserCategoryCrossRef("a8", 2),
+                    UserCategoryCrossRef("a9", 3),
+                    UserCategoryCrossRef("a1", 4),
+                    UserCategoryCrossRef("a2", 5),
+                    UserCategoryCrossRef("a3", 6),
+                    UserCategoryCrossRef("a4", 7),
+                    UserCategoryCrossRef("a5", 3)
                 )
             )
         }

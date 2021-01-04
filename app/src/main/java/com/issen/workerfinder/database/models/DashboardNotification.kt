@@ -18,8 +18,5 @@ data class DashboardNotification(
 
     var dashboardNotificationType: String = "",
 
-    var modifiedRecordId: Int = 0,
-
-    val resolved: Boolean
-
+    var modifiedRecordId: Int = 0
 ) : Serializable

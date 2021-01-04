@@ -20,6 +20,8 @@ data class UserData(
 
     var description: String = "",
 
+    var localization: String = "",
+
     var isAccountPublic: Boolean = false,
 
     var isOpenForWork: Boolean = false

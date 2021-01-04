@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.WorkerFinderDatabase
-import com.issen.workerfinder.database.models.UserData
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.database.repositories.UserRepository
 import com.issen.workerfinder.ui.filters.FilterContainer
@@ -27,7 +26,7 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
     var workerList: LiveData<List<UserDataFull>> = userRepository.getUserWorkers(currentLoggedInUserFull!!.userData.userId)
     var userListFull: LiveData<List<UserDataFull>> = userRepository.getUserUsers(currentLoggedInUserFull!!.userData.userId)
 
-    fun setFilter(name: String, list: MutableList<String>){
+    fun setFilter(name: String, list: MutableList<String>) {
         if (list.contains(name)) {
             list.remove(name)
         } else {
@@ -47,7 +46,7 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
         filterContainer.groupBy = selectedGroupValue
     }
 
-    fun applyTaskListFilters(){
+    fun applyTaskListFilters() {
         currentTaskListFilter = selectedTaskListFilter
     }
 
@@ -55,7 +54,7 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
         selectedTaskListFilter = currentTaskListFilter
     }
 
-    fun applyTaskBoardFilters(){
+    fun applyTaskBoardFilters() {
         currentTaskBoardFilter = selectedTaskBoardFilter
     }
 
@@ -63,7 +62,7 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
         selectedTaskBoardFilter = currentTaskBoardFilter
     }
 
-    fun applyWorkerBoardFilters(){
+    fun applyWorkerBoardFilters() {
         currentWorkerBoardFilter = selectedWorkerBoardFilter
     }
 
@@ -73,33 +72,7 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
 
     fun populateDb() {
         viewModelScope.launch(Dispatchers.IO) {
-            database.userDataDao.delete("aaaaaaaaaaaaaaaaaa")
-            database.userDataDao.insert(UserData(
-                "aaaaaaaaaaaaaaaaaa",
-                "Testowy Zbyszek",
-                "",
-                "email123",
-                "000999888",
-                "Test account",
-                true,
-                true
-            ))
-
-            database.populateComments(
-                this, currentLoggedInUserFull
-                !!.userData.userId
-            )
-            database.populateContacts(
-                this, currentLoggedInUserFull
-                !!.userData.userId
-            )
-            database.populateNotificationsOpen(
-                this, currentLoggedInUserFull
-                !!.userData.userId
-            )
-            database.populateTasksOpen(this, currentLoggedInUserFull!!.userData.userId)
+            database.populateDb(this, currentLoggedInUserFull!!.userData.userId)
         }
-
     }
-
 }

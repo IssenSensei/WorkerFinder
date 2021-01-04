@@ -91,8 +91,7 @@ class UserProfileViewModel(
                     userDataFull.userData.userId,
                     currentLoggedInUserFull!!.userData.userId,
                     DashboardNotificationTypes.CONTACTREMOVED.toString(),
-                    0,
-                    false
+                    0
                 )
             )
             dashboardNotificationRepository.notify(
@@ -102,8 +101,7 @@ class UserProfileViewModel(
                     currentLoggedInUserFull!!.userData.userId,
                     userDataFull.userData.userId,
                     DashboardNotificationTypes.CONTACTREMOVED.toString(),
-                    0,
-                    false
+                    0
                 )
             )
         }
@@ -118,8 +116,7 @@ class UserProfileViewModel(
                     userDataFull.userData.userId,
                     currentLoggedInUserFull!!.userData.userId,
                     DashboardNotificationTypes.CONTACTINVITED.toString(),
-                    0,
-                    false
+                    0
                 )
             )
         }
