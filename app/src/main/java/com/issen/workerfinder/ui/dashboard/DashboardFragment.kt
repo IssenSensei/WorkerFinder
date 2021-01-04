@@ -1,15 +1,15 @@
 package com.issen.workerfinder.ui.dashboard
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
+import com.issen.workerfinder.database.models.DashboardNotification
 import com.issen.workerfinder.database.models.DashboardNotificationFull
 import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 
@@ -18,7 +18,8 @@ class DashboardFragment : Fragment(), DashboardListener {
     private val dashboardViewModel: DashboardViewModel by viewModels {
         WordViewModelFactory(
             (requireActivity().application as WorkerFinderApplication).dashboardNotificationRepository,
-            (requireActivity().application as WorkerFinderApplication).contactRepository
+            (requireActivity().application as WorkerFinderApplication).contactRepository,
+            (requireActivity().application as WorkerFinderApplication).taskRepository
         )
     }
 
@@ -43,12 +44,10 @@ class DashboardFragment : Fragment(), DashboardListener {
 
     override fun onContactAccept(dashboardNotificationFull: DashboardNotificationFull) {
         dashboardViewModel.acceptContact(dashboardNotificationFull)
-        Toast.makeText(requireContext(), "Accepted", Toast.LENGTH_SHORT).show()
     }
 
     override fun onContactRefuse(dashboardNotificationFull: DashboardNotificationFull) {
         dashboardViewModel.refuseContact(dashboardNotificationFull)
-        Toast.makeText(requireContext(), "Refused", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCheckProfile() {
@@ -67,12 +66,20 @@ class DashboardFragment : Fragment(), DashboardListener {
         TODO("Not yet implemented")
     }
 
-    override fun onTaskAccept() {
-        TODO("Not yet implemented")
+    override fun onTaskAccept(dashboardNotification: DashboardNotification) {
+        dashboardViewModel.acceptTask(dashboardNotification)
     }
 
-    override fun onTaskRefuse() {
-        TODO("Not yet implemented")
+    override fun onTaskReject(dashboardNotification: DashboardNotification) {
+        dashboardViewModel.rejectTask(dashboardNotification)
+    }
+
+    override fun onWorkAccept(dashboardNotification: DashboardNotification) {
+        dashboardViewModel.acceptWork(dashboardNotification)
+    }
+
+    override fun onWorkRefuse(dashboardNotification: DashboardNotification) {
+        dashboardViewModel.refuseWork(dashboardNotification)
     }
 
     override fun onCheckTaskDetails() {

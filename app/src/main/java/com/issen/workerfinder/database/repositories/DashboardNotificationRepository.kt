@@ -11,5 +11,11 @@ class DashboardNotificationRepository(private val dashboardNotificationDao: Dash
     suspend fun cancelNotification(notificationOwner: String, notificationCausedBy: String) = dashboardNotificationDao.cancelNotification(notificationOwner, notificationCausedBy)
     suspend fun acceptContact(id: Int) = dashboardNotificationDao.acceptContact(id)
     suspend fun refuseContact(id: Int) = dashboardNotificationDao.refuseContact(id)
+    suspend fun acceptTask(id: Int) = dashboardNotificationDao.acceptTask(id)
+    suspend fun rejectTask(id: Int) = dashboardNotificationDao.rejectTask(id)
+    suspend fun cancelNotification(modifiedRecordId: Int, notificationCausedBy: String) = dashboardNotificationDao.cancelNotification(modifiedRecordId, notificationCausedBy)
+    suspend fun acceptWork(id: Int) = dashboardNotificationDao.acceptWork(id)
+    suspend fun refuseWork(id: Int) = dashboardNotificationDao.refuseWork(id)
+
 
 }

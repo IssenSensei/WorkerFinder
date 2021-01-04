@@ -13,6 +13,7 @@ import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.DashboardNotificationFull
+import com.issen.workerfinder.database.models.TaskModel
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.DashboardNotificationTypes
@@ -87,35 +88,35 @@ fun setNotificationTaskText(textView: TextView, notificationFull: DashboardNotif
 fun setNotificationContactText(textView: TextView, notificationFull: DashboardNotificationFull) {
     textView.text = "Użytkownik " + notificationFull.userData?.userName + when (notificationFull.notification.dashboardNotificationType) {
         DashboardNotificationTypes.CONTACTACCEPTED.toString() -> {
-            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+            if (notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId) {
                 " otrzymał Twoją akceptację przyjęcia do kontaktów."
             } else {
                 " przyjął Twoje zaproszenie do kontaktów."
             }
         }
         DashboardNotificationTypes.CONTACTCANCELED.toString() -> {
-            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+            if (notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId) {
                 " otrzymał informację o wycofaniu propozycji przyjęcia do kontaktów."
             } else {
                 " anulował zaproszenie do kontaktów."
             }
         }
         DashboardNotificationTypes.CONTACTINVITED.toString() -> {
-            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+            if (notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId) {
                 " otrzymał informację o Twojej chęci przyjęcia do kontaktów."
             } else {
                 " chce nawiązać z Tobą kontakt."
             }
         }
         DashboardNotificationTypes.CONTACTREFUSED.toString() -> {
-            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+            if (notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId) {
                 " otrzymał Twoją odmowę przyjęcia do kontaktów."
             } else {
                 " odrzucił Twoje zaproszenie do kontaktów."
             }
         }
         DashboardNotificationTypes.CONTACTREMOVED.toString() -> {
-            if(notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId){
+            if (notificationFull.userData.userId != currentLoggedInUserFull!!.userData.userId) {
                 " został usunięty z Twojej listy kontaktów."
             } else {
                 " usunął Cię ze swojej listy kontaktów."
@@ -160,8 +161,8 @@ fun setCheckBoxTint(checkBox: CheckBox, priority: String) {
 }
 
 @BindingAdapter("checkButtonVisibility")
-fun setCheckBoxVisibility(checkBox: CheckBox, completion: String) {
-    if (completion == CompletionTypes.ACTIVE.toString()) {
+fun setCheckBoxVisibility(checkBox: CheckBox, task: TaskModel) {
+    if (task.completed == CompletionTypes.ACTIVE.toString() && task.workerFirebaseKey == currentLoggedInUserFull!!.userData.userId) {
         checkBox.visibility = View.VISIBLE
     } else {
         checkBox.visibility = View.INVISIBLE

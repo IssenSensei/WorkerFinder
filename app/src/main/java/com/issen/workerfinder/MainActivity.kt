@@ -38,7 +38,7 @@ import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.OnFilterSelectionListener
 import com.issen.workerfinder.ui.taskBoard.TaskBoardFragment
-import com.issen.workerfinder.ui.taskList.TaskListFragment
+import com.issen.workerfinder.ui.taskList.CreatedTaskListFragment
 import com.issen.workerfinder.utils.ViewAnimation
 import com.issen.workerfinder.utils.hideAnimated
 import com.issen.workerfinder.utils.nestedScrollTo
@@ -258,7 +258,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
     override fun onFilterContainerClicked(view: View) {
         when (getCurrentlyDisplayedFragment()) {
-            is TaskListFragment -> {
+            is CreatedTaskListFragment -> {
                 drawer_filter_task_list_main_container.visibility = View.GONE
                 (drawer_filter_task_list_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(view.tag.toString() + "Container").visibility =
                     View.VISIBLE
@@ -282,7 +282,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
     override fun onUserFilterSelected(userDataFull: UserDataFull, isWorker: Boolean, view: View) {
         when (getCurrentlyDisplayedFragment()) {
-            is TaskListFragment -> {
+            is CreatedTaskListFragment -> {
                 if (isWorker) {
                     mainActivityViewModel.setFilter(
                         userDataFull.userData.userId,
@@ -312,7 +312,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
     override fun onFilterCyclicChanged(cyclicTypes: CyclicTypes, view: View) {
         when (getCurrentlyDisplayedFragment()) {
-            is TaskListFragment -> {
+            is CreatedTaskListFragment -> {
                 mainActivityViewModel.setFilter(cyclicTypes.name, mainActivityViewModel.selectedTaskListFilter.filterByCyclic)
             }
             is TaskBoardFragment -> {
@@ -325,7 +325,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
     override fun onAcceptClicked() {
         when (val currentFragment = getCurrentlyDisplayedFragment()) {
-            is TaskListFragment -> {
+            is CreatedTaskListFragment -> {
                 mainActivityViewModel.applyTaskListFilters()
                 currentFragment.onAcceptClicked(mainActivityViewModel.currentTaskListFilter)
             }
@@ -347,7 +347,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
     override fun onBackClicked() {
         when (getCurrentlyDisplayedFragment()) {
-            is TaskListFragment -> {
+            is CreatedTaskListFragment -> {
                 mainActivityViewModel.clearSelectedTaskListFilters()
                 drawer_filter_task_list_worker_container.visibility = View.GONE
                 drawer_filter_task_list_user_container.visibility = View.GONE
@@ -381,7 +381,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
     override fun onClearClicked() {
         when (getCurrentlyDisplayedFragment()) {
-            is TaskListFragment -> {
+            is CreatedTaskListFragment -> {
                 mainActivityViewModel.selectedTaskListFilter = FilterContainer()
 
                 drawer_filter_task_list_group_radio.check(R.id.drawer_filter_task_list_group_none)
@@ -424,7 +424,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
     override fun onOrderSwitched(view: View) {
         when (getCurrentlyDisplayedFragment()) {
-            is TaskListFragment -> {
+            is CreatedTaskListFragment -> {
                 mainActivityViewModel.setOrder(drawer_filter_task_list_sort_switch.isChecked, mainActivityViewModel.selectedTaskListFilter)
             }
             is TaskBoardFragment -> {
@@ -472,7 +472,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     override fun onDrawerRequest(interactionImpl: (v: DrawerLayout) -> Unit) {
         interactionImpl(drawer_layout)
         when (getCurrentlyDisplayedFragment()) {
-            is TaskListFragment -> {
+            is CreatedTaskListFragment -> {
                 drawer_content_task_list.visibility = View.VISIBLE
                 drawer_content_task_board.visibility = View.GONE
                 drawer_content_worker_board.visibility = View.GONE

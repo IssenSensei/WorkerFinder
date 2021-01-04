@@ -247,6 +247,170 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
         }
     }
 
+    fun populateTasksOpen(coroutineScope: CoroutineScope, userId: String) {
+        coroutineScope.launch {
+            taskModelDao.insert(
+                mutableListOf(
+                    TaskModel(
+                        0,
+                        "Odśnieżanie",
+                        "Należy odśnieżyć całą posesję",
+                        userId,
+                        "Zbysiu Zbyś",
+                        "22-12-2020",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.URGENT.toString(),
+                        CompletionTypes.ABANDONED.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Pomoc na budowie",
+                        "Potrzebny pomocnik na budowie",
+                        userId,
+                        "",
+                        "01-01-2020",
+                        CyclicTypes.MONTHDAY.toString(),
+                        Date(),
+                        PriorityTypes.NORMAL.toString(),
+                        CompletionTypes.COMPLETED.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Klaun na urodzinach online",
+                        "Najlepiej jakiś rudy",
+                        userId,
+                        "",
+                        "03-02-2021",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.LOW.toString(),
+                        CompletionTypes.PENDING.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Zadanie testowe oznaczone jako active",
+                        "opisu brak",
+                        userId,
+                        "",
+                        "03-02-2021",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.URGENT.toString(),
+                        CompletionTypes.ACTIVE.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Odśnieżanie",
+                        "Należy odśnieżyć całą posesję",
+                        userId,
+                        userId,
+                        "22-12-2020",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.URGENT.toString(),
+                        CompletionTypes.ABANDONED.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Pomoc na budowie",
+                        "Potrzebny pomocnik na budowie",
+                        userId,
+                        userId,
+                        "01-01-2020",
+                        CyclicTypes.MONTHDAY.toString(),
+                        Date(),
+                        PriorityTypes.NORMAL.toString(),
+                        CompletionTypes.COMPLETED.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Klaun na urodzinach online",
+                        "Najlepiej jakiś rudy",
+                        userId,
+                        userId,
+                        "03-02-2021",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.LOW.toString(),
+                        CompletionTypes.PENDING.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Zadanie testowe oznaczone jako active",
+                        "opisu brak",
+                        userId,
+                        userId,
+                        "03-02-2021",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.URGENT.toString(),
+                        CompletionTypes.ACTIVE.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Odśnieżanie",
+                        "Należy odśnieżyć całą posesję",
+                        "Zbysiu Zbyś",
+                        userId,
+                        "22-12-2020",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.URGENT.toString(),
+                        CompletionTypes.ABANDONED.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Pomoc na budowie",
+                        "Potrzebny pomocnik na budowie",
+                        "Zbysiu Zbyś",
+                        userId,
+                        "01-01-2020",
+                        CyclicTypes.MONTHDAY.toString(),
+                        Date(),
+                        PriorityTypes.NORMAL.toString(),
+                        CompletionTypes.COMPLETED.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Klaun na urodzinach online",
+                        "Najlepiej jakiś rudy",
+                        "Zbysiu Zbyś",
+                        userId,
+                        "03-02-2021",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.LOW.toString(),
+                        CompletionTypes.PENDING.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        0,
+                        "Zadanie testowe oznaczone jako active",
+                        "opisu brak",
+                        "Zbysiu Zbyś",
+                        userId,
+                        "03-02-2021",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.URGENT.toString(),
+                        CompletionTypes.ACTIVE.toString(),
+                        "completion"
+                    )
+                )
+            )
+        }
+    }
 
     fun populateNotificationsOpen(coroutineScope: CoroutineScope, userId: String) {
         coroutineScope.launch {
@@ -411,7 +575,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     Comments(0, userId, "adagduawsefdyga", 3.5f, "jjjjjjjjjjjjjjjjjjjjjjjjjjjjj", true),
                     Comments(0, userId, "adagduawdyga", 4.9f, "kkkkkkkkkkkkkkkkkkkkkkkkkkkkk", false),
                     Comments(0, userId, "adagduawdyga", 4.1f, "llllllllllllllllllllllllllllllllllllllllllllllllllllllll", true),
-                    Comments(0, userId, "adagduawdyga", 3.3f, " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz ", true
+                    Comments(
+                        0, userId, "adagduawdyga", 3.3f, " zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz ", true
                     )
                 )
             )

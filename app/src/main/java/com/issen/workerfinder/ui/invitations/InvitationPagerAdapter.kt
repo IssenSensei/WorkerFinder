@@ -10,7 +10,7 @@ class InvitationPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> InvitationContactsFragment()
-            1 -> InvitationTasksFragment()
+            1 -> InvitationWorkFragment()
             else -> InvitationContactsFragment()
         }
     }

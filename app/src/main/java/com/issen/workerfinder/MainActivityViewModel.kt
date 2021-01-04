@@ -97,6 +97,7 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
                 this, currentLoggedInUserFull
                 !!.userData.userId
             )
+            database.populateTasksOpen(this, currentLoggedInUserFull!!.userData.userId)
         }
 
     }

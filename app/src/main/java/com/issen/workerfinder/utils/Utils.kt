@@ -25,20 +25,20 @@ fun nestedScrollTo(nested: NestedScrollView, targetView: View) {
     nested.post(Runnable { nested.scrollTo(500, targetView.bottom) })
 }
 
-fun getDashboardNotificationGroup(type: String) = when(type){
+fun getDashboardNotificationGroup(type: String) = when (type) {
     DashboardNotificationTypes.RATEDBYWORKER.toString() -> {
         "RATING"
     }
-    DashboardNotificationTypes.RATEDBYUSER.toString() ->{
+    DashboardNotificationTypes.RATEDBYUSER.toString() -> {
         "RATING"
     }
     DashboardNotificationTypes.WORKOFFERED.toString() -> {
         "WORK"
     }
-    DashboardNotificationTypes.WORKACCEPTED.toString() ->{
+    DashboardNotificationTypes.WORKACCEPTED.toString() -> {
         "WORK"
     }
-    DashboardNotificationTypes.WORKREFUSED.toString() ->{
+    DashboardNotificationTypes.WORKREFUSED.toString() -> {
         "WORK"
     }
     DashboardNotificationTypes.WORKCANCELED.toString() -> {
@@ -47,10 +47,10 @@ fun getDashboardNotificationGroup(type: String) = when(type){
     DashboardNotificationTypes.TASKCOMPLETED.toString() -> {
         "TASK"
     }
-    DashboardNotificationTypes.TASKABANDONED.toString() ->{
+    DashboardNotificationTypes.TASKABANDONED.toString() -> {
         "TASK"
     }
-    DashboardNotificationTypes.TASKREJECTED.toString() ->{
+    DashboardNotificationTypes.TASKREJECTED.toString() -> {
         "TASK"
     }
     DashboardNotificationTypes.TASKACCEPTED.toString() -> {
@@ -59,10 +59,10 @@ fun getDashboardNotificationGroup(type: String) = when(type){
     DashboardNotificationTypes.CONTACTINVITED.toString() -> {
         "CONTACT"
     }
-    DashboardNotificationTypes.CONTACTREFUSED.toString() ->{
+    DashboardNotificationTypes.CONTACTREFUSED.toString() -> {
         "CONTACT"
     }
-    DashboardNotificationTypes.CONTACTCANCELED.toString() ->{
+    DashboardNotificationTypes.CONTACTCANCELED.toString() -> {
         "CONTACT"
     }
     DashboardNotificationTypes.CONTACTACCEPTED.toString() -> {
@@ -75,3 +75,4 @@ fun getDashboardNotificationGroup(type: String) = when(type){
         "ERROR"
     }
 }
+

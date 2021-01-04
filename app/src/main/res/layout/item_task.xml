@@ -11,7 +11,7 @@
 
         <variable
             name="clickListener"
-            type="com.issen.workerfinder.ui.taskList.TaskListListener" />
+            type="com.issen.workerfinder.ui.misc.TaskListListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -42,7 +42,7 @@
                     <CheckBox
                         android:id="@+id/task_checkbox"
                         checkButtonTint="@{fullTask.task.priority}"
-                        checkButtonVisibility="@{fullTask.task.completed}"
+                        checkButtonVisibility="@{fullTask.task}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:foregroundGravity="center"

@@ -146,6 +146,9 @@
         <action
             android:id="@+id/action_nav_invitations_to_nav_user_profile"
             app:destination="@id/nav_user_profile" />
+        <action
+            android:id="@+id/action_nav_invitations_to_nav_task_detail"
+            app:destination="@id/nav_task_detail" />
     </fragment>
 
 </navigation>

@@ -1,5 +1,6 @@
 package com.issen.workerfinder.ui.taskDetail
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -12,8 +13,10 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
+import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.databinding.FragmentTaskDetailBinding
+import com.issen.workerfinder.enums.CompletionTypes
 
 class TaskDetailFragment : Fragment() {
 
@@ -39,7 +42,7 @@ class TaskDetailFragment : Fragment() {
         taskFull = safeArgs.fullTask
         binding.fullTask = taskFull
 
-        if(taskFull.photos.isNotEmpty()){
+        if (taskFull.photos.isNotEmpty()) {
             binding.taskListPhotos.visibility = View.VISIBLE
             taskFull.photos.forEach {
 
@@ -51,7 +54,7 @@ class TaskDetailFragment : Fragment() {
             }
         }
 
-        if(taskFull.repeatDays.isNotEmpty()){
+        if (taskFull.repeatDays.isNotEmpty()) {
             taskFull.repeatDays.forEach {
                 binding.taskDetailRepeatDays.append(it.repeatDay + "\n")
             }
@@ -66,6 +69,11 @@ class TaskDetailFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.fragment_task_detail, menu)
+        menu.findItem(R.id.action_abandon).isVisible = isPossibleToAbandon()
+    }
+
+    private fun isPossibleToAbandon(): Boolean {
+        return taskFull.task.completed != CompletionTypes.COMPLETED.name && taskFull.task.completed != CompletionTypes.ABANDONED.name
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -83,8 +91,30 @@ class TaskDetailFragment : Fragment() {
     }
 
     private fun abandonTask() {
-        taskDetailViewModel.abandonTask(taskFull)
-        Toast.makeText(context, taskFull.task.completed, Toast.LENGTH_SHORT).show()
+        if (taskFull.task.userFirebaseKey == currentLoggedInUserFull!!.userData.userId && taskFull.task.workerFirebaseKey == currentLoggedInUserFull!!.userData.userId) {
+            taskDetailViewModel.abandonCreatedTask(taskFull)
+        } else {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            builder.apply {
+                setTitle("Potwierdź decyzję")
+                if (taskFull.task.userFirebaseKey == currentLoggedInUserFull!!.userData.userId && taskFull.task.workerFirebaseKey != currentLoggedInUserFull!!.userData.userId) {
+                    setMessage("Czy na pewno chcesz anulować wystawione przez Ciebie zadanie?")
+                    setPositiveButton("Zatwierdź") { dialogInterface, i ->
+                        taskDetailViewModel.abandonCommissionedTask(taskFull)
+                        Toast.makeText(requireContext(), "Zadanie zostało wycofane", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    setMessage("Czy na pewno chcesz porzucić wykonywanie tego zadania?")
+                    setPositiveButton("Akceptuj") { dialogInterface, i ->
+                        taskDetailViewModel.abandonAcceptedTask(taskFull)
+                        Toast.makeText(requireContext(), "Zadanie zostało porzucone", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                setNeutralButton("Anuluj") { dialogInterface, i -> }
+                create()
+                show()
+            }
+        }
     }
 
     private fun editTask() {

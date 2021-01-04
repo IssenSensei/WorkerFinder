@@ -10,6 +10,7 @@
         <variable
             name="notificationData"
             type="com.issen.workerfinder.database.models.DashboardNotificationFull" />
+
         <variable
             name="clickListener"
             type="com.issen.workerfinder.ui.dashboard.DashboardListener" />
@@ -97,6 +98,7 @@
                     android:background="@drawable/btn_rounded_transparent"
                     android:drawableStart="@drawable/ic_done"
                     android:drawableTint="@color/green_600"
+                    android:onClick="@{() -> clickListener.onWorkAccept(notificationData.notification)}"
                     android:shadowRadius="3"
                     android:text="Przyjmij"
                     android:visibility="@{notificationData.notification.dashboardNotificationType.equals(DashboardNotificationTypes.WORKOFFERED.toString()) ? View.VISIBLE : View.GONE}"
@@ -114,6 +116,7 @@
                     android:background="@drawable/btn_rounded_transparent"
                     android:drawableStart="@drawable/clear_smallest_black"
                     android:drawableTint="@color/red_600"
+                    android:onClick="@{() -> clickListener.onWorkRefuse(notificationData.notification)}"
                     android:shadowRadius="3"
                     android:text="Odrzuć"
                     android:visibility="@{notificationData.notification.dashboardNotificationType.equals(DashboardNotificationTypes.WORKOFFERED.toString()) ? View.VISIBLE : View.GONE}"

@@ -1,39 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/task_list_filter_drawer"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.taskList.TaskListFragment"
-    tools:openDrawer="end">
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/task_list_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/task_recycler_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_task" />
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/task_list_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/task_recycler_list_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/save_smallest_black"
-            app:layout_constraintBottom_toBottomOf="@+id/task_recycler_list"
-            app:layout_constraintEnd_toEndOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>

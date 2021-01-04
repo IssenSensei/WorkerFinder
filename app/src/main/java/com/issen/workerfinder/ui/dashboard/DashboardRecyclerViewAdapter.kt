@@ -6,8 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.issen.workerfinder.database.models.DashboardNotification
 import com.issen.workerfinder.database.models.DashboardNotificationFull
-import com.issen.workerfinder.databinding.*
+import com.issen.workerfinder.databinding.ItemNotificationContactBinding
+import com.issen.workerfinder.databinding.ItemNotificationRatingBinding
+import com.issen.workerfinder.databinding.ItemNotificationTaskBinding
+import com.issen.workerfinder.databinding.ItemNotificationWorkBinding
 import com.issen.workerfinder.utils.getDashboardNotificationGroup
 
 class DashboardRecyclerViewAdapter(private val dashboardListener: DashboardListener, private val context: Context) :
@@ -132,8 +136,10 @@ interface DashboardListener {
     fun onCheckRating()
     fun onCreateTask()
     fun onChatWithUser()
-    fun onTaskAccept()
-    fun onTaskRefuse()
+    fun onTaskAccept(dashboardNotification: DashboardNotification)
+    fun onTaskReject(dashboardNotification: DashboardNotification)
+    fun onWorkAccept(dashboardNotification: DashboardNotification)
+    fun onWorkRefuse(dashboardNotification: DashboardNotification)
     fun onCheckTaskDetails()
     fun onTaskEdit()
 }

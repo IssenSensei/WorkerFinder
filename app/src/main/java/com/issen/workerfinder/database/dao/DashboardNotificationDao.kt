@@ -31,5 +31,21 @@ interface DashboardNotificationDao {
     @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTREFUSED' WHERE id = :id")
     suspend fun refuseContact(id: Int)
 
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'TASKACCEPTED' WHERE id = :id")
+    suspend fun acceptTask(id: Int)
+
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'TASKREJECTED' WHERE id = :id")
+    suspend fun rejectTask(id: Int)
+
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'WORKACCEPTED' WHERE id = :id")
+    suspend fun acceptWork(id: Int)
+
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'WORKREFUSED' WHERE id = :id")
+    suspend fun refuseWork(id: Int)
+
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'WORKCANCELED' WHERE modifiedRecordId = " +
+            ":modifiedRecordId AND notificationCausedByUserId = :notificationCausedBy")
+    suspend fun cancelNotification(modifiedRecordId: Int, notificationCausedBy: String)
+
 
 }
