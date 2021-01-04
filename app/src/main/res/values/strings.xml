@@ -58,7 +58,7 @@
     <string name="surname_label">Nazwisko</string>
     <string name="repeat_password_label">Powtórz hasło</string>
     <string name="has_account_text">Posiadasz już konto?</string>
-    <string name="new_task_title_label">Nazwa</string>
+    <string name="new_task_title_label">Tytuł</string>
     <string name="new_task_description_label">Opis</string>
     <string name="new_task_worker_label">Pracownik</string>
     <string name="task_form_category_label">Kategoria</string>

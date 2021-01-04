@@ -13,6 +13,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.view.*
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,20 +22,25 @@ import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.TaskModel
+import com.issen.workerfinder.database.models.TaskModelFull
+import com.issen.workerfinder.databinding.FragmentTaskCreateBinding
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
 import com.issen.workerfinder.enums.PriorityTypes
+import com.issen.workerfinder.utils.ViewAnimation
+import com.issen.workerfinder.utils.nestedScrollTo
+import com.issen.workerfinder.utils.toggleArrow
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_calendarview_picker.view.*
 import kotlinx.android.synthetic.main.dialog_day_interval_picker.view.*
 import kotlinx.android.synthetic.main.fragment_task_create.*
-import kotlinx.android.synthetic.main.fragment_task_create.view.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class TaskCreateFragment : Fragment() {
+class TaskCreateFragment : Fragment(), TaskCreateListener {
 
     private val CAMERA_CODE = 0
     private val GALLERY_CODE = 1
@@ -57,21 +63,17 @@ class TaskCreateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_task_create, container, false)
-
+        val binding = FragmentTaskCreateBinding.inflate(inflater, container, false)
         val tempModel = taskCreateViewModel.generateMockupModel()
-        root.new_task_title.setText(tempModel.taskTitle)
-        root.new_task_description.setText(tempModel.taskDescription)
-        root.new_task_worker.setText(currentLoggedInUserFull!!.userData.userName)
-//        root.new_task_category.setText(tempModel.category)
-        root.new_task_date.setText(tempModel.nextCompletionDate)
+        binding.task = TaskModelFull(tempModel, mutableListOf(), mutableListOf(), mutableListOf(), currentLoggedInUserFull!!.userData, currentLoggedInUserFull!!.userData)
+        binding.clickListener = this
 
         val prioritySpinnerAdapter = PrioritySpinnerAdapter(requireContext())
-        root.new_task_priority_spinner.adapter = prioritySpinnerAdapter
-        root.new_task_priority_spinner.setSelection(prioritySpinnerAdapter.getPosition(PriorityTypes.NORMAL))
+        binding.newTaskPrioritySpinner.adapter = prioritySpinnerAdapter
+        binding.newTaskPrioritySpinner.setSelection(prioritySpinnerAdapter.getPosition(PriorityTypes.NORMAL))
 
-        setOnClickListeners(root)
-        return root
+        binding.executePendingBindings()
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -95,9 +97,9 @@ class TaskCreateFragment : Fragment() {
                 0,
                 new_task_title.text.toString(),
                 new_task_description.text.toString(),
-                "zbysiu",
-                new_task_worker.text.toString(),
-                new_task_date.text.toString(),
+                currentLoggedInUserFull!!.userData.userId,
+                "a1",
+                new_task_date_container.text.toString(),
                 type,
                 Date(),
                 PriorityTypes.NORMAL.toString(),
@@ -126,37 +128,6 @@ class TaskCreateFragment : Fragment() {
         }
         else -> {
             "Beware of the errors"
-        }
-    }
-
-    private fun setOnClickListeners(root: View) {
-        root.new_task_cyclic_none.setOnClickListener {
-            taskCreateViewModel.clearDates()
-        }
-
-        root.new_task_cyclic_weekday.setOnClickListener {
-            taskCreateViewModel.clearDates()
-            showWeekdayPicker()
-        }
-        root.new_task_cyclic_monthday.setOnClickListener {
-            taskCreateViewModel.clearDates()
-            showMonthdayPicker()
-        }
-        root.new_task_cyclic_yearday.setOnClickListener {
-            taskCreateViewModel.clearDates()
-            showYeardayPicker()
-        }
-        root.new_task_cyclic_day.setOnClickListener {
-            taskCreateViewModel.clearDates()
-            showDayIntervalPicker()
-        }
-        root.new_task_gallery.setOnClickListener {
-            val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(pickPhoto, GALLERY_CODE)
-        }
-        root.new_task_camera.setOnClickListener {
-            val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(takePicture, CAMERA_CODE)
         }
     }
 
@@ -189,7 +160,7 @@ class TaskCreateFragment : Fragment() {
         }
     }
 
-    private fun showMonthdayPicker() {
+    private fun showMonthDayPicker() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         val dialogView = layoutInflater.inflate(R.layout.dialog_calendarview_picker, null)
         val calendarView = dialogView.calendar
@@ -224,7 +195,7 @@ class TaskCreateFragment : Fragment() {
         }
     }
 
-    private fun showYeardayPicker() {
+    private fun showYearDayPicker() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         val dialogView = layoutInflater.inflate(R.layout.dialog_calendarview_picker, null)
         val calendarView = dialogView.calendar
@@ -338,7 +309,80 @@ class TaskCreateFragment : Fragment() {
             id = (taskCreateViewModel.photos.size - 1)
             setImageURI(uri)
         }
-        task_photos_grid.addView(imageView)
+        new_task_photos_grid.addView(imageView)
+    }
+
+    private fun toggleSectionInput(view: View, containerView: View) {
+        val show = toggleArrow(view)
+        if (show) {
+            ViewAnimation.expand(containerView) {
+                fun onFinish() {
+                    nestedScrollTo(
+                        drawer_filter_nested_scroll_view,
+                        containerView
+                    )
+                }
+            }
+        } else {
+            ViewAnimation.collapse(containerView)
+        }
+    }
+
+    override fun onHeaderClicked(view: View) {
+        toggleSectionInput(
+            view.findViewWithTag("viewButton"),
+            (view.parent as LinearLayout).findViewWithTag(view.tag.toString() + "Container")
+        )
+    }
+
+    override fun onAddWorkerClicked() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCategoryFastSelectClicked() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSelectPictureClicked() {
+        val pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(pickPhoto, GALLERY_CODE)
+    }
+
+    override fun onTakePictureClicked() {
+        val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(takePicture, CAMERA_CODE)
+    }
+
+    override fun onCyclicDayClicked() {
+        taskCreateViewModel.clearDates()
+        showDayIntervalPicker()
+    }
+
+    override fun onCyclicYearDayClicked() {
+        taskCreateViewModel.clearDates()
+        showYearDayPicker()
+    }
+
+    override fun onCyclicMonthDayClicked() {
+        taskCreateViewModel.clearDates()
+        showMonthDayPicker()
+    }
+
+    override fun onCyclicWeekdayClicked() {
+        taskCreateViewModel.clearDates()
+        showWeekdayPicker()
+    }
+
+    override fun onCyclicNoneClicked() {
+        taskCreateViewModel.clearDates()
+    }
+
+    override fun onSetNextDateClicked() {
+        TODO("Not yet implemented")
+    }
+
+    override fun setRemote(view: View) {
+        TODO("Not yet implemented")
     }
 
 }

@@ -25,6 +25,16 @@ fun nestedScrollTo(nested: NestedScrollView, targetView: View) {
     nested.post(Runnable { nested.scrollTo(500, targetView.bottom) })
 }
 
+fun toggleArrow(view: View): Boolean {
+    return if (view.rotation == 0f) {
+        view.animate().setDuration(200).rotation(180f)
+        true
+    } else {
+        view.animate().setDuration(200).rotation(0f)
+        false
+    }
+}
+
 fun getDashboardNotificationGroup(type: String) = when (type) {
     DashboardNotificationTypes.RATEDBYWORKER.toString() -> {
         "RATING"

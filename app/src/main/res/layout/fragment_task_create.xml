@@ -1,282 +1,574 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey_300">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <data>
+
+        <variable
+            name="task"
+            type="com.issen.workerfinder.database.models.TaskModelFull" />
+
+        <variable
+            name="clickListener"
+            type="com.issen.workerfinder.ui.taskCreate.TaskCreateListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_medium">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/new_task_title_label"
-                app:endIconMode="clear_text">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/new_task_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/new_task_description_label"
-                app:endIconMode="clear_text">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/new_task_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:lines="3"
-                    android:maxLines="5"
-                    android:minLines="3"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/new_task_worker_container"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:hint="@string/new_task_worker_label"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_task_worker"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/new_task_worker_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Wyszukaj" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/new_task_category_container"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:hint="@string/task_form_category_label"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_task_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Spinner
-                    android:id="@+id/new_task_category_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-            <Spinner
-                android:id="@+id/new_task_priority_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/blue_outline"
-                android:spinnerMode="dropdown"
-                tools:listitem="@layout/item_priority" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/new_task_date_container"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="12"
-                    android:hint="@string/new_task_date_label"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_task_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <ImageButton
-                    android:id="@+id/new_task_date_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/save_smallest_black" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="12"
-                    android:text="@string/new_task_photos_label"
-                    android:textStyle="bold" />
-
-
-                <ImageButton
-                    android:id="@+id/new_task_camera"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/spacing_small"
-                    android:layout_weight="3"
-                    android:src="@drawable/camera_smallest_black" />
-
-                <ImageButton
-                    android:id="@+id/new_task_gallery"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/spacing_small"
-                    android:layout_weight="3"
-                    android:src="@drawable/ic_menu_gallery" />
-            </LinearLayout>
-
-            <GridLayout
-                android:id="@+id/new_task_grid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="3"
-                android:gravity="center"
-                android:horizontalSpacing="@dimen/spacing_x_small"
-                android:verticalSpacing="@dimen/spacing_x_small" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/new_task_cyclic_form_container"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/new_task_cyclic_form_label"
-                        android:textStyle="bold" />
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginRight="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <RadioGroup
-                            android:id="@+id/new_task_cyclic_radio"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/spacing_x_large"
-                            android:layout_weight="6">
-
-                            <RadioButton
-                                android:id="@+id/new_task_cyclic_none"
-                                android:checked="true"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:buttonTint="@color/colorSecondary"
-                                android:text="@string/new_task_cyclic_none_label" />
-
-                            <RadioButton
-                                android:id="@+id/new_task_cyclic_weekday"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:buttonTint="@color/colorSecondary"
-                                android:text="@string/new_task_cyclic_weekday_label" />
-
-                            <RadioButton
-                                android:id="@+id/new_task_cyclic_monthday"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:buttonTint="@color/colorSecondary"
-                                android:text="@string/new_task_cyclic_monthday_label" />
-
-                            <RadioButton
-                                android:id="@+id/new_task_cyclic_yearday"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:buttonTint="@color/colorSecondary"
-                                android:text="@string/new_task_cyclic_yearday_label" />
-
-                            <RadioButton
-                                android:id="@+id/new_task_cyclic_day"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:buttonTint="@color/colorSecondary"
-                                android:text="@string/new_task_cyclic_day_label" />
-                        </RadioGroup>
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/new_task_cyclic_list"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey_3" />
-                </LinearLayout>
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/new_task_toggle_primary_info_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:gravity="center_vertical"
+                            android:minHeight="?attr/actionBarSize"
+                            android:onClick="@{(view) -> clickListener.onHeaderClicked(view)}"
+                            android:orientation="horizontal"
+                            android:tag="primary">
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Podstawowe informacje"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/grey_80" />
+
+                            <ImageButton
+                                android:id="@+id/new_task_toggle_primary_info_button"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="?attr/actionBarSize"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="false"
+                                android:tag="viewButton"
+                                android:tint="@color/grey_80"
+                                app:srcCompat="@drawable/ic_expand_arrow" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/new_task_primary_expand_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_small"
+                            android:orientation="vertical"
+                            android:tag="primaryContainer">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/new_task_title_label"
+                                app:endIconMode="clear_text">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/new_task_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:text="@{task.task.taskTitle}" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/new_task_description_label"
+                                app:endIconMode="clear_text">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/new_task_description"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textMultiLine"
+                                    android:lines="3"
+                                    android:maxLines="5"
+                                    android:minLines="3"
+                                    android:singleLine="true"
+                                    android:text="@{task.task.taskDescription}" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <include
+                                android:id="@+id/item_contact_mini"
+                                layout="@layout/item_contact_mini"
+                                bind:worker="@{task.taskWorker}" />
+
+                            <Button
+                                android:id="@+id/new_task_worker_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:onClick="@{() -> clickListener.onAddWorkerClicked()}"
+                                android:text="Wybierz pracownika" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginRight="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/new_task_toggle_additional_info_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:gravity="center_vertical"
+                            android:minHeight="?attr/actionBarSize"
+                            android:onClick="@{(view) -> clickListener.onHeaderClicked(view)}"
+                            android:orientation="horizontal"
+                            android:tag="additional">
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Dodatkowe informacje"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/grey_80" />
+
+                            <ImageButton
+                                android:id="@+id/new_task_toggle_additional_info_button"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="?attr/actionBarSize"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="false"
+                                android:tag="viewButton"
+                                android:tint="@color/grey_80"
+                                app:srcCompat="@drawable/ic_expand_arrow" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/new_task_additional_expand_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_small"
+                            android:orientation="vertical"
+                            android:tag="additionalContainer"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/new_task_priority_spinner"
+                                android:text="Priorytet" />
+
+                            <Spinner
+                                android:id="@+id/new_task_priority_spinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/blue_outline"
+                                android:spinnerMode="dropdown"
+                                tools:listitem="@layout/item_priority" />
+
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{(view)->clickListener.setRemote(view)}"
+                                android:text="Praca zdalna" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/new_task_localization"
+                                android:text="Lokalizacja" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/spacing_small"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/new_task_localization"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="8"
+                                    android:hint="Podaj lokalizację" />
+
+                                <!--                                todo implement localization picker-->
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:labelFor="@id/new_task_pay"
+                                android:text="Stawka" />
+
+                            <EditText
+                                android:id="@+id/new_task_pay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:text="@{task.task.pay}" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <!--                               todo add chips instead-->
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/new_task_category_container"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="8"
+                                    android:hint="@string/task_form_category_label"
+                                    app:endIconMode="clear_text">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/new_task_category"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:inputType="textMultiLine"
+                                        android:maxLines="1"
+                                        android:singleLine="true"
+                                        android:text="@{task.categories.toString()}" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <ImageButton
+                                    android:id="@+id/new_task_category_select_button"
+                                    android:layout_width="?attr/actionBarSize"
+                                    android:layout_height="?attr/actionBarSize"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:clickable="false"
+                                    android:onClick="@{() -> clickListener.onCategoryFastSelectClicked()}"
+                                    android:tag="viewButton"
+                                    android:tint="@color/grey_80"
+                                    app:srcCompat="@drawable/ic_arrow_left" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginRight="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/new_task_toggle_data_info_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:gravity="center_vertical"
+                            android:minHeight="?attr/actionBarSize"
+                            android:onClick="@{(view) -> clickListener.onHeaderClicked(view)}"
+                            android:orientation="horizontal"
+                            android:tag="data">
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Data"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/grey_80" />
+
+                            <ImageButton
+                                android:id="@+id/new_task_toggle_data_info_button"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="?attr/actionBarSize"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="false"
+                                android:tag="viewButton"
+                                android:tint="@color/grey_80"
+                                app:srcCompat="@drawable/ic_expand_arrow" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/new_task_data_expand_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_small"
+                            android:orientation="vertical"
+                            android:tag="dataContainer"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/new_task_date_container"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="12"
+                                    android:text="@{task.task.nextCompletionDate}" />
+
+                                <ImageButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{() -> clickListener.onSetNextDateClicked()}"
+                                    android:src="@drawable/save_smallest_black" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/new_task_cyclic_form_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/new_task_cyclic_form_label"
+                                        android:textStyle="bold" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+
+                                        <RadioGroup
+                                            android:id="@+id/new_task_cyclic_radio"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="@dimen/spacing_x_large"
+                                            android:layout_weight="6">
+
+                                            <RadioButton
+                                                android:id="@+id/new_task_cyclic_none"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:buttonTint="@color/colorSecondary"
+                                                android:checked="true"
+                                                android:onClick="@{ () -> clickListener.onCyclicNoneClicked()}"
+                                                android:text="@string/new_task_cyclic_none_label" />
+
+                                            <RadioButton
+                                                android:id="@+id/new_task_cyclic_weekday"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:buttonTint="@color/colorSecondary"
+                                                android:onClick="@{ () -> clickListener.onCyclicWeekdayClicked()}"
+                                                android:text="@string/new_task_cyclic_weekday_label" />
+
+                                            <RadioButton
+                                                android:id="@+id/new_task_cyclic_monthday"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:buttonTint="@color/colorSecondary"
+                                                android:onClick="@{ () -> clickListener.onCyclicMonthDayClicked()}"
+                                                android:text="@string/new_task_cyclic_monthday_label" />
+
+                                            <RadioButton
+                                                android:id="@+id/new_task_cyclic_yearday"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:buttonTint="@color/colorSecondary"
+                                                android:onClick="@{ () -> clickListener.onCyclicYearDayClicked()}"
+                                                android:text="@string/new_task_cyclic_yearday_label" />
+
+                                            <RadioButton
+                                                android:id="@+id/new_task_cyclic_day"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:buttonTint="@color/colorSecondary"
+                                                android:onClick="@{ () -> clickListener.onCyclicDayClicked()}"
+                                                android:text="@string/new_task_cyclic_day_label" />
+                                        </RadioGroup>
+                                    </LinearLayout>
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/new_task_cyclic_recycler"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginRight="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/new_task_toggle_picture_info_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:gravity="center_vertical"
+                            android:minHeight="?attr/actionBarSize"
+                            android:onClick="@{(view) -> clickListener.onHeaderClicked(view)}"
+                            android:orientation="horizontal"
+                            android:tag="picture">
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Zdjęcia"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/grey_80" />
+
+                            <ImageButton
+                                android:id="@+id/new_task_toggle_picture_info_button"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="?attr/actionBarSize"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="false"
+                                android:tag="viewButton"
+                                android:tint="@color/grey_80"
+                                app:srcCompat="@drawable/ic_expand_arrow" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/new_task_picture_expand_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_small"
+                            android:orientation="vertical"
+                            android:tag="pictureContainer"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <Button
+                                    android:id="@+id/new_task_camera"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/spacing_small"
+                                    android:layout_weight="3"
+                                    android:onClick="@{()->clickListener.onTakePictureClicked()}"
+                                    android:src="@drawable/camera_smallest_black"
+                                    android:text="Zrób nowe" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="lub" />
+
+                                <Button
+                                    android:id="@+id/new_task_gallery"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/spacing_small"
+                                    android:layout_weight="3"
+                                    android:onClick="@{()->clickListener.onSelectPictureClicked()}"
+                                    android:src="@drawable/ic_menu_gallery"
+                                    android:text="Wybierz z galerii" />
+                            </LinearLayout>
+
+                            <GridLayout
+                                android:id="@+id/new_task_photos_grid"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:columnCount="3"
+                                android:gravity="center"
+                                android:horizontalSpacing="@dimen/spacing_x_small"
+                                android:verticalSpacing="@dimen/spacing_x_small" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <GridLayout
-                android:id="@+id/task_photos_grid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="3"
-                android:gravity="center"
-                android:horizontalSpacing="@dimen/spacing_x_small"
-                android:verticalSpacing="@dimen/spacing_x_small" />
-        </LinearLayout>
-
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

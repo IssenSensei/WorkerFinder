@@ -39,10 +39,7 @@ import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.OnFilterSelectionListener
 import com.issen.workerfinder.ui.taskBoard.TaskBoardFragment
 import com.issen.workerfinder.ui.taskList.CreatedTaskListFragment
-import com.issen.workerfinder.utils.ViewAnimation
-import com.issen.workerfinder.utils.hideAnimated
-import com.issen.workerfinder.utils.nestedScrollTo
-import com.issen.workerfinder.utils.showAnimated
+import com.issen.workerfinder.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.drawer_content_task_board.*
@@ -513,14 +510,6 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         }
     }
 
-    private fun toggleArrow(view: View): Boolean {
-        return if (view.rotation == 0f) {
-            view.animate().setDuration(200).rotation(180f)
-            true
-        } else {
-            view.animate().setDuration(200).rotation(0f)
-            false
-        }
-    }
+
 
 }
