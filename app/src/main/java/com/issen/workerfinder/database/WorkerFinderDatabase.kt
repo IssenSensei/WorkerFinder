@@ -329,6 +329,58 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         PriorityTypes.URGENT.toString(),
                         CompletionTypes.ACTIVE.toString(),
                         "completion"
+                    ),
+                    TaskModel(
+                        13,
+                        "Odśnieżanie",
+                        "Należy odśnieżyć całą posesję",
+                        "a5",
+                        "",
+                        "22-12-2020",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.URGENT.toString(),
+                        CompletionTypes.BOARD.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        14,
+                        "Pomoc na budowie",
+                        "Potrzebny pomocnik na budowie",
+                        "a6",
+                        "",
+                        "01-01-2020",
+                        CyclicTypes.MONTHDAY.toString(),
+                        Date(),
+                        PriorityTypes.NORMAL.toString(),
+                        CompletionTypes.BOARD.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        15,
+                        "Klaun na urodzinach online",
+                        "Najlepiej jakiś rudy",
+                        "a7",
+                        "",
+                        "03-02-2021",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.LOW.toString(),
+                        CompletionTypes.BOARD.toString(),
+                        "completion"
+                    ),
+                    TaskModel(
+                        16,
+                        "Zadanie testowe oznaczone jako active",
+                        "opisu brak",
+                        "a8",
+                        "",
+                        "03-02-2021",
+                        CyclicTypes.NONE.toString(),
+                        Date(),
+                        PriorityTypes.URGENT.toString(),
+                        CompletionTypes.BOARD.toString(),
+                        "completion"
                     )
                 )
             )
@@ -483,6 +535,70 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         userId,
                         "a15",
                         DashboardNotificationTypes.WORKACCEPTED.toString(),
+                        1
+                    ),
+                    DashboardNotification(
+                        19,
+                        Date().toString(),
+                        "a17",
+                        userId,
+                        DashboardNotificationTypes.WORKOFFERED.toString(),
+                        1
+                    ),
+                    DashboardNotification(
+                        20,
+                        Date().toString(),
+                        "a10",
+                        userId,
+                        DashboardNotificationTypes.WORKOFFERED.toString(),
+                        2
+                    ),
+                    DashboardNotification(
+                        21,
+                        Date().toString(),
+                        "a11",
+                        userId,
+                        DashboardNotificationTypes.WORKREFUSED.toString(),
+                        3
+                    ),
+                    DashboardNotification(
+                        22,
+                        Date().toString(),
+                        "a12",
+                        userId,
+                        DashboardNotificationTypes.WORKREFUSED.toString(),
+                        4
+                    ),
+                    DashboardNotification(
+                        23,
+                        Date().toString(),
+                        "a13",
+                        userId,
+                        DashboardNotificationTypes.CONTACTINVITED.toString(),
+                        1
+                    ),
+                    DashboardNotification(
+                        24,
+                        Date().toString(),
+                        "a14",
+                        userId,
+                        DashboardNotificationTypes.CONTACTINVITED.toString(),
+                        1
+                    ),
+                    DashboardNotification(
+                        25,
+                        Date().toString(),
+                        "a18",
+                        userId,
+                        DashboardNotificationTypes.CONTACTINVITED.toString(),
+                        1
+                    ),
+                    DashboardNotification(
+                        26,
+                        Date().toString(),
+                        "a15",
+                        userId,
+                        DashboardNotificationTypes.CONTACTINVITED.toString(),
                         1
                     )
                 )

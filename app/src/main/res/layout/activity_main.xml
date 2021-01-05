@@ -151,21 +151,8 @@
                         android:layout_height="wrap_content">
 
                         <include
-                            android:id="@+id/drawer_content_task_list"
-                            layout="@layout/drawer_content_task_list"
-                            android:visibility="gone"
-                            bind:drawerFilterClickListener="@{drawerFilterClickListener}" />
-
-                        <include
-                            android:id="@+id/drawer_content_task_board"
-                            layout="@layout/drawer_content_task_board"
-                            android:visibility="gone"
-                            bind:drawerFilterClickListener="@{drawerFilterClickListener}" />
-
-                        <include
-                            android:id="@+id/drawer_content_worker_board"
-                            layout="@layout/drawer_content_worker_board"
-                            android:visibility="gone"
+                            android:id="@+id/drawer_filter_content"
+                            layout="@layout/drawer_filter_content"
                             bind:drawerFilterClickListener="@{drawerFilterClickListener}" />
 
                     </androidx.coordinatorlayout.widget.CoordinatorLayout>

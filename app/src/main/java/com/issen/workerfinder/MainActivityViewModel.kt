@@ -14,14 +14,26 @@ import kotlinx.coroutines.launch
 class MainActivityViewModel(private val userRepository: UserRepository, private val database: WorkerFinderDatabase) : ViewModel() {
 
     //todo get data from shared prefs on start and read to learn about possible better ways to do this
-    var currentTaskListFilter = FilterContainer()
-    var selectedTaskListFilter: FilterContainer = currentTaskListFilter
+    var currentCreatedTaskListFilter = FilterContainer()
+    var selectedCreatedTaskListFilter: FilterContainer = currentCreatedTaskListFilter
 
-    var currentWorkerBoardFilter = FilterContainer()
-    var selectedWorkerBoardFilter: FilterContainer = currentWorkerBoardFilter
+    var currentAcceptedTaskListFilter = FilterContainer()
+    var selectedAcceptedTaskListFilter: FilterContainer = currentAcceptedTaskListFilter
+
+    var currentCommissionedTaskListFilter = FilterContainer()
+    var selectedCommissionedTaskListFilter: FilterContainer = currentCommissionedTaskListFilter
 
     var currentTaskBoardFilter = FilterContainer()
     var selectedTaskBoardFilter: FilterContainer = currentTaskBoardFilter
+
+    var currentContactListFilter = FilterContainer()
+    var selectedContactListFilter: FilterContainer = currentContactListFilter
+
+    var currentContactAddFilter = FilterContainer()
+    var selectedContactAddFilter: FilterContainer = currentContactAddFilter
+
+    var currentContactBoardFilter = FilterContainer()
+    var selectedContactBoardFilter: FilterContainer = currentContactBoardFilter
 
     var workerList: LiveData<List<UserDataFull>> = userRepository.getUserWorkers(currentLoggedInUserFull!!.userData.userId)
     var userListFull: LiveData<List<UserDataFull>> = userRepository.getUserUsers(currentLoggedInUserFull!!.userData.userId)
@@ -46,12 +58,28 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
         filterContainer.groupBy = selectedGroupValue
     }
 
-    fun applyTaskListFilters() {
-        currentTaskListFilter = selectedTaskListFilter
+    fun applyCreatedTaskListFilters() {
+        currentCreatedTaskListFilter = selectedCreatedTaskListFilter
     }
 
-    fun clearSelectedTaskListFilters() {
-        selectedTaskListFilter = currentTaskListFilter
+    fun clearSelectedCreatedTaskListFilters() {
+        selectedCreatedTaskListFilter = currentCreatedTaskListFilter
+    }
+
+    fun applyAcceptedTaskListFilters() {
+        currentAcceptedTaskListFilter = selectedAcceptedTaskListFilter
+    }
+
+    fun clearSelectedAcceptedTaskListFilters() {
+        selectedAcceptedTaskListFilter = currentAcceptedTaskListFilter
+    }
+
+    fun applyCommissionedTaskListFilters() {
+        currentCommissionedTaskListFilter = selectedCommissionedTaskListFilter
+    }
+
+    fun clearSelectedCommissionedTaskListFilters() {
+        selectedCommissionedTaskListFilter = currentCommissionedTaskListFilter
     }
 
     fun applyTaskBoardFilters() {
@@ -62,12 +90,28 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
         selectedTaskBoardFilter = currentTaskBoardFilter
     }
 
-    fun applyWorkerBoardFilters() {
-        currentWorkerBoardFilter = selectedWorkerBoardFilter
+    fun applyContactListFilters() {
+        currentContactListFilter = selectedContactListFilter
     }
 
-    fun clearSelectedWorkerBoardFilters() {
-        selectedWorkerBoardFilter = currentWorkerBoardFilter
+    fun clearSelectedContactListFilters() {
+        selectedContactListFilter = currentContactListFilter
+    }
+
+    fun applyContactAddFilters() {
+        currentContactAddFilter = selectedContactAddFilter
+    }
+
+    fun clearSelectedContactAddFilters() {
+        selectedContactAddFilter = currentContactAddFilter
+    }
+
+    fun applyContactBoardFilters() {
+        currentContactBoardFilter = selectedContactBoardFilter
+    }
+
+    fun clearSelectedContactBoardFilters() {
+        selectedContactBoardFilter = currentContactBoardFilter
     }
 
     fun populateDb() {
@@ -75,4 +119,5 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
             database.populateDb(this, currentLoggedInUserFull!!.userData.userId)
         }
     }
+
 }

@@ -2,7 +2,11 @@ package com.issen.workerfinder.ui.taskList
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RadioButton
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -55,39 +59,29 @@ class CreatedTaskListFragment : Fragment(), TaskListListener {
         return root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_filter, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_filter -> {
-                toggleFilterDrawer()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnDrawerRequestListener)
             onDrawerRequestListener = context
         if (context is OnCustomizeDrawerListener)
             onCustomizeDrawerListener = context
-
     }
 
-    private fun toggleFilterDrawer() {
+    fun toggleFilterDrawer() {
         onDrawerRequestListener.onDrawerRequest {
             if (it.isDrawerOpen(GravityCompat.END)) {
                 it.closeDrawer(GravityCompat.END)
             } else {
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_category_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_cyclic_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_localization_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_date_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_completion_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_priority_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_search_subheader).visibility = View.VISIBLE
+                it.findViewById<RadioButton>(R.id.drawer_filter_sort_completion_date).visibility = View.VISIBLE
+                it.findViewById<RadioButton>(R.id.drawer_filter_group_priority).visibility = View.VISIBLE
+                it.findViewById<RadioButton>(R.id.drawer_filter_group_completion_date).visibility = View.VISIBLE
                 it.openDrawer(GravityCompat.END)
             }
         }

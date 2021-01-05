@@ -32,7 +32,7 @@ class TaskBoardViewModel(private val taskRepository: TaskRepository) : ViewModel
     }
 
     private fun setQuerySource(selectedFilterContainer: FilterContainer): SimpleSQLiteQuery {
-        var queryString = "SELECT * FROM task_table WHERE task_worker_id = '' AND task_completion_type = 'PENDING'";
+        var queryString = "SELECT * FROM task_table WHERE task_worker_id = '' AND task_completion_type = 'BOARD'";
         var queryArgs = arrayListOf<Any>()
 
         if(selectedFilterContainer.filterByUser.isNotEmpty()){
@@ -51,14 +51,14 @@ class TaskBoardViewModel(private val taskRepository: TaskRepository) : ViewModel
             }
             queryString += ")"
         }
-//        if(selectedFilterContainer.filterByCategory.isNotEmpty()){
-//            queryString += " category IN ("
-//            selectedFilterContainer.filterByCategory.forEachIndexed { index, item ->
-//                queryString += if(index == 0) "? " else ", ?"
-//                queryArgs.add(item)
-//            }
-//            queryString += ")"
-//        }
+        if(selectedFilterContainer.filterByCategory.isNotEmpty()){
+            queryString += " category IN ("
+            selectedFilterContainer.filterByCategory.forEachIndexed { index, item ->
+                queryString += if(index == 0) "? " else ", ?"
+                queryArgs.add(item)
+            }
+            queryString += ")"
+        }
         if(selectedFilterContainer.filterByPay.isNotEmpty()){
             queryString += " and pay IN ("
             selectedFilterContainer.filterByPay.forEachIndexed { index, item ->
@@ -67,14 +67,14 @@ class TaskBoardViewModel(private val taskRepository: TaskRepository) : ViewModel
             }
             queryString += ")"
         }
-//        if(selectedFilterContainer.filterByRating.isNotEmpty()){
-//            queryString += " rating IN ("
-//            selectedFilterContainer.filterByRating.forEachIndexed { index, item ->
-//                queryString += if(index == 0) "? " else ", ?"
-//                queryArgs.add(item)
-//            }
-//            queryString += ")"
-//        }
+        if(selectedFilterContainer.filterByRating.isNotEmpty()){
+            queryString += " rating IN ("
+            selectedFilterContainer.filterByRating.forEachIndexed { index, item ->
+                queryString += if(index == 0) "? " else ", ?"
+                queryArgs.add(item)
+            }
+            queryString += ")"
+        }
         if(selectedFilterContainer.filterByLocalization.isNotEmpty()){
             queryString += " and localization IN ("
             selectedFilterContainer.filterByLocalization.forEachIndexed { index, item ->

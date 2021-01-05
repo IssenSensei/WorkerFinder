@@ -68,10 +68,9 @@ class AcceptedTaskListViewModel(
     }
 
     private fun setQuerySource(selectedFilterContainer: FilterContainer): SimpleSQLiteQuery {
-        var queryString = "SELECT * FROM task_table ";
+        var queryString = "SELECT * FROM task_table WHERE task_user_id <> ? AND task_worker_id = ?";
         var queryArgs = arrayListOf<Any>()
-
-        queryString += " WHERE task_worker_id = ?"
+        queryArgs.add(currentLoggedInUserFull!!.userData.userId)
         queryArgs.add(currentLoggedInUserFull!!.userData.userId)
 
         if (selectedFilterContainer.filterByUser.isNotEmpty()) {

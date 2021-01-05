@@ -3,6 +3,8 @@ package com.issen.workerfinder.ui.contactBoard
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.LinearLayout
+import android.widget.RadioButton
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -66,7 +68,6 @@ class ContactBoardFragment : Fragment(), ContactListener {
         super.onAttach(context)
         if (context is OnDrawerRequestListener)
             onDrawerRequestListener = context
-
     }
 
     private fun toggleFilterDrawer() {
@@ -74,6 +75,11 @@ class ContactBoardFragment : Fragment(), ContactListener {
             if (it.isDrawerOpen(GravityCompat.END)) {
                 it.closeDrawer(GravityCompat.END)
             } else {
+                it.findViewById<LinearLayout>(R.id.drawer_filter_toggle_group_container).visibility = View.GONE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_category_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_localization_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_rating_subheader).visibility = View.VISIBLE
+                it.findViewById<RadioButton>(R.id.drawer_filter_sort_rating).visibility = View.VISIBLE
                 it.openDrawer(GravityCompat.END)
             }
         }

@@ -29,7 +29,7 @@ interface TaskModelDao {
     fun getAllTasks(): LiveData<List<TaskModelFull>>
 
     @Transaction
-    @Query("SELECT * FROM task_table WHERE task_worker_id = '' AND task_completion_type = 'PENDING'")
+    @Query("SELECT * FROM task_table WHERE task_worker_id = '' AND task_completion_type = 'BOARD'")
     fun getBoardTasks(): LiveData<List<TaskModelFull>>
 
     @Transaction

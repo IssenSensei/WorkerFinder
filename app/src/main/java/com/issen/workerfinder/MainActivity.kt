@@ -32,19 +32,25 @@ import com.issen.workerfinder.databinding.NavHeaderMainBinding
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
 import com.issen.workerfinder.enums.PriorityTypes
+import com.issen.workerfinder.ui.contactAdd.ContactAddFragment
 import com.issen.workerfinder.ui.contactBoard.ContactBoardFragment
+import com.issen.workerfinder.ui.contactList.ContactListFragment
 import com.issen.workerfinder.ui.filters.*
 import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.OnFilterSelectionListener
 import com.issen.workerfinder.ui.taskBoard.TaskBoardFragment
+import com.issen.workerfinder.ui.taskList.AcceptedTaskListFragment
+import com.issen.workerfinder.ui.taskList.CommissionedTaskListFragment
 import com.issen.workerfinder.ui.taskList.CreatedTaskListFragment
-import com.issen.workerfinder.utils.*
+import com.issen.workerfinder.ui.taskList.TaskListFragment
+import com.issen.workerfinder.utils.ViewAnimation
+import com.issen.workerfinder.utils.hideAnimated
+import com.issen.workerfinder.utils.showAnimated
+import com.issen.workerfinder.utils.toggleArrow
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.drawer_content_task_board.*
-import kotlinx.android.synthetic.main.drawer_content_task_list.*
-import kotlinx.android.synthetic.main.drawer_content_worker_board.*
+import kotlinx.android.synthetic.main.drawer_filter_content.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -64,6 +70,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     private lateinit var completionAdapter: CompletionFilterAdapter
     private lateinit var userAdapter: UserListRecyclerViewAdapter
     private lateinit var workerAdapter: UserListRecyclerViewAdapter
+    private lateinit var selectedFilterContainerLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,31 +112,32 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
 
     private fun prepareFilterContent() {
-        workerAdapter = UserListRecyclerViewAdapter(this, true, mainActivityViewModel.currentTaskListFilter.filterByWorker)
+        //todo send to fragments
+        workerAdapter = UserListRecyclerViewAdapter(this, true, getCurrentSelectedFilterContainer().filterByWorker)
         mainActivityViewModel.workerList.observe(this, Observer {
             it?.let {
                 workerAdapter.submitList(it)
             }
         })
-        drawer_filter_task_list_worker_container_recycler.adapter = workerAdapter
+        drawer_filter_worker_container_recycler.adapter = workerAdapter
 
-        userAdapter = UserListRecyclerViewAdapter(this, false, mainActivityViewModel.currentTaskListFilter.filterByUser)
+        userAdapter = UserListRecyclerViewAdapter(this, false, getCurrentSelectedFilterContainer().filterByUser)
         mainActivityViewModel.userListFull.observe(this, Observer {
             it?.let {
                 userAdapter.submitList(it)
             }
         })
-        drawer_filter_task_list_user_container_recycler.adapter = userAdapter
+        drawer_filter_user_container_recycler.adapter = userAdapter
 
-        priorityAdapter = PriorityFilterAdapter(this, PriorityTypes.values(), mainActivityViewModel.currentTaskListFilter.filterByPriority)
-        drawer_filter_task_list_priority_container_recycler.adapter = priorityAdapter
+        priorityAdapter = PriorityFilterAdapter(this, PriorityTypes.values(), getCurrentSelectedFilterContainer().filterByPriority)
+        drawer_filter_priority_container_recycler.adapter = priorityAdapter
 
-        cyclicAdapter = CyclicFilterAdapter(this, CyclicTypes.values(), mainActivityViewModel.currentTaskListFilter.filterByCyclic)
-        drawer_filter_task_list_cyclic_container_recycler.adapter = cyclicAdapter
+        cyclicAdapter = CyclicFilterAdapter(this, CyclicTypes.values(), getCurrentSelectedFilterContainer().filterByCyclic)
+        drawer_filter_cyclic_container_recycler.adapter = cyclicAdapter
 
         completionAdapter =
-            CompletionFilterAdapter(this, CompletionTypes.values(), mainActivityViewModel.currentTaskListFilter.filterByCompletionType)
-        drawer_filter_task_list_completion_container_recycler.adapter = completionAdapter
+            CompletionFilterAdapter(this, CompletionTypes.values(), getCurrentSelectedFilterContainer().filterByCompletionType)
+        drawer_filter_completion_container_recycler.adapter = completionAdapter
     }
 
     private fun setupNavigationMenu(navController: NavController) {
@@ -163,7 +171,6 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection
         return when (item.itemId) {
             R.id.action_populateDb -> {
                 populateDb()
@@ -254,85 +261,81 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     }
 
     override fun onFilterContainerClicked(view: View) {
-        when (getCurrentlyDisplayedFragment()) {
-            is CreatedTaskListFragment -> {
-                drawer_filter_task_list_main_container.visibility = View.GONE
-                (drawer_filter_task_list_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(view.tag.toString() + "Container").visibility =
-                    View.VISIBLE
-            }
-            is TaskBoardFragment -> {
-                drawer_filter_task_board_main_container.visibility = View.GONE
-                (drawer_filter_task_board_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(
-                    view.tag.toString() + "Container"
-                ).visibility = View.VISIBLE
-            }
-            is ContactBoardFragment -> {
-                drawer_filter_worker_board_main_container.visibility = View.GONE
-                (drawer_filter_worker_board_main_container.parent as LinearLayout).findViewWithTag<LinearLayout>(
-                    view.tag.toString() + "Container"
-                ).visibility = View.VISIBLE
-            }
-        }
+        drawer_filter_main_container.visibility = View.GONE
+        selectedFilterContainerLayout = (drawer_filter_main_container.parent as LinearLayout).findViewWithTag(view.tag.toString() + "Container")
+        selectedFilterContainerLayout.visibility = View.VISIBLE
         drawer_filter_back.visibility = View.VISIBLE
+    }
 
+    override fun onBackClicked() {
+        drawer_filter_main_container.visibility = View.VISIBLE
+        if (::selectedFilterContainerLayout.isInitialized) {
+            selectedFilterContainerLayout.visibility = View.GONE
+        }
+        drawer_filter_back.visibility = View.INVISIBLE
     }
 
     override fun onUserFilterSelected(userDataFull: UserDataFull, isWorker: Boolean, view: View) {
-        when (getCurrentlyDisplayedFragment()) {
-            is CreatedTaskListFragment -> {
-                if (isWorker) {
-                    mainActivityViewModel.setFilter(
-                        userDataFull.userData.userId,
-                        mainActivityViewModel.selectedTaskListFilter.filterByWorker
-                    )
-                } else {
-                    mainActivityViewModel.setFilter(userDataFull.userData.userId, mainActivityViewModel.selectedTaskListFilter.filterByUser)
-                }
-            }
-            is TaskBoardFragment -> {
-                mainActivityViewModel.setFilter(userDataFull.userData.userId, mainActivityViewModel.selectedTaskBoardFilter.filterByUser)
-            }
+        if (isWorker) {
+            mainActivityViewModel.setFilter(
+                userDataFull.userData.userId,
+                getCurrentSelectedFilterContainer().filterByWorker
+            )
+        } else {
+            mainActivityViewModel.setFilter(userDataFull.userData.userId, getCurrentSelectedFilterContainer().filterByUser)
         }
-
         view.findViewWithTag<CheckBox>("checkbox").isChecked = !view.findViewWithTag<CheckBox>("checkbox").isChecked
     }
 
     override fun onFilterPriorityChanged(priorityTypes: PriorityTypes, view: View) {
-        mainActivityViewModel.setFilter(priorityTypes.name, mainActivityViewModel.selectedTaskListFilter.filterByPriority)
+        mainActivityViewModel.setFilter(priorityTypes.name, getCurrentSelectedFilterContainer().filterByPriority)
         view.findViewWithTag<CheckBox>("checkbox").isChecked = !view.findViewWithTag<CheckBox>("checkbox").isChecked
     }
 
     override fun onFilterCompletionChanged(completionTypes: CompletionTypes, view: View) {
-        mainActivityViewModel.setFilter(completionTypes.name, mainActivityViewModel.selectedTaskListFilter.filterByCompletionType)
+        mainActivityViewModel.setFilter(completionTypes.name, getCurrentSelectedFilterContainer().filterByCompletionType)
         view.findViewWithTag<CheckBox>("checkbox").isChecked = !view.findViewWithTag<CheckBox>("checkbox").isChecked
     }
 
     override fun onFilterCyclicChanged(cyclicTypes: CyclicTypes, view: View) {
-        when (getCurrentlyDisplayedFragment()) {
-            is CreatedTaskListFragment -> {
-                mainActivityViewModel.setFilter(cyclicTypes.name, mainActivityViewModel.selectedTaskListFilter.filterByCyclic)
-            }
-            is TaskBoardFragment -> {
-                mainActivityViewModel.setFilter(cyclicTypes.name, mainActivityViewModel.selectedTaskBoardFilter.filterByCyclic)
-            }
-        }
+        mainActivityViewModel.setFilter(cyclicTypes.name, getCurrentSelectedFilterContainer().filterByCyclic)
         view.findViewWithTag<CheckBox>("checkbox").isChecked = !view.findViewWithTag<CheckBox>("checkbox").isChecked
     }
 
 
     override fun onAcceptClicked() {
         when (val currentFragment = getCurrentlyDisplayedFragment()) {
-            is CreatedTaskListFragment -> {
-                mainActivityViewModel.applyTaskListFilters()
-                currentFragment.onAcceptClicked(mainActivityViewModel.currentTaskListFilter)
+            is TaskListFragment -> {
+                when (val fragment = currentFragment.getCurrentListFragment()) {
+                    is CreatedTaskListFragment -> {
+                        mainActivityViewModel.applyCreatedTaskListFilters()
+                        fragment.onAcceptClicked(mainActivityViewModel.currentCreatedTaskListFilter)
+                    }
+                    is AcceptedTaskListFragment -> {
+                        mainActivityViewModel.applyAcceptedTaskListFilters()
+                        fragment.onAcceptClicked(mainActivityViewModel.currentAcceptedTaskListFilter)
+                    }
+                    is CommissionedTaskListFragment -> {
+                        mainActivityViewModel.applyCommissionedTaskListFilters()
+                        fragment.onAcceptClicked(mainActivityViewModel.currentCommissionedTaskListFilter)
+                    }
+                }
             }
             is TaskBoardFragment -> {
                 mainActivityViewModel.applyTaskBoardFilters()
                 currentFragment.onAcceptClicked(mainActivityViewModel.currentTaskBoardFilter)
             }
+            is ContactListFragment -> {
+                mainActivityViewModel.applyContactListFilters()
+                currentFragment.onAcceptClicked(mainActivityViewModel.currentContactListFilter)
+            }
+            is ContactAddFragment -> {
+                mainActivityViewModel.applyContactAddFilters()
+                currentFragment.onAcceptClicked(mainActivityViewModel.currentContactAddFilter)
+            }
             is ContactBoardFragment -> {
-                mainActivityViewModel.applyWorkerBoardFilters()
-                currentFragment.onAcceptClicked(mainActivityViewModel.currentWorkerBoardFilter)
+                mainActivityViewModel.applyContactBoardFilters()
+                currentFragment.onAcceptClicked(mainActivityViewModel.currentContactBoardFilter)
             }
         }
         drawer_layout.closeDrawer(GravityCompat.END)
@@ -342,153 +345,133 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         drawer_layout.closeDrawer(GravityCompat.END)
     }
 
-    override fun onBackClicked() {
-        when (getCurrentlyDisplayedFragment()) {
-            is CreatedTaskListFragment -> {
-                mainActivityViewModel.clearSelectedTaskListFilters()
-                drawer_filter_task_list_worker_container.visibility = View.GONE
-                drawer_filter_task_list_user_container.visibility = View.GONE
-                drawer_filter_task_list_category_container.visibility = View.GONE
-                drawer_filter_task_list_cyclic_container.visibility = View.GONE
-                drawer_filter_task_list_priority_container.visibility = View.GONE
-                drawer_filter_task_list_completion_container.visibility = View.GONE
-                drawer_filter_task_list_main_container.visibility = View.VISIBLE
-            }
-            is TaskBoardFragment -> {
-                mainActivityViewModel.clearSelectedTaskBoardFilters()
-                drawer_filter_task_board_user_container.visibility = View.GONE
-                drawer_filter_task_board_category_container.visibility = View.GONE
-                drawer_filter_task_board_cyclic_container.visibility = View.GONE
-                drawer_filter_task_board_localization_container.visibility = View.GONE
-                drawer_filter_task_board_pay_container.visibility = View.GONE
-                drawer_filter_task_board_rating_container.visibility = View.GONE
-                drawer_filter_task_board_due_date_container.visibility = View.GONE
-                drawer_filter_task_board_main_container.visibility = View.VISIBLE
-            }
-            is ContactBoardFragment -> {
-                mainActivityViewModel.clearSelectedWorkerBoardFilters()
-                drawer_filter_worker_board_category_container.visibility = View.GONE
-                drawer_filter_worker_board_localization_container.visibility = View.GONE
-                drawer_filter_worker_board_rating_container.visibility = View.GONE
-                drawer_filter_worker_board_main_container.visibility = View.VISIBLE
-            }
-        }
-        drawer_filter_back.visibility = View.INVISIBLE
-    }
-
     override fun onClearClicked() {
-        when (getCurrentlyDisplayedFragment()) {
-            is CreatedTaskListFragment -> {
-                mainActivityViewModel.selectedTaskListFilter = FilterContainer()
-
-                drawer_filter_task_list_group_radio.check(R.id.drawer_filter_task_list_group_none)
-                drawer_filter_task_list_sort_radio.check(R.id.drawer_filter_task_list_sort_none)
-                drawer_filter_task_list_sort_switch.isChecked = false
-
-                completionAdapter.clearValues()
-                cyclicAdapter.clearValues()
-                priorityAdapter.clearValues()
-                userAdapter.clearValues()
-                workerAdapter.clearValues()
+        when (val currentFragment = getCurrentlyDisplayedFragment()) {
+            is TaskListFragment -> {
+                when (val fragment = currentFragment.getCurrentListFragment()) {
+                    is CreatedTaskListFragment -> {
+                        mainActivityViewModel.selectedCreatedTaskListFilter = FilterContainer()
+                    }
+                    is AcceptedTaskListFragment -> {
+                        mainActivityViewModel.selectedAcceptedTaskListFilter = FilterContainer()
+                    }
+                    is CommissionedTaskListFragment -> {
+                        mainActivityViewModel.selectedCommissionedTaskListFilter = FilterContainer()
+                    }
+                }
             }
             is TaskBoardFragment -> {
                 mainActivityViewModel.selectedTaskBoardFilter = FilterContainer()
-
-                drawer_filter_task_board_group_radio.check(R.id.drawer_filter_task_board_group_none)
-                drawer_filter_task_board_sort_radio.check(R.id.drawer_filter_task_board_sort_none)
-                drawer_filter_task_board_sort_switch.isChecked = false
-
-                completionAdapter.clearValues()
-                cyclicAdapter.clearValues()
-                priorityAdapter.clearValues()
-                userAdapter.clearValues()
-                workerAdapter.clearValues()
+            }
+            is ContactListFragment -> {
+                mainActivityViewModel.selectedContactListFilter = FilterContainer()
+            }
+            is ContactAddFragment -> {
+                mainActivityViewModel.selectedContactAddFilter = FilterContainer()
             }
             is ContactBoardFragment -> {
-                mainActivityViewModel.selectedWorkerBoardFilter = FilterContainer()
-
-                drawer_filter_worker_board_sort_radio.check(R.id.drawer_filter_worker_board_sort_none)
-                drawer_filter_worker_board_sort_switch.isChecked = false
-
-                completionAdapter.clearValues()
-                cyclicAdapter.clearValues()
-                priorityAdapter.clearValues()
-                userAdapter.clearValues()
-                workerAdapter.clearValues()
+                mainActivityViewModel.selectedContactBoardFilter = FilterContainer()
             }
         }
+        drawer_filter_group_radio.check(R.id.drawer_filter_group_none)
+        drawer_filter_sort_radio.check(R.id.drawer_filter_sort_none)
+        drawer_filter_sort_switch.isChecked = false
+
+        completionAdapter.clearValues()
+        cyclicAdapter.clearValues()
+        priorityAdapter.clearValues()
+        userAdapter.clearValues()
+        workerAdapter.clearValues()
     }
 
     override fun onOrderSwitched(view: View) {
-        when (getCurrentlyDisplayedFragment()) {
-            is CreatedTaskListFragment -> {
-                mainActivityViewModel.setOrder(drawer_filter_task_list_sort_switch.isChecked, mainActivityViewModel.selectedTaskListFilter)
-            }
-            is TaskBoardFragment -> {
-                mainActivityViewModel.setOrder(
-                    drawer_filter_task_board_sort_switch.isChecked,
-                    mainActivityViewModel.selectedTaskBoardFilter
-                )
-            }
-            is ContactBoardFragment -> {
-                mainActivityViewModel.setOrder(
-                    drawer_filter_worker_board_sort_switch.isChecked,
-                    mainActivityViewModel.selectedWorkerBoardFilter
-                )
-            }
-        }
+        mainActivityViewModel.setOrder(drawer_filter_sort_switch.isChecked, getCurrentSelectedFilterContainer())
     }
 
     private fun prepareDrawer() {
+        (drawer_layout as DrawerLayout).addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+            override fun onDrawerOpened(drawerView: View) {}
+            override fun onDrawerStateChanged(newState: Int) {}
+
+            override fun onDrawerClosed(drawerView: View) {
+                cleanUpDrawer(drawer_layout)
+            }
+        })
 
         //todo rating has no tag in worker and task boards
-        drawer_filter_task_list_sort_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
+        drawer_filter_sort_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
             val radio = radioGroup.findViewById<RadioButton>(checkedId)
-            mainActivityViewModel.setSort(radio.tag.toString(), mainActivityViewModel.selectedTaskListFilter)
+            mainActivityViewModel.setSort(radio.tag.toString(), getCurrentSelectedFilterContainer())
         }
-        drawer_filter_task_list_group_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
+        drawer_filter_group_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
             val radio = radioGroup.findViewById<RadioButton>(checkedId)
-            mainActivityViewModel.setGroup(radio.tag.toString(), mainActivityViewModel.selectedTaskListFilter)
-        }
-
-        drawer_filter_task_board_sort_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
-            val radio = radioGroup.findViewById<RadioButton>(checkedId)
-            mainActivityViewModel.setSort(radio.tag.toString(), mainActivityViewModel.selectedTaskBoardFilter)
-        }
-        drawer_filter_task_board_group_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
-            val radio = radioGroup.findViewById<RadioButton>(checkedId)
-            mainActivityViewModel.setGroup(radio.tag.toString(), mainActivityViewModel.selectedTaskBoardFilter)
-        }
-
-        drawer_filter_worker_board_sort_radio.setOnCheckedChangeListener { radioGroup, checkedId ->
-            val radio = radioGroup.findViewById<RadioButton>(checkedId)
-            mainActivityViewModel.setSort(radio.tag.toString(), mainActivityViewModel.selectedWorkerBoardFilter)
+            mainActivityViewModel.setGroup(radio.tag.toString(), getCurrentSelectedFilterContainer())
         }
     }
 
     override fun onDrawerRequest(interactionImpl: (v: DrawerLayout) -> Unit) {
         interactionImpl(drawer_layout)
-        when (getCurrentlyDisplayedFragment()) {
-            is CreatedTaskListFragment -> {
-                drawer_content_task_list.visibility = View.VISIBLE
-                drawer_content_task_board.visibility = View.GONE
-                drawer_content_worker_board.visibility = View.GONE
-            }
-            is TaskBoardFragment -> {
-                drawer_content_task_list.visibility = View.GONE
-                drawer_content_task_board.visibility = View.VISIBLE
-                drawer_content_worker_board.visibility = View.GONE
-            }
-            is ContactBoardFragment -> {
-                drawer_content_task_list.visibility = View.GONE
-                drawer_content_task_board.visibility = View.GONE
-                drawer_content_worker_board.visibility = View.VISIBLE
-            }
-        }
     }
 
     override fun onDrawerClose(interactionImpl: (v: DrawerLayout) -> Unit) {
         interactionImpl(drawer_layout)
+    }
+
+    private fun cleanUpDrawer(drawerLayout: DrawerLayout) {
+        onBackClicked()
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_worker_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_user_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_category_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_cyclic_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_localization_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_pay_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_rating_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_date_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_completion_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_priority_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_search_subheader).visibility = View.GONE
+        drawerLayout.findViewById<LinearLayout>(R.id.drawer_filter_filter_open_for_work_subheader).visibility = View.GONE
+        drawerLayout.findViewById<RadioButton>(R.id.drawer_filter_sort_completion_date).visibility = View.GONE
+        drawerLayout.findViewById<RadioButton>(R.id.drawer_filter_sort_pay).visibility = View.GONE
+        drawerLayout.findViewById<RadioButton>(R.id.drawer_filter_sort_rating).visibility = View.GONE
+        drawerLayout.findViewById<RadioButton>(R.id.drawer_filter_group_priority).visibility = View.GONE
+        drawerLayout.findViewById<RadioButton>(R.id.drawer_filter_group_localization).visibility = View.GONE
+        drawerLayout.findViewById<RadioButton>(R.id.drawer_filter_group_completion_date).visibility = View.GONE
+    }
+
+    private fun getCurrentSelectedFilterContainer(): FilterContainer {
+        return when (val fragment = getCurrentlyDisplayedFragment()) {
+            is TaskListFragment -> {
+                when (fragment.getCurrentListFragment()) {
+                    is CreatedTaskListFragment -> {
+                        mainActivityViewModel.selectedCreatedTaskListFilter
+                    }
+                    is AcceptedTaskListFragment -> {
+                        mainActivityViewModel.selectedAcceptedTaskListFilter
+                    }
+                    is CommissionedTaskListFragment -> {
+                        mainActivityViewModel.selectedCommissionedTaskListFilter
+                    }
+                    else -> {
+                        FilterContainer()
+                    }
+                }
+            }
+            is TaskBoardFragment -> {
+                mainActivityViewModel.selectedTaskBoardFilter
+            }
+            is ContactListFragment -> {
+                mainActivityViewModel.selectedContactBoardFilter
+            }
+            is ContactAddFragment -> {
+                mainActivityViewModel.selectedContactBoardFilter
+            }
+            is ContactBoardFragment -> {
+                mainActivityViewModel.selectedContactBoardFilter
+            }
+            else -> FilterContainer()
+        }
     }
 
     private fun getCurrentlyDisplayedFragment() = (supportFragmentManager.primaryNavigationFragment as NavHostFragment)
@@ -498,18 +481,11 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
         val show = toggleArrow(view)
         if (show) {
             ViewAnimation.expand(containerView) {
-                fun onFinish() {
-                    nestedScrollTo(
-                        drawer_filter_nested_scroll_view,
-                        containerView
-                    )
-                }
             }
         } else {
             ViewAnimation.collapse(containerView)
         }
     }
-
 
 
 }

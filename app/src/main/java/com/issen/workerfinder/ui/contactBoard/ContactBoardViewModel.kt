@@ -35,18 +35,18 @@ class ContactBoardViewModel(private val userRepository: UserRepository) : ViewMo
     private fun setQuerySource(selectedFilterContainer: FilterContainer): SimpleSQLiteQuery {
         var queryString = "SELECT * FROM user_table WHERE isAccountPublic = 1 AND isOpenForWork = 1";
         var queryArgs = arrayListOf<Any>()
-        //        if(selectedFilterContainer.filterByCategory.isNotEmpty()){
+//        if (selectedFilterContainer.filterByCategory.isNotEmpty()) {
 //            queryString += " category IN ("
 //            selectedFilterContainer.filterByCategory.forEachIndexed { index, item ->
-//                queryString += if(index == 0) "? " else ", ?"
+//                queryString += if (index == 0) "? " else ", ?"
 //                queryArgs.add(item)
 //            }
 //            queryString += ")"
 //        }
-//        if(selectedFilterContainer.filterByRating.isNotEmpty()){
+//        if (selectedFilterContainer.filterByRating.isNotEmpty()) {
 //            queryString += " rating IN ("
 //            selectedFilterContainer.filterByRating.forEachIndexed { index, item ->
-//                queryString += if(index == 0) "? " else ", ?"
+//                queryString += if (index == 0) "? " else ", ?"
 //                queryArgs.add(item)
 //            }
 //            queryString += ")"

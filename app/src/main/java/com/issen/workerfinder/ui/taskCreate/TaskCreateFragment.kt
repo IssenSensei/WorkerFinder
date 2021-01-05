@@ -28,9 +28,7 @@ import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
 import com.issen.workerfinder.enums.PriorityTypes
 import com.issen.workerfinder.utils.ViewAnimation
-import com.issen.workerfinder.utils.nestedScrollTo
 import com.issen.workerfinder.utils.toggleArrow
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_calendarview_picker.view.*
 import kotlinx.android.synthetic.main.dialog_day_interval_picker.view.*
 import kotlinx.android.synthetic.main.fragment_task_create.*
@@ -315,14 +313,7 @@ class TaskCreateFragment : Fragment(), TaskCreateListener {
     private fun toggleSectionInput(view: View, containerView: View) {
         val show = toggleArrow(view)
         if (show) {
-            ViewAnimation.expand(containerView) {
-                fun onFinish() {
-                    nestedScrollTo(
-                        drawer_filter_nested_scroll_view,
-                        containerView
-                    )
-                }
-            }
+            ViewAnimation.expand(containerView)
         } else {
             ViewAnimation.collapse(containerView)
         }

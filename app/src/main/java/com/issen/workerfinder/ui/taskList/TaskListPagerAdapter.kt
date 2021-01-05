@@ -15,5 +15,4 @@ class TaskListPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
             else -> CreatedTaskListFragment()
         }
     }
-
 }

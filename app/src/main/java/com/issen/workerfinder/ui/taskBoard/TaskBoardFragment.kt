@@ -3,6 +3,8 @@ package com.issen.workerfinder.ui.taskBoard
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.LinearLayout
+import android.widget.RadioButton
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -72,10 +74,22 @@ class TaskBoardFragment : Fragment(), TaskBoardListener {
             if (it.isDrawerOpen(GravityCompat.END)) {
                 it.closeDrawer(GravityCompat.END)
             } else {
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_user_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_category_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_cyclic_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_localization_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_pay_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_rating_subheader).visibility = View.VISIBLE
+                it.findViewById<LinearLayout>(R.id.drawer_filter_filter_date_subheader).visibility = View.VISIBLE
+                it.findViewById<RadioButton>(R.id.drawer_filter_sort_pay).visibility = View.VISIBLE
+                it.findViewById<RadioButton>(R.id.drawer_filter_sort_completion_date).visibility = View.VISIBLE
+                it.findViewById<RadioButton>(R.id.drawer_filter_sort_rating).visibility = View.VISIBLE
+                it.findViewById<RadioButton>(R.id.drawer_filter_group_localization).visibility = View.VISIBLE
                 it.openDrawer(GravityCompat.END)
             }
         }
     }
+
 
     override fun onTaskClicked(taskModelFull: TaskModelFull) {
         val actionDetail = TaskBoardFragmentDirections.actionNavTaskBoardToNavTaskDetail(taskModelFull)
