@@ -27,7 +27,9 @@ class TaskRepository(private val taskModelDao: TaskModelDao) {
     suspend fun markTaskAsCompleted(taskId: Int) = taskModelDao.markTaskAsCompleted(taskId)
     suspend fun markTaskAsActive(taskId: Int) = taskModelDao.markTaskAsActive(taskId)
     suspend fun abandonTask(taskId: Int) = taskModelDao.abandonTask(taskId)
-    suspend fun acceptTask(modifiedRecordId: Int, userId: String) = taskModelDao.acceptTask(modifiedRecordId, userId)
+    suspend fun acceptTask(modifiedRecordId: Int) = taskModelDao.acceptTask(modifiedRecordId)
+    suspend fun deleteTask(taskId: Int) = taskModelDao.delete(taskId)
+    suspend fun refuseTask(taskId: Int) = taskModelDao.refuseTask(taskId)
 
 
 }

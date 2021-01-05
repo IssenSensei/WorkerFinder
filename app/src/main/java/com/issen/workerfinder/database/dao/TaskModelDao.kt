@@ -21,6 +21,9 @@ interface TaskModelDao {
     @Delete
     fun delete(taskModel: TaskModel)
 
+    @Query("DELETE FROM task_table WHERE taskId = :taskId")
+    suspend fun delete(taskId: Int)
+
     @Query("DELETE FROM task_table")
     suspend fun deleteAll()
 
@@ -61,6 +64,9 @@ interface TaskModelDao {
     @Query("UPDATE task_table set task_completion_type = 'ABANDONED' where taskId = :taskId")
     suspend fun abandonTask(taskId: Int)
 
+    @Query("UPDATE task_table set task_completion_type = 'REFUSED' where taskId = :taskId")
+    suspend fun refuseTask(taskId: Int)
+
     @RawQuery
     fun getTasksQueried(query: SimpleSQLiteQuery): LiveData<List<TaskModelFull>>
 
@@ -69,7 +75,7 @@ interface TaskModelDao {
     fun getAllAcceptedTasks(userId: String): LiveData<List<TaskModelFull>>
 
     @Transaction
-    @Query("SELECT * FROM task_table WHERE task_user_id = :userId AND task_worker_id <> :userId")
+    @Query("SELECT * FROM task_table WHERE task_user_id = :userId AND task_worker_id <> :userId AND task_completion_type NOT IN ('OFFERED', 'REFUSED')")
     fun getAllCommissionedTasks(userId: String): LiveData<List<TaskModelFull>>
 
     @Transaction
@@ -81,6 +87,8 @@ interface TaskModelDao {
             " :userId AND (dashboardNotificationType = 'WORKOFFERED' OR dashboardNotificationType = 'WORKREFUSED'))")
     fun getUserInvitations(userId: String): LiveData<List<TaskModelFull>>
 
-    @Query("UPDATE task_table set task_user_id = :userId where taskId = :modifiedRecordId")
-    suspend fun acceptTask(modifiedRecordId: Int, userId: String)
+    @Query("UPDATE task_table set task_completion_type = 'ACTIVE' where taskId = :modifiedRecordId")
+    suspend fun acceptTask(modifiedRecordId: Int)
+
+
 }

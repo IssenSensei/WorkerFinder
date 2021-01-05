@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="user"
             type="com.issen.workerfinder.database.models.UserDataFull" />
@@ -399,45 +399,56 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <Button
-                android:id="@+id/user_profile_contact_manage"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> clickListener.onContactManageClicked(user)}"
-                android:text="Nawiąż kontakt/ usuń kontakt"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/user_profile_user_additional_info_container" />
+                app:layout_constraintTop_toBottomOf="@id/user_profile_user_additional_info_container">
 
-            <Button
-                android:id="@+id/user_profile_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> clickListener.onEditProfileClicked(user)}"
-                android:text="Edytuj profil"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/user_profile_contact_manage" />
+                <Button
+                    android:id="@+id/user_profile_contact_manage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="@{() -> clickListener.onContactManageClicked(user)}"
+                    android:text="Nawiąż kontakt/ usuń kontakt" />
 
-            <Button
-                android:id="@+id/user_profile_public_manage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> clickListener.onPublicManageClicked(user)}"
-                android:text="Opublikuj konto"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/user_profile_edit" />
+                <Button
+                    android:id="@+id/user_profile_offer_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="@{user.userData.openForWork ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{() -> clickListener.onOfferWork(user)}"
+                    android:text="Wystaw zadanie" />
 
-            <Button
-                android:id="@+id/user_profile_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> clickListener.onDeleteAccountClicked(user)}"
-                android:text="Usuń konto"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/user_profile_public_manage" />
+                <Button
+                    android:id="@+id/user_profile_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="@{() -> clickListener.onEditProfileClicked(user)}"
+                    android:text="Edytuj profil" />
+
+                <Button
+                    android:id="@+id/user_profile_public_manage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="@{() -> clickListener.onPublicManageClicked(user)}"
+                    android:text="Opublikuj konto" />
+
+                <Button
+                    android:id="@+id/user_profile_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="@{() -> clickListener.onDeleteAccountClicked(user)}"
+                    android:text="Usuń konto" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

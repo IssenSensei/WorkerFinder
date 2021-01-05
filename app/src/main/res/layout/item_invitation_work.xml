@@ -42,7 +42,7 @@
                 android:id="@+id/item_invitation_work_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel job offer"
+                android:text="@{task.task.completed.equals(`REFUSED`) ? `Refused` : `Cancel job offer`}"
                 android:onClick="@{() -> clickListener.onCancelClicked(task.task)}"
                 android:layout_margin="@dimen/spacing_medium"
                 style="@style/TextAppearance.AppCompat.Subhead"

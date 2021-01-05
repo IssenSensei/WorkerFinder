@@ -18,11 +18,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.TaskModel
 import com.issen.workerfinder.database.models.TaskModelFull
+import com.issen.workerfinder.database.models.UserData
 import com.issen.workerfinder.databinding.FragmentTaskCreateBinding
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.CyclicTypes
@@ -42,12 +44,15 @@ class TaskCreateFragment : Fragment(), TaskCreateListener {
 
     private val CAMERA_CODE = 0
     private val GALLERY_CODE = 1
+    private val taskCreateFragmentArgs: TaskCreateFragmentArgs by navArgs()
+    private lateinit var worker: UserData
 
     private val taskCreateViewModel: TaskCreateViewModel by viewModels {
         TaskCreateViewModelFactory(
             (requireActivity().application as WorkerFinderApplication).taskRepository,
             (requireActivity().application as WorkerFinderApplication).taskPhotoRepository,
-            (requireActivity().application as WorkerFinderApplication).taskRepeatDayRepository
+            (requireActivity().application as WorkerFinderApplication).taskRepeatDayRepository,
+            (requireActivity().application as WorkerFinderApplication).dashboardNotificationRepository
         )
     }
 
@@ -63,7 +68,8 @@ class TaskCreateFragment : Fragment(), TaskCreateListener {
 
         val binding = FragmentTaskCreateBinding.inflate(inflater, container, false)
         val tempModel = taskCreateViewModel.generateMockupModel()
-        binding.task = TaskModelFull(tempModel, mutableListOf(), mutableListOf(), mutableListOf(), currentLoggedInUserFull!!.userData, currentLoggedInUserFull!!.userData)
+        worker = if (taskCreateFragmentArgs.userDataFull != null) taskCreateFragmentArgs.userDataFull!!.userData else currentLoggedInUserFull!!.userData
+        binding.task = TaskModelFull(tempModel, mutableListOf(), mutableListOf(), mutableListOf(), currentLoggedInUserFull!!.userData, worker)
         binding.clickListener = this
 
         val prioritySpinnerAdapter = PrioritySpinnerAdapter(requireContext())
@@ -96,16 +102,17 @@ class TaskCreateFragment : Fragment(), TaskCreateListener {
                 new_task_title.text.toString(),
                 new_task_description.text.toString(),
                 currentLoggedInUserFull!!.userData.userId,
-                "a1",
+                worker.userId,
                 new_task_date_container.text.toString(),
                 type,
                 Date(),
                 PriorityTypes.NORMAL.toString(),
-                CompletionTypes.ACTIVE.toString(),
+                if(worker.userId == currentLoggedInUserFull!!.userData.userId) CompletionTypes.ACTIVE.toString() else CompletionTypes.OFFERED.toString(),
                 ""
             )
         )
-        findNavController().popBackStack()
+        findNavController().navigate(R.id.nav_task_list)
+        //todo should set correct task list fragment and scroll to new task? consider possible problem when there are active filters
     }
 
     private fun getSelectedCyclicType() = when (new_task_cyclic_radio.checkedRadioButtonId) {

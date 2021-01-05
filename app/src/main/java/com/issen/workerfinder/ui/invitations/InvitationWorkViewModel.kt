@@ -16,6 +16,7 @@ class InvitationWorkViewModel(private val taskRepository: TaskRepository, privat
     fun cancelInvitation(taskId: Int) {
         viewModelScope.launch {
             dashboardNotificationRepository.cancelNotification(taskId, currentLoggedInUserFull!!.userData.userId)
+            taskRepository.deleteTask(taskId)
         }
     }
 }

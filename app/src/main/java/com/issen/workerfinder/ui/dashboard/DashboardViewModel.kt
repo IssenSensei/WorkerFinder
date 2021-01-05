@@ -3,7 +3,6 @@ package com.issen.workerfinder.ui.dashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
 import com.issen.workerfinder.database.models.Contacts
 import com.issen.workerfinder.database.models.DashboardNotification
 import com.issen.workerfinder.database.models.DashboardNotificationFull
@@ -56,13 +55,14 @@ class DashboardViewModel(
     fun acceptWork(dashboardNotification: DashboardNotification) {
         viewModelScope.launch {
             dashboardNotificationRepository.acceptWork(dashboardNotification.id)
-            taskRepository.acceptTask(dashboardNotification.modifiedRecordId, currentLoggedInUserFull!!.userData.userId)
+            taskRepository.acceptTask(dashboardNotification.modifiedRecordId)
         }
     }
 
     fun refuseWork(dashboardNotification: DashboardNotification) {
         viewModelScope.launch {
             dashboardNotificationRepository.refuseWork(dashboardNotification.id)
+            taskRepository.refuseTask(dashboardNotification.modifiedRecordId)
         }
     }
 }

@@ -2,20 +2,25 @@ package com.issen.workerfinder.ui.taskCreate
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.issen.workerfinder.database.models.DashboardNotification
 import com.issen.workerfinder.database.models.TaskModel
 import com.issen.workerfinder.database.models.TaskModelPhotos
 import com.issen.workerfinder.database.models.TaskModelRepeatDays
+import com.issen.workerfinder.database.repositories.DashboardNotificationRepository
 import com.issen.workerfinder.database.repositories.TaskPhotoRepository
 import com.issen.workerfinder.database.repositories.TaskRepeatDayRepository
 import com.issen.workerfinder.database.repositories.TaskRepository
+import com.issen.workerfinder.enums.DashboardNotificationTypes
 import com.issen.workerfinder.enums.PriorityTypes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class TaskCreateViewModel(
     private val taskRepository: TaskRepository,
     private val taskPhotoRepository: TaskPhotoRepository,
-    private val taskRepeatDayRepository: TaskRepeatDayRepository
+    private val taskRepeatDayRepository: TaskRepeatDayRepository,
+    private val notificationRepository: DashboardNotificationRepository
 ) : ViewModel() {
 
     private val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
@@ -32,6 +37,7 @@ class TaskCreateViewModel(
     fun insert(taskModel: TaskModel) {
         viewModelScope.launch(Dispatchers.IO) {
             val id: Long = taskRepository.insert(taskModel)
+
             photos.forEach {
                 it.taskId = id.toInt()
             }
@@ -40,6 +46,18 @@ class TaskCreateViewModel(
             }
             taskPhotoRepository.insert(photos)
             taskRepeatDayRepository.insert(repeatDays)
+            if (taskModel.workerFirebaseKey != taskModel.userFirebaseKey) {
+                notificationRepository.notify(
+                    DashboardNotification(
+                        0,
+                        Date().toString(),
+                        taskModel.workerFirebaseKey,
+                        taskModel.userFirebaseKey,
+                        DashboardNotificationTypes.WORKOFFERED.toString(),
+                        id.toInt()
+                    )
+                )
+            }
         }
     }
 

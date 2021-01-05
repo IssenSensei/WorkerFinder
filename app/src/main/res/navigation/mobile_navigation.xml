@@ -46,6 +46,11 @@
             app:destination="@id/nav_task_list"
             app:popUpTo="@id/nav_task_list"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="userDataFull"
+            android:defaultValue="@null"
+            app:argType="com.issen.workerfinder.database.models.UserDataFull"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/nav_contact_add"
@@ -84,7 +89,7 @@
         android:id="@+id/task_edit_fragment"
         android:name="com.issen.workerfinder.ui.taskEdit.TaskEditFragment"
         android:label="@string/menu_taskEdit"
-        tools:layout="@layout/fragment_task_edit" >
+        tools:layout="@layout/fragment_task_edit">
         <argument
             android:name="fullTask"
             app:argType="com.issen.workerfinder.database.models.TaskModelFull" />
@@ -100,6 +105,9 @@
         <action
             android:id="@+id/action_nav_user_profile_to_nav_user_profile_edit"
             app:destination="@id/nav_user_profile_edit" />
+        <action
+            android:id="@+id/action_nav_user_profile_to_nav_new_task"
+            app:destination="@id/nav_new_task" />
     </fragment>
     <fragment
         android:id="@+id/nav_user_profile_edit"
@@ -137,7 +145,7 @@
         android:id="@+id/nav_contact_chat"
         android:name="com.issen.workerfinder.ui.contactChat.ContactChatFragment"
         android:label="@string/menu_contact_chat"
-        tools:layout="@layout/fragment_contact_chat"/>
+        tools:layout="@layout/fragment_contact_chat" />
     <fragment
         android:id="@+id/nav_invitations"
         android:name="com.issen.workerfinder.ui.invitations.InvitationFragment"

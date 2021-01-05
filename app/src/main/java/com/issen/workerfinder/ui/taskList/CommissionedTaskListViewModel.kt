@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Query
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.google.firebase.auth.FirebaseAuth
 import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
@@ -49,7 +48,7 @@ class CommissionedTaskListViewModel(
     }
 
     private fun setQuerySource(selectedFilterContainer: FilterContainer): SimpleSQLiteQuery {
-        var queryString = "SELECT * FROM task_table WHERE task_user_id = ? AND task_worker_id <> ?";
+        var queryString = "SELECT * FROM task_table WHERE task_user_id = ? AND task_worker_id <> ? AND task_completion_type <> 'OFFERED'";
         var queryArgs = arrayListOf<Any>()
         queryArgs.add(currentLoggedInUserFull!!.userData.userId)
         queryArgs.add(currentLoggedInUserFull!!.userData.userId)

@@ -2,7 +2,9 @@ package com.issen.workerfinder.ui.userProfile
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -177,6 +179,10 @@ class UserProfileFragment : Fragment(), UserProfileListener {
         }
     }
 
+    override fun onOfferWork(userFull: UserDataFull) {
+        val actionTask = UserProfileFragmentDirections.actionNavUserProfileToNavNewTask(userFull)
+        findNavController().navigate(actionTask)
+    }
 
     override fun onProfilePhotoClicked(userFull: UserDataFull) {
         Toast.makeText(requireContext(), "photo clicked", Toast.LENGTH_SHORT).show()
@@ -245,6 +251,7 @@ interface UserProfileListener {
     fun onDeleteAccountClicked(userFull: UserDataFull)
     fun onPublicManageClicked(userFull: UserDataFull)
     fun onContactManageClicked(userFull: UserDataFull)
+    fun onOfferWork(userFull: UserDataFull)
     fun onProfilePhotoClicked(userFull: UserDataFull)
     fun onShowUserCommentsClicked(userFull: UserDataFull)
     fun onShowWorkerCommentsClicked(userFull: UserDataFull)
