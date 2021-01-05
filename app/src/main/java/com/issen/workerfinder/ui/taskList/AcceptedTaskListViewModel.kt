@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.google.firebase.auth.FirebaseAuth
 import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
+import com.issen.workerfinder.database.models.Comments
 import com.issen.workerfinder.database.models.DashboardNotification
 import com.issen.workerfinder.database.models.TaskModel
 import com.issen.workerfinder.database.models.TaskModelFull
+import com.issen.workerfinder.database.repositories.CommentRepository
 import com.issen.workerfinder.database.repositories.DashboardNotificationRepository
 import com.issen.workerfinder.database.repositories.TaskRepository
 import com.issen.workerfinder.enums.DashboardNotificationTypes
@@ -20,11 +22,13 @@ import java.util.*
 
 class AcceptedTaskListViewModel(
     private val taskRepository: TaskRepository,
-    private val dashboardNotificationRepository: DashboardNotificationRepository
+    private val dashboardNotificationRepository: DashboardNotificationRepository,
+    private val commentRepository: CommentRepository
 ) : ViewModel() {
 
     private var auth = FirebaseAuth.getInstance()
     private var source: LiveData<List<TaskModelFull>>
+    var popupTask: TaskModelFull? = null
     val mediatorLiveData: MediatorLiveData<List<TaskModelFull>> = MediatorLiveData()
 
     init {
@@ -112,6 +116,31 @@ class AcceptedTaskListViewModel(
 
 
         return SimpleSQLiteQuery(queryString, queryArgs.toArray())
+    }
+
+    fun rateUser(rating: Float, comment: String) {
+        viewModelScope.launch {
+            commentRepository.addRating(
+                Comments(
+                    0,
+                    popupTask!!.task.userFirebaseKey,
+                    popupTask!!.task.workerFirebaseKey,
+                    rating,
+                    comment,
+                    true
+                )
+            )
+            dashboardNotificationRepository.notify(
+                DashboardNotification(
+                    0,
+                    Date().toString(),
+                    popupTask!!.task.userFirebaseKey,
+                    popupTask!!.task.workerFirebaseKey,
+                    DashboardNotificationTypes.RATEDBYWORKER.toString(),
+                    popupTask!!.task.taskId
+                )
+            )
+        }
     }
 
 

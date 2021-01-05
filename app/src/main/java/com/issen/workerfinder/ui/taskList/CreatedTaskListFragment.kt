@@ -96,6 +96,8 @@ class CreatedTaskListFragment : Fragment(), TaskListListener {
         findNavController().navigate(actionDetail)
     }
 
+    override fun onPopupClicked(view: View, taskFull: TaskModelFull) {}
+
     fun onAcceptClicked(selectedFilterContainer: FilterContainer) {
         createdTaskListViewModel.requery(selectedFilterContainer)
     }

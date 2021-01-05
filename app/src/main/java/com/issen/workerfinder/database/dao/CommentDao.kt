@@ -20,4 +20,7 @@ interface CommentDao {
     @Query("DELETE FROM comment_table")
     suspend fun deleteAll()
 
+    @Insert
+    suspend fun addRating(comment: Comments)
+
 }

@@ -1,12 +1,13 @@
 package com.issen.workerfinder.ui.taskList
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RadioButton
+import android.widget.*
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,12 +25,13 @@ import com.issen.workerfinder.ui.misc.TaskListListener
 import kotlinx.android.synthetic.main.fragment_accepted_task_list.view.*
 
 
-class AcceptedTaskListFragment : Fragment(), TaskListListener {
+class AcceptedTaskListFragment : Fragment(), TaskListListener, PopupMenu.OnMenuItemClickListener {
     private var auth = FirebaseAuth.getInstance()
     private val acceptedTaskListViewModel: AcceptedTaskListViewModel by viewModels {
         AcceptedTaskListViewModelFactory(
             (requireActivity().application as WorkerFinderApplication).taskRepository,
-            (requireActivity().application as WorkerFinderApplication).dashboardNotificationRepository
+            (requireActivity().application as WorkerFinderApplication).dashboardNotificationRepository,
+            (requireActivity().application as WorkerFinderApplication).commentRepository
         )
     }
     private lateinit var onDrawerRequestListener: OnDrawerRequestListener
@@ -41,7 +43,7 @@ class AcceptedTaskListFragment : Fragment(), TaskListListener {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_accepted_task_list, container, false)
-        val adapter = TaskListRecyclerViewAdapter(this, auth.currentUser!!.uid)
+        val adapter: TaskListRecyclerViewAdapter = TaskListRecyclerViewAdapter(this, auth.currentUser!!.uid)
 
         acceptedTaskListViewModel.mediatorLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -101,7 +103,45 @@ class AcceptedTaskListFragment : Fragment(), TaskListListener {
         findNavController().navigate(actionDetail)
     }
 
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_show_rating_dialog -> {
+                showRatingDialog()
+                true
+            }
+            else -> true
+        }
+    }
+
+    override fun onPopupClicked(view: View, taskFull: TaskModelFull) {
+        PopupMenu(requireContext(), view).apply {
+            setOnMenuItemClickListener(this@AcceptedTaskListFragment)
+            inflate(R.menu.popup_menu_task)
+            show()
+        }
+        acceptedTaskListViewModel.popupTask = taskFull
+    }
+
     fun onAcceptClicked(selectedFilterContainer: FilterContainer) {
         acceptedTaskListViewModel.requery(selectedFilterContainer)
+    }
+
+    private fun showRatingDialog() {
+        //todo allow 1 rating per task
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.apply {
+            setTitle("Oceń użytkownika")
+            val view: View = layoutInflater.inflate(R.layout.dialog_rating, null)
+            setView(view)
+            setPositiveButton("Zatwierdź") { dialogInterface, i ->
+                acceptedTaskListViewModel.rateUser(
+                    view.findViewById<RatingBar>(R.id.dialog_rating_rating).rating,
+                    view.findViewById<EditText>(R.id.dialog_rating_comment).text.toString()
+                )
+            }
+            setNeutralButton("Anuluj") { dialogInterface, i -> }
+            create()
+            show()
+        }
     }
 }
