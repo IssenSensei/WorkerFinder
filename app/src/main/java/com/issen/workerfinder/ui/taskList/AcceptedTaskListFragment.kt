@@ -1,6 +1,7 @@
 package com.issen.workerfinder.ui.taskList
 
 import android.app.AlertDialog
+import android.app.NotificationManager
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,6 +24,8 @@ import com.issen.workerfinder.ui.filters.FilterContainer
 import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.TaskListListener
+import com.issen.workerfinder.utils.createChannel
+import com.issen.workerfinder.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_accepted_task_list.view.*
 
 
@@ -43,7 +47,7 @@ class AcceptedTaskListFragment : Fragment(), TaskListListener, PopupMenu.OnMenuI
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_accepted_task_list, container, false)
-        val adapter: TaskListRecyclerViewAdapter = TaskListRecyclerViewAdapter(this, auth.currentUser!!.uid)
+        val adapter = TaskListRecyclerViewAdapter(this, auth.currentUser!!.uid)
 
         acceptedTaskListViewModel.mediatorLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -59,6 +63,11 @@ class AcceptedTaskListFragment : Fragment(), TaskListListener, PopupMenu.OnMenuI
             )
         )
 
+        createChannel(
+            getString(R.string.notification_rating_channel_id),
+            getString(R.string.notification_rating_channel_name),
+            requireActivity()
+        )
         return root
     }
 
@@ -138,6 +147,17 @@ class AcceptedTaskListFragment : Fragment(), TaskListListener, PopupMenu.OnMenuI
                     view.findViewById<RatingBar>(R.id.dialog_rating_rating).rating,
                     view.findViewById<EditText>(R.id.dialog_rating_comment).text.toString()
                 )
+
+                val notificationManager = getSystemService(
+                    requireContext(),
+                    NotificationManager::class.java
+                ) as NotificationManager
+
+                notificationManager.sendNotification(
+                    requireContext().getText(R.string.notification_rating_content).toString(),
+                    requireContext()
+                )
+
             }
             setNeutralButton("Anuluj") { dialogInterface, i -> }
             create()

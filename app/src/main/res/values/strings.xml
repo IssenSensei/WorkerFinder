@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">WorkerFinder</string>
+    <string name="notification_rating_channel_id">rating_channel</string>
+    <string name="notification_rating_channel_name">Rating</string>
+    <string name="notification_rating_title">New rating!</string>
+    <string name="notification_rating_content">You have been rated!</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
