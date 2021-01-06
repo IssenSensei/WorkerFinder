@@ -51,6 +51,9 @@
             android:defaultValue="@null"
             app:argType="com.issen.workerfinder.database.models.UserDataFull"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_nav_new_task_to_nav_task_worker_picker"
+            app:destination="@id/nav_task_worker_picker" />
     </fragment>
     <fragment
         android:id="@+id/nav_contact_add"
@@ -157,6 +160,17 @@
         <action
             android:id="@+id/action_nav_invitations_to_nav_task_detail"
             app:destination="@id/nav_task_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_task_worker_picker"
+        android:name="com.issen.workerfinder.ui.taskWorkerPicker.TaskWorkerPickerFragment"
+        android:label="@string/menu_workerPicker"
+        tools:layout="@layout/fragment_task_worker_picker" >
+        <action
+            android:id="@+id/action_nav_task_worker_picker_to_nav_new_task"
+            app:destination="@id/nav_new_task"
+            app:popUpTo="@id/nav_new_task"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 </navigation>

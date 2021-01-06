@@ -334,7 +334,8 @@ class TaskCreateFragment : Fragment(), TaskCreateListener {
     }
 
     override fun onAddWorkerClicked() {
-        TODO("Not yet implemented")
+        val actionPickWorker = TaskCreateFragmentDirections.actionNavNewTaskToNavTaskWorkerPicker()
+        findNavController().navigate(actionPickWorker)
     }
 
     override fun onCategoryFastSelectClicked() {

@@ -100,7 +100,7 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         "a8", "name7 lastName7", "https://i.imgflip.com/15l4w6.jpg", "email7", "777777777", "aaaaaa7", "Lublin", false, false
                     ),
                     UserData(
-                        "a9", "name8 lastName8", "https://i.imgflip.com/15l4w6.jpg", "email8", "88888888", "aaaaaa8", "Lublin", false, false
+                        "a9", "name8 lastName8", "https://i.imgflip.com/15l4w6.jpg", "email8", "88888888", "aaaaaa8", "Lublin", true, true
                     ),
                     UserData(
                         "a10", "name9 lastName9", "https://i.imgflip.com/15l4w6.jpg", "email89", "88888888", "aaaaaa8", "Lublin", false, false

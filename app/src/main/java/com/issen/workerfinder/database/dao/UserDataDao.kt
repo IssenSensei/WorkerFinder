@@ -55,7 +55,13 @@ interface UserDataDao {
     fun gerUserInvitations(userId: String): LiveData<List<UserDataFull>>
 
     @Transaction
-    @Query("SELECT * FROM user_table WHERE userId in (SELECT contactId from contact_table where userId = :userId)")
+    @Query("SELECT DISTINCT * FROM user_table WHERE (userId in (SELECT contactId from contact_table where userId = :userId) OR userId in " +
+            "(SELECT userId from contact_table where contactId = :userId)) AND isOpenForWork = 1 and userName like '%' || :userName || '%'")
+    fun getUserWorkers(userId: String, userName: String): LiveData<List<UserDataFull>>
+
+    @Transaction
+    @Query("SELECT DISTINCT * FROM user_table WHERE (userId in (SELECT contactId from contact_table where userId = :userId) OR userId in " +
+            "(SELECT userId from contact_table where contactId = :userId)) AND isOpenForWork = 1")
     fun getUserWorkers(userId: String): LiveData<List<UserDataFull>>
 
     @Transaction

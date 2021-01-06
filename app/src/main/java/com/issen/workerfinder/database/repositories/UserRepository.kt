@@ -12,6 +12,7 @@ class UserRepository(private val userDataDao: UserDataDao){
     fun getUsersQueried(query: SimpleSQLiteQuery): LiveData<List<UserDataFull>> = userDataDao.getUsersQueried(query)
     fun getUserContacts(userId: String): LiveData<List<UserDataFull>> = userDataDao.getUserContacts(userId)
     fun getUserWorkers(userId: String): LiveData<List<UserDataFull>> = userDataDao.getUserWorkers(userId)
+    fun getUserWorkers(userId: String, userName: String): LiveData<List<UserDataFull>> = userDataDao.getUserWorkers(userId, userName)
     fun getUserUsers(userId: String): LiveData<List<UserDataFull>> = userDataDao.getUserUsers(userId)
     fun getBoardWorkers(): LiveData<List<UserDataFull>> = userDataDao.getBoardWorkers()
     fun getUsersList(userId: String): LiveData<List<UserDataFull>> = userDataDao.getUsersList(userId)

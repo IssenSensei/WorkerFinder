@@ -17,6 +17,7 @@
     <string name="menu_task_list">Lista zadań</string>
     <string name="menu_dashboard">Powiadomienia</string>
     <string name="menu_invitations">Zaproszenia</string>
+    <string name="menu_workerPicker">Wyślij do</string>
     <string name="menu_task_board">Ogłoszenia</string>
     <string name="menu_newTask">Nowe zadanie</string>
     <string name="menu_taskHistory">Historia zadań</string>
