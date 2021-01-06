@@ -484,7 +484,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="true"
-                                android:tag=""
+                                android:tag="none"
                                 android:text="Brak" />
 
 
@@ -503,7 +503,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="true"
-                                android:tag="completion_date"
+                                android:tag="task_next_completion_date"
                                 android:text="Data"
                                 android:visibility="gone" />
 
@@ -539,6 +539,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:onClick="@{(view) -> drawerFilterClickListener.onOrderSwitchClicked(view)}"
                                 android:gravity="center" />
 
                             <TextView
@@ -625,7 +626,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="true"
-                                android:tag=""
+                                android:tag="none"
                                 android:text="Brak" />
 
                             <RadioButton
@@ -640,7 +641,7 @@
                                 android:id="@+id/drawer_filter_group_completion_date"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="completion_date"
+                                android:tag="task_next_completion_date"
                                 android:text="Data"
                                 android:visibility="gone" />
 

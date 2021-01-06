@@ -47,7 +47,7 @@ data class TaskModel(
 
     var localization: String = "",
 
-    var pay: String = ""
+    var pay: Float = 0f
 
 
 ) : Serializable

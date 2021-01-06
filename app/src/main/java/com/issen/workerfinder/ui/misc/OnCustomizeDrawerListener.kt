@@ -11,4 +11,5 @@ interface OnCustomizeDrawerListener{
     fun onClearClicked()
     fun onBackClicked()
     fun onOrderSwitched(view: View)
+    fun onOrderSwitchClicked(view: View)
 }

@@ -91,10 +91,8 @@ class TaskBoardViewModel(private val taskRepository: TaskRepository) : ViewModel
             }
             queryString += ")"
         }
-
-        if(selectedFilterContainer.sortBy != "none"){
-            queryString += " order by ?" + if(selectedFilterContainer.orderAscending) " asc" else " desc"
-            queryArgs.add(selectedFilterContainer.sortBy)
+        if (selectedFilterContainer.sortBy != "none") {
+            queryString += " order by " + selectedFilterContainer.sortBy + if (selectedFilterContainer.orderAscending) " asc" else " desc"
         }
 
 

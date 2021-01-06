@@ -7,6 +7,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
@@ -350,27 +351,27 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
             is TaskListFragment -> {
                 when (val fragment = currentFragment.getCurrentListFragment()) {
                     is CreatedTaskListFragment -> {
-                        mainActivityViewModel.selectedCreatedTaskListFilter = FilterContainer()
+                        mainActivityViewModel.selectedCreatedTaskListFilter.clearData()
                     }
                     is AcceptedTaskListFragment -> {
-                        mainActivityViewModel.selectedAcceptedTaskListFilter = FilterContainer()
+                        mainActivityViewModel.selectedAcceptedTaskListFilter.clearData()
                     }
                     is CommissionedTaskListFragment -> {
-                        mainActivityViewModel.selectedCommissionedTaskListFilter = FilterContainer()
+                        mainActivityViewModel.selectedCommissionedTaskListFilter.clearData()
                     }
                 }
             }
             is TaskBoardFragment -> {
-                mainActivityViewModel.selectedTaskBoardFilter = FilterContainer()
+                mainActivityViewModel.selectedTaskBoardFilter.clearData()
             }
             is ContactListFragment -> {
-                mainActivityViewModel.selectedContactListFilter = FilterContainer()
+                mainActivityViewModel.selectedContactListFilter.clearData()
             }
             is ContactAddFragment -> {
-                mainActivityViewModel.selectedContactAddFilter = FilterContainer()
+                mainActivityViewModel.selectedContactAddFilter.clearData()
             }
             is ContactBoardFragment -> {
-                mainActivityViewModel.selectedContactBoardFilter = FilterContainer()
+                mainActivityViewModel.selectedContactBoardFilter.clearData()
             }
         }
         drawer_filter_group_radio.check(R.id.drawer_filter_group_none)
@@ -385,7 +386,12 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     }
 
     override fun onOrderSwitched(view: View) {
+        drawer_filter_sort_switch.isChecked = view.tag == "asc"
         mainActivityViewModel.setOrder(drawer_filter_sort_switch.isChecked, getCurrentSelectedFilterContainer())
+    }
+
+    override fun onOrderSwitchClicked(view: View) {
+        mainActivityViewModel.setOrder((view as SwitchCompat).isChecked, getCurrentSelectedFilterContainer())
     }
 
     private fun prepareDrawer() {
@@ -396,6 +402,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
             override fun onDrawerClosed(drawerView: View) {
                 cleanUpDrawer(drawer_layout)
+                getCurrentSelectedFilterContainer().resetData(getCurrentCurrentFilterContainer())
             }
         })
 
@@ -469,6 +476,40 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
             }
             is ContactBoardFragment -> {
                 mainActivityViewModel.selectedContactBoardFilter
+            }
+            else -> FilterContainer()
+        }
+    }
+
+    private fun getCurrentCurrentFilterContainer(): FilterContainer {
+        return when (val fragment = getCurrentlyDisplayedFragment()) {
+            is TaskListFragment -> {
+                when (fragment.getCurrentListFragment()) {
+                    is CreatedTaskListFragment -> {
+                        mainActivityViewModel.currentCreatedTaskListFilter
+                    }
+                    is AcceptedTaskListFragment -> {
+                        mainActivityViewModel.currentAcceptedTaskListFilter
+                    }
+                    is CommissionedTaskListFragment -> {
+                        mainActivityViewModel.currentCommissionedTaskListFilter
+                    }
+                    else -> {
+                        FilterContainer()
+                    }
+                }
+            }
+            is TaskBoardFragment -> {
+                mainActivityViewModel.currentTaskBoardFilter
+            }
+            is ContactListFragment -> {
+                mainActivityViewModel.currentContactBoardFilter
+            }
+            is ContactAddFragment -> {
+                mainActivityViewModel.currentContactBoardFilter
+            }
+            is ContactBoardFragment -> {
+                mainActivityViewModel.currentContactBoardFilter
             }
             else -> FilterContainer()
         }

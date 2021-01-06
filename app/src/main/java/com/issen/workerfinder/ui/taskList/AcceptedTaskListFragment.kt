@@ -40,6 +40,7 @@ class AcceptedTaskListFragment : Fragment(), TaskListListener, PopupMenu.OnMenuI
     }
     private lateinit var onDrawerRequestListener: OnDrawerRequestListener
     private lateinit var onCustomizeDrawerListener: OnCustomizeDrawerListener
+    private lateinit var adapter: TaskListRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +48,7 @@ class AcceptedTaskListFragment : Fragment(), TaskListListener, PopupMenu.OnMenuI
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_accepted_task_list, container, false)
-        val adapter = TaskListRecyclerViewAdapter(this, auth.currentUser!!.uid)
+        adapter = TaskListRecyclerViewAdapter(this, auth.currentUser!!.uid)
 
         acceptedTaskListViewModel.mediatorLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {

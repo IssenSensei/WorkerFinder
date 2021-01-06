@@ -18,5 +18,39 @@ data class FilterContainer(
     var filterByPay: MutableList<String> = mutableListOf(),
     var filterDueDate: MutableList<String> = mutableListOf()
 
-) : Serializable
+
+) : Serializable {
+
+    fun clearData() {
+        orderAscending = false
+        sortBy = "none"
+        groupBy = "none"
+        filterByWorker = mutableListOf()
+        filterByUser = mutableListOf()
+        filterByCategory = mutableListOf()
+        filterByCyclic = mutableListOf()
+        filterByPriority = mutableListOf()
+        filterByCompletionType = mutableListOf()
+        filterByRating = mutableListOf()
+        filterByLocalization = mutableListOf()
+        filterByPay = mutableListOf()
+        filterDueDate = mutableListOf()
+    }
+
+    fun resetData(filterContainer: FilterContainer){
+        orderAscending = filterContainer.orderAscending
+        sortBy = filterContainer.sortBy
+        groupBy = filterContainer.groupBy
+        filterByWorker = filterContainer.filterByWorker
+        filterByUser = filterContainer.filterByUser
+        filterByCategory = filterContainer.filterByCategory
+        filterByCyclic = filterContainer.filterByCyclic
+        filterByPriority = filterContainer.filterByPriority
+        filterByCompletionType = filterContainer.filterByCompletionType
+        filterByRating = filterContainer.filterByRating
+        filterByLocalization = filterContainer.filterByLocalization
+        filterByPay = filterContainer.filterByPay
+        filterDueDate = filterContainer.filterDueDate
+    }
+}
 

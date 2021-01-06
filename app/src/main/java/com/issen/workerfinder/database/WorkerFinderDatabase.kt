@@ -185,7 +185,9 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date(),
                         PriorityTypes.URGENT.toString(),
                         CompletionTypes.ABANDONED.toString(),
-                        "completion"
+                        "completion",
+                        "Lublin",
+                        4000f
                     ),
                     TaskModel(
                         2,
@@ -198,7 +200,9 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date(),
                         PriorityTypes.NORMAL.toString(),
                         CompletionTypes.COMPLETED.toString(),
-                        "completion"
+                        "completion",
+                        "Warszawa",
+                        8000f
                     ),
                     TaskModel(
                         3,
@@ -211,7 +215,9 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date(),
                         PriorityTypes.LOW.toString(),
                         CompletionTypes.PENDING.toString(),
-                        "completion"
+                        "completion",
+                        "Zamość",
+                        2300f
                     ),
                     TaskModel(
                         4,
@@ -224,7 +230,9 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date(),
                         PriorityTypes.URGENT.toString(),
                         CompletionTypes.ACTIVE.toString(),
-                        "completion"
+                        "completion",
+                        "Gdańsk",
+                        90f
                     ),
                     TaskModel(
                         5,
@@ -289,7 +297,9 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date(),
                         PriorityTypes.URGENT.toString(),
                         CompletionTypes.ABANDONED.toString(),
-                        "completion"
+                        "completion",
+                        "Lublin",
+                        3200f
                     ),
                     TaskModel(
                         10,
@@ -302,7 +312,9 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date(),
                         PriorityTypes.NORMAL.toString(),
                         CompletionTypes.COMPLETED.toString(),
-                        "completion"
+                        "completion",
+                        "Warszawa",
+                        5000f
                     ),
                     TaskModel(
                         11,
@@ -315,7 +327,9 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date(),
                         PriorityTypes.LOW.toString(),
                         CompletionTypes.PENDING.toString(),
-                        "completion"
+                        "completion",
+                        "Lublin",
+                        300f
                     ),
                     TaskModel(
                         12,
@@ -328,7 +342,9 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                         Date(),
                         PriorityTypes.URGENT.toString(),
                         CompletionTypes.ACTIVE.toString(),
-                        "completion"
+                        "completion",
+                        "Lublin",
+                        10000f
                     ),
                     TaskModel(
                         13,
