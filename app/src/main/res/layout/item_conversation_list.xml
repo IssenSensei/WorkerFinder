@@ -1,0 +1,44 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="clickListener"
+            type="com.issen.workerfinder.ui.conversationList.ConversationListListener" />
+        <variable
+            name="conversation"
+            type="com.issen.workerfinder.database.models.ConversationsFull" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:onClick="@{()->clickListener.onConversationClicked(conversation)}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/item_conversation_list_photo"
+            conversationPhoto="@{conversation}"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="@dimen/spacing_medium"
+            app:civ_border="false"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_conversation_list_name"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            conversationName="@{conversation}"
+            app:layout_constraintStart_toEndOf="@id/item_conversation_list_photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/item_conversation_list_photo"
+            app:layout_constraintTop_toTopOf="@id/item_conversation_list_photo" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

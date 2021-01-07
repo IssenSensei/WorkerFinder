@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.UserDataFull
@@ -18,11 +19,12 @@ import com.issen.workerfinder.ui.misc.ContactListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import kotlinx.android.synthetic.main.fragment_contact_list.view.*
 
-class ContactListFragment : Fragment(), ContactListener {
+class ContactListFragment : Fragment(), ContactListener, ContactChatListener {
 
     private val contactListViewModel: ContactListViewModel by viewModels {
         ContactListViewModelFactory((requireActivity().application as WorkerFinderApplication).userRepository)
     }
+    private val contactListFragmentArgs: ContactListFragmentArgs by navArgs()
     private lateinit var onDrawerRequestListener: OnDrawerRequestListener
 
     override fun onCreateView(
@@ -31,7 +33,7 @@ class ContactListFragment : Fragment(), ContactListener {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_contact_list, container, false)
 
-        val adapter = ContactListRecyclerViewAdapter(this)
+        val adapter = ContactListRecyclerViewAdapter(this, contactListFragmentArgs.shouldDisplayChatButton, this)
 
         contactListViewModel.mediatorLiveData.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -93,6 +95,11 @@ class ContactListFragment : Fragment(), ContactListener {
 
     fun onAcceptClicked(filterContainer: FilterContainer) {
         contactListViewModel.requery(filterContainer)
+    }
+
+    override fun onContactChatClicked(userDataFull: UserDataFull) {
+        val actionChat = ContactListFragmentDirections.actionNavContactListToNavConversation(null, userDataFull.userData)
+        findNavController().navigate(actionChat)
     }
 
 }

@@ -18,7 +18,7 @@ import java.util.*
 
 @Database(
     entities = [TaskModel::class, TaskModelPhotos::class, TaskModelRepeatDays::class, UserData::class, Categories::class,
-        Comments::class, Contacts::class, DashboardNotification::class, TasksCategoryCrossRef::class, UserCategoryCrossRef::class],
+        Comments::class, Contacts::class, DashboardNotification::class, TasksCategoryCrossRef::class, UserCategoryCrossRef::class, Messages::class, Conversations::class],
     version = 1,
     exportSchema = false
 )
@@ -35,6 +35,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
     abstract val dashboardNotificationDao: DashboardNotificationDao
     abstract val tasksCategoryCrossRefDao: TasksCategoryCrossRefDao
     abstract val userCategoryCrossRefDao: UserCategoryCrossRefDao
+    abstract val messageDao: MessageDao
+    abstract val conversationDao: ConversationDao
 
     companion object {
         @Volatile
@@ -68,6 +70,8 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
         populateCategories(coroutineScope)
         populateUserCategories(coroutineScope, userId)
         populateTaskCategories(coroutineScope, userId)
+        populateConversations(coroutineScope, userId)
+        populateMessages(coroutineScope, userId)
     }
 
     private fun populateUsers(coroutineScope: CoroutineScope, userId: String) {
@@ -726,6 +730,61 @@ abstract class WorkerFinderDatabase : RoomDatabase() {
                     UserCategoryCrossRef("a3", 6),
                     UserCategoryCrossRef("a4", 7),
                     UserCategoryCrossRef("a5", 3)
+                )
+            )
+        }
+    }
+
+    private fun populateConversations(coroutineScope: CoroutineScope, userId: String) {
+        coroutineScope.launch {
+            conversationDao.deleteAll()
+            conversationDao.insert(
+                mutableListOf(
+                    Conversations(1, userId, "a1"),
+                    Conversations(2, userId, "a3"),
+                    Conversations(3, userId, "a5"),
+                    Conversations(4, userId, "a7"),
+                    Conversations(6, userId, "a9"),
+                    Conversations(7, userId, "a11"),
+                    Conversations(8, userId, "a13"),
+                    Conversations(9, userId, "a15")
+                )
+            )
+        }
+    }
+
+    private fun populateMessages(coroutineScope: CoroutineScope, userId: String) {
+        coroutineScope.launch {
+            messageDao.deleteAll()
+            messageDao.insert(
+                mutableListOf(
+                    Messages(1, 1, userId,"Witam", Date().toString()),
+                    Messages(2, 1, "a1","Również", Date().toString()),
+                    Messages(3, 1, userId,"Żegnam", Date().toString()),
+                    Messages(4, 1, "a1","Również", Date().toString()),
+                    Messages(5, 2, userId,"Witam", Date().toString()),
+                    Messages(6, 2, userId,"Witam", Date().toString()),
+                    Messages(7, 3, "a5","Hello world", Date().toString()),
+                    Messages(8, 4, "a7","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", Date().toString()),
+                    Messages(9, 4, userId,"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", Date().toString()),
+                    Messages(11, 6, userId,".", Date().toString()),
+                    Messages(12, 6, "a9","6", Date().toString()),
+                    Messages(13, 6, "a9","spammessage", Date().toString()),
+                    Messages(14, 7, userId,"Lorem", Date().toString()),
+                    Messages(15, 7, "a11","ipsum", Date().toString()),
+                    Messages(16, 7, userId,"dolor", Date().toString()),
+                    Messages(17, 7, "a11","sit", Date().toString()),
+                    Messages(18, 7, userId,"amet", Date().toString()),
+                    Messages(19, 7, "a11","consectetur", Date().toString()),
+                    Messages(20, 7, userId,"adipiscing", Date().toString()),
+                    Messages(21, 7, "a11","elit", Date().toString()),
+                    Messages(22, 7, userId,"sed", Date().toString()),
+                    Messages(23, 7, "a11","do", Date().toString()),
+                    Messages(24, 8, userId,"eiusmod", Date().toString()),
+                    Messages(25, 8, "a15","tempor", Date().toString()),
+                    Messages(26, 8, "a15","incididunt", Date().toString()),
+                    Messages(27, 8, userId,"ut", Date().toString()),
+                    Messages(28, 8, userId,"labore", Date().toString())
                 )
             )
         }

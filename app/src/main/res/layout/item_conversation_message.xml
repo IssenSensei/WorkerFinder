@@ -1,0 +1,49 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="message"
+            type="com.issen.workerfinder.database.models.MessagesFull" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/item_conversation_message_start"
+            messageSpacingLeft="@{message.user.userId}"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="@id/item_conversation_message_content"
+            app:layout_constraintEnd_toStartOf="@id/item_conversation_message_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/item_conversation_message_content" />
+
+        <TextView
+            android:id="@+id/item_conversation_message_content"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{message.message.messageContent}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_conversation_message_start"
+            app:layout_constraintTop_toTopOf="parent"
+            messageGravity="@{message.user.userId}"
+            app:layout_constraintHorizontal_weight="9" />
+
+        <View
+            android:id="@+id/item_conversation_message_end"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintBottom_toBottomOf="@id/item_conversation_message_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_conversation_message_content"
+            app:layout_constraintTop_toTopOf="@id/item_conversation_message_content"
+            messageSpacingRight="@{message.user.userId}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

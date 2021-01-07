@@ -43,9 +43,9 @@
                     android:icon="@drawable/contact_add_smallest_black"
                     android:title="@string/menu_contact_add" />
                 <item
-                    android:id="@+id/nav_contact_chat"
+                    android:id="@+id/nav_conversation_list"
                     android:icon="@drawable/contact_add_smallest_black"
-                    android:title="@string/menu_contact_chat" />
+                    android:title="@string/menu_conversation_list" />
                 <item
                     android:id="@+id/nav_contact_board"
                     android:icon="@drawable/contact_add_smallest_black"

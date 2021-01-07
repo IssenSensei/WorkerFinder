@@ -23,6 +23,8 @@ class WorkerFinderApplication : Application() {
     val userRepository by lazy {UserRepository(database.userDataDao)}
     val tasksCategoryCrossRefRepository by lazy {TasksCategoryCrossRefRepository(database.tasksCategoryCrossRefDao)}
     val userCategoryCrossRefRepository by lazy {UserCategoryCrossRefRepository(database.userCategoryCrossRefDao)}
+    val messageRepository by lazy {MessageRepository(database.messageDao)}
+    val conversationRepository by lazy {ConversationRepository(database.conversationDao)}
 
     override fun onCreate() {
         super.onCreate()

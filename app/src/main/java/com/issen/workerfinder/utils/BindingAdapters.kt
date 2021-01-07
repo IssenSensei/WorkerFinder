@@ -1,11 +1,13 @@
 package com.issen.workerfinder.utils
 
 import android.content.res.ColorStateList
+import android.view.Gravity
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -13,18 +15,69 @@ import com.google.firebase.auth.FirebaseAuth
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.WorkerFinderApplication.Companion.currentLoggedInUserFull
+import com.issen.workerfinder.database.models.ConversationsFull
 import com.issen.workerfinder.database.models.DashboardNotificationFull
 import com.issen.workerfinder.database.models.TaskModel
 import com.issen.workerfinder.database.models.TaskModelFull
 import com.issen.workerfinder.enums.CompletionTypes
 import com.issen.workerfinder.enums.DashboardNotificationTypes
 import com.issen.workerfinder.enums.PriorityTypes
+
 private var auth = FirebaseAuth.getInstance()
 
 @BindingAdapter("photo")
 fun setPhoto(imageView: ImageView, photo: String?) {
     Glide.with(imageView.context).load(photo).placeholder(R.drawable.meme)
         .into(imageView)
+}
+
+@BindingAdapter("conversationPhoto")
+fun setConversationPhoto(imageView: ImageView, conversationsFull: ConversationsFull) {
+    Glide.with(imageView.context).load(
+        if (conversationsFull.firstUser.userId != currentLoggedInUserFull!!.userData.userId) {
+            conversationsFull.firstUser.photo
+        } else {
+            conversationsFull.secondUser.photo
+        }
+    )
+        .placeholder(R.drawable.meme)
+        .into(imageView)
+}
+
+@BindingAdapter("conversationName")
+fun setConversationName(textView: TextView, conversationsFull: ConversationsFull) {
+    textView.text = if (conversationsFull.firstUser.userId != currentLoggedInUserFull!!.userData.userId) {
+        conversationsFull.firstUser.userName
+    } else {
+        conversationsFull.secondUser.userName
+    }
+}
+
+@BindingAdapter("messageSpacingLeft")
+fun setMessageSpacingLeft(view: View, userId: String) {
+    (view.layoutParams as ConstraintLayout.LayoutParams).horizontalWeight = if (userId != currentLoggedInUserFull!!.userData.userId) {
+        0f
+    } else {
+        2f
+    }
+}
+
+@BindingAdapter("messageSpacingRight")
+fun setMessageSpacingRight(view: View, userId: String) {
+    (view.layoutParams as ConstraintLayout.LayoutParams).horizontalWeight = if (userId != currentLoggedInUserFull!!.userData.userId) {
+        2f
+    } else {
+        0f
+    }
+}
+
+@BindingAdapter("messageGravity")
+fun setMessageGravity(view: TextView, userId: String) {
+    view.gravity = if (userId != currentLoggedInUserFull!!.userData.userId) {
+        Gravity.START
+    } else {
+        Gravity.END
+    }
 }
 
 

@@ -106,7 +106,9 @@ class UserProfileFragment : Fragment(), UserProfileListener {
     }
 
     override fun onChatClicked(userFull: UserDataFull) {
-        Toast.makeText(requireContext(), "chat clicked", Toast.LENGTH_SHORT).show()
+
+        val actionChat = UserProfileFragmentDirections.actionNavUserProfileToNavConversation(null, userFull.userData)
+        findNavController().navigate(actionChat)
     }
 
     override fun onEmailClicked(userFull: UserDataFull) {

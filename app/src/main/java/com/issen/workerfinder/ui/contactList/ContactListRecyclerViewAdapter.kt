@@ -10,7 +10,7 @@ import com.issen.workerfinder.databinding.ItemContactListBinding
 import com.issen.workerfinder.ui.misc.ContactListener
 
 
-class ContactListRecyclerViewAdapter(private val contactListener: ContactListener) :
+class ContactListRecyclerViewAdapter(private val contactListener: ContactListener, private val shouldDisplayChatButton: Boolean, private val contactChatListener: ContactChatListener) :
     ListAdapter<UserDataFull, ContactListRecyclerViewAdapter.ViewHolder>(ContactListDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,14 +20,16 @@ class ContactListRecyclerViewAdapter(private val contactListener: ContactListene
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position)!!, contactListener)
+        holder.bind(getItem(position)!!, contactListener, shouldDisplayChatButton, contactChatListener)
     }
 
     class ViewHolder(val binding: ItemContactListBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: UserDataFull, contactListener: ContactListener) {
+        fun bind(item: UserDataFull, contactListener: ContactListener, shouldDisplayChatButton: Boolean, contactChatListener: ContactChatListener) {
             binding.worker = item
             binding.clickListener = contactListener
+            binding.shouldDisplayChatButton = shouldDisplayChatButton
+            binding.contactChatListener = contactChatListener
             binding.executePendingBindings()
         }
     }
@@ -41,4 +43,8 @@ class ContactListDiffCallback : DiffUtil.ItemCallback<UserDataFull>() {
     override fun areContentsTheSame(oldItem: UserDataFull, newItem: UserDataFull): Boolean {
         return oldItem == newItem
     }
+}
+
+interface ContactChatListener {
+    fun onContactChatClicked(userDataFull: UserDataFull)
 }

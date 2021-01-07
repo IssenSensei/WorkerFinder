@@ -23,7 +23,7 @@
     <string name="menu_taskHistory">Historia zadań</string>
     <string name="menu_contact_add">Nawiąż kontakt</string>
     <string name="menu_contact_list">Moje kontakty</string>
-    <string name="menu_contact_chat">Wiadomości</string>
+    <string name="menu_conversation_list">Wiadomości</string>
     <string name="menu_contact_board">Ogłoszenia</string>
     <string name="menu_settings">Ustawienia</string>
     <string name="menu_info">Co nowego?</string>
