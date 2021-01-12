@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.issen.workerfinder.database.models.UserDataWithComments
-import com.issen.workerfinder.databinding.ItemDialogCommentBinding
+import com.issen.workerfinder.databinding.ItemCommentBinding
 
 
 class CommentRecyclerViewAdapter :
@@ -14,7 +14,7 @@ class CommentRecyclerViewAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemDialogCommentBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemCommentBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 
@@ -22,7 +22,7 @@ class CommentRecyclerViewAdapter :
         holder.bind(getItem(position)!!)
     }
 
-    class ViewHolder(val binding: ItemDialogCommentBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: UserDataWithComments) {
             binding.comment = item

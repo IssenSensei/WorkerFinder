@@ -4,7 +4,6 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <data>
 
         <variable
@@ -60,10 +59,7 @@
                         android:layout_gravity="center"
                         android:background="@color/colorAccent" />
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
             </FrameLayout>
-
-
         </LinearLayout>
 
         <com.google.android.material.navigation.NavigationView
@@ -72,8 +68,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
-            app:menu="@menu/activity_main_drawer"
-            tools:visibility="gone" />
+            app:menu="@menu/activity_main_drawer" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/drawer_filter_navigation"
@@ -117,7 +112,7 @@
                             android:layout_marginEnd="@dimen/spacing_large"
                             android:gravity="center"
                             android:padding="@dimen/spacing_medium"
-                            android:text="Dostosuj"
+                            android:text="@string/drawer_filter_header"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                             android:textColor="@color/colorPrimaryDark"
                             app:fontFamily="sans-serif-medium" />
@@ -134,7 +129,7 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:onClick="@{() -> drawerFilterClickListener.onCloseClicked()}"
                             android:tint="@color/red_500"
-                            app:srcCompat="@drawable/clear_smallest_black" />
+                            app:srcCompat="@drawable/ic_close" />
                     </LinearLayout>
                 </com.google.android.material.appbar.AppBarLayout>
 
@@ -169,11 +164,11 @@
                         android:layout_width="0dp"
                         android:layout_height="?actionBarSize"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/clear_smallest_black"
+                        android:drawableStart="@drawable/ic_close"
                         android:drawableTint="@color/blue_600"
                         android:onClick="@{() -> drawerFilterClickListener.onClearClicked()}"
                         android:shadowRadius="3"
-                        android:text="Wyczyść" />
+                        android:text="@string/clear_label" />
 
                     <Button
                         android:id="@+id/drawer_filter_accept"
@@ -181,11 +176,11 @@
                         android:layout_width="0dp"
                         android:layout_height="?actionBarSize"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_done"
+                        android:drawableStart="@drawable/ic_accept"
                         android:drawableTint="@color/green_600"
                         android:onClick="@{() -> drawerFilterClickListener.onAcceptClicked()}"
                         android:shadowRadius="3"
-                        android:text="Zatwierdź" />
+                        android:text="@string/confirm" />
 
                 </LinearLayout>
 

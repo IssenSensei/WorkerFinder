@@ -13,6 +13,13 @@ data class DashboardNotificationFull(
         parentColumn = "notificationCausedByUserId",
         entityColumn = "userId"
     )
-    val userData: UserData
+    val userData: UserData,
+
+    @Relation(
+        parentColumn = "modifiedRecordId",
+        entityColumn = "taskId"
+    )
+    val task: TaskModel?
+
 
 ) : Serializable

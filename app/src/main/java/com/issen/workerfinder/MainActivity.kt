@@ -41,6 +41,8 @@ import com.issen.workerfinder.ui.misc.OnCustomizeDrawerListener
 import com.issen.workerfinder.ui.misc.OnDrawerRequestListener
 import com.issen.workerfinder.ui.misc.OnFilterSelectionListener
 import com.issen.workerfinder.ui.taskBoard.TaskBoardFragment
+import com.issen.workerfinder.ui.taskBoard.TaskBoardMineFragment
+import com.issen.workerfinder.ui.taskBoard.TaskBoardOthersFragment
 import com.issen.workerfinder.ui.taskList.AcceptedTaskListFragment
 import com.issen.workerfinder.ui.taskList.CommissionedTaskListFragment
 import com.issen.workerfinder.ui.taskList.CreatedTaskListFragment
@@ -102,8 +104,8 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_dashboard, R.id.nav_task_list, R.id.nav_task_board, R.id.nav_contact_board,
-                R.id.nav_contact_list
+                R.id.nav_dashboard, R.id.nav_invitations, R.id.nav_task_list, R.id.nav_new_task, R.id.nav_task_board, R.id.nav_contact_board,
+                R.id.nav_contact_list, R.id.nav_contact_add, R.id.nav_conversation_list
             ), drawerLayout
         )
 
@@ -323,8 +325,19 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 }
             }
             is TaskBoardFragment -> {
-                mainActivityViewModel.applyTaskBoardFilters()
-                currentFragment.onAcceptClicked(mainActivityViewModel.currentTaskBoardFilter)
+                when (val fragment = currentFragment.getCurrentListFragment()) {
+                    is TaskBoardOthersFragment -> {
+                        mainActivityViewModel.applyTaskBoardOthersFilters()
+                        fragment.onAcceptClicked(mainActivityViewModel.currentTaskBoardOthersFilter)
+                    }
+                    is TaskBoardMineFragment -> {
+                        mainActivityViewModel.applyTaskBoardMineFilters()
+                        fragment.onAcceptClicked(mainActivityViewModel.currentTaskBoardMineFilter)
+                    }
+                    else -> {
+                        FilterContainer()
+                    }
+                }
             }
             is ContactListFragment -> {
                 mainActivityViewModel.applyContactListFilters()
@@ -349,7 +362,7 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
     override fun onClearClicked() {
         when (val currentFragment = getCurrentlyDisplayedFragment()) {
             is TaskListFragment -> {
-                when (val fragment = currentFragment.getCurrentListFragment()) {
+                when (currentFragment.getCurrentListFragment()) {
                     is CreatedTaskListFragment -> {
                         mainActivityViewModel.selectedCreatedTaskListFilter.clearData()
                     }
@@ -362,7 +375,14 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 }
             }
             is TaskBoardFragment -> {
-                mainActivityViewModel.selectedTaskBoardFilter.clearData()
+                when (currentFragment.getCurrentListFragment()) {
+                    is TaskBoardOthersFragment -> {
+                        mainActivityViewModel.selectedTaskBoardOthersFilter.clearData()
+                    }
+                    is TaskBoardMineFragment -> {
+                        mainActivityViewModel.selectedTaskBoardMineFilter.clearData()
+                    }
+                }
             }
             is ContactListFragment -> {
                 mainActivityViewModel.selectedContactListFilter.clearData()
@@ -466,7 +486,17 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 }
             }
             is TaskBoardFragment -> {
-                mainActivityViewModel.selectedTaskBoardFilter
+                when (fragment.getCurrentListFragment()) {
+                    is TaskBoardOthersFragment -> {
+                        mainActivityViewModel.selectedTaskBoardOthersFilter
+                    }
+                    is TaskBoardMineFragment -> {
+                        mainActivityViewModel.selectedTaskBoardMineFilter
+                    }
+                    else -> {
+                        FilterContainer()
+                    }
+                }
             }
             is ContactListFragment -> {
                 mainActivityViewModel.selectedContactBoardFilter
@@ -500,7 +530,17 @@ class MainActivity : AppCompatActivity(), OnDrawerRequestListener, OnCustomizeDr
                 }
             }
             is TaskBoardFragment -> {
-                mainActivityViewModel.currentTaskBoardFilter
+                when (fragment.getCurrentListFragment()) {
+                    is TaskBoardOthersFragment -> {
+                        mainActivityViewModel.currentTaskBoardOthersFilter
+                    }
+                    is TaskBoardMineFragment -> {
+                        mainActivityViewModel.currentTaskBoardMineFilter
+                    }
+                    else -> {
+                        FilterContainer()
+                    }
+                }
             }
             is ContactListFragment -> {
                 mainActivityViewModel.currentContactBoardFilter

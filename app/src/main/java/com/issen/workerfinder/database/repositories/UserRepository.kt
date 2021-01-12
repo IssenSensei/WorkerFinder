@@ -25,6 +25,8 @@ class UserRepository(private val userDataDao: UserDataDao){
 
     suspend fun getUserByFirebaseKey(userId: String): UserDataFull  = userDataDao.getUserByFirebaseKey(userId)
     suspend fun insert(userData: UserData) = userDataDao.insert(userData)
+    fun getBoardTaskApplications(taskId: Int): LiveData<List<UserDataFull>> = userDataDao.getBoardTaskApplications(taskId)
+    fun getBoardTaskApplications(taskId: Int, name: String): LiveData<List<UserDataFull>> = userDataDao.getBoardTaskApplications(taskId, name)
 
 
 }

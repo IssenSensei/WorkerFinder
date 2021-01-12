@@ -5,9 +5,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
 
+        <!--todo used to set navigationView items size, possible problems when handling different screen sizes-->
+        <item name="listPreferredItemHeightSmall">40dp</item>
     </style>
 
     <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
@@ -16,6 +17,4 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
-
-
 </resources>

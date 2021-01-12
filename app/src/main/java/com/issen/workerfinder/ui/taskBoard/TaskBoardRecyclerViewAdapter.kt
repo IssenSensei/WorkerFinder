@@ -2,11 +2,10 @@ package com.issen.workerfinder.ui.taskBoard
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.issen.workerfinder.database.models.TaskModelFull
-import com.issen.workerfinder.databinding.ItemTaskBinding
 import com.issen.workerfinder.databinding.ItemTaskBoardBinding
 
 
@@ -45,4 +44,5 @@ class TaskBoardDiffCallback : DiffUtil.ItemCallback<TaskModelFull>() {
 
 interface TaskBoardListener {
     fun onTaskClicked(taskModelFull: TaskModelFull)
+    fun onTaskApplied(taskModelFull: TaskModelFull)
 }

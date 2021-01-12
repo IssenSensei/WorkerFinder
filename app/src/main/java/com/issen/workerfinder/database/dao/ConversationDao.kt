@@ -21,12 +21,10 @@ interface ConversationDao {
     suspend fun deleteAll()
 
     @Transaction
-    @Query("SELECT DISTINCT * FROM conversation_table WHERE firstUserId = :userId OR secondUserId = :userId")
+    @Query("SELECT DISTINCT * FROM conversation_table WHERE firstUserId = :userId OR secondUserId = :userId ")
     fun getUserConversations(userId: String): LiveData<List<ConversationsFull>>
 
     @Transaction
     @Query("SELECT * FROM conversation_table WHERE (firstUserId = :userId AND secondUserId = :userId2) OR (firstUserId = :userId2 AND secondUserId = :userId)")
     suspend fun findConversation(userId: String, userId2: String): ConversationsFull?
-
-
 }

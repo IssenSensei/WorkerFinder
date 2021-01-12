@@ -28,7 +28,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         applicationContext.getString(R.string.notification_rating_channel_id)
     )
 
-        .setSmallIcon(R.drawable.ic_logo_small)
+        .setSmallIcon(R.drawable.ic_logo)
         .setContentTitle(
             applicationContext
                 .getString(R.string.notification_rating_title)

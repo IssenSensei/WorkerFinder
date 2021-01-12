@@ -18,34 +18,42 @@ interface DashboardNotificationDao {
     @Query("SELECT * FROM dashboard_notifications_table ORDER BY date DESC")
     fun getAllNotifications(): LiveData<List<DashboardNotificationFull>>
 
+    @Transaction
+    @Query("SELECT * FROM dashboard_notifications_table WHERE notificationOwnerId = :userId ORDER BY date DESC")
+    fun getAllUserNotifications(userId: String): LiveData<List<DashboardNotificationFull>>
+
     @Insert
     suspend fun notify(dashboardNotification: DashboardNotification)
 
-    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTCANCELED' WHERE notificationOwnerId = " +
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTCANCELED', resolved = 1 WHERE notificationOwnerId = " +
             ":notificationOwner AND notificationCausedByUserId = :notificationCausedBy")
-    suspend fun cancelNotification(notificationOwner: String, notificationCausedBy: String)
+    suspend fun cancelContactNotification(notificationOwner: String, notificationCausedBy: String)
 
-    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTACCEPTED' WHERE id = :id")
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTACCEPTED', resolved = 1 WHERE id = :id")
     suspend fun acceptContact(id: Int)
 
-    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTREFUSED' WHERE id = :id")
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'CONTACTREFUSED', resolved = 1 WHERE id = :id")
     suspend fun refuseContact(id: Int)
 
-    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'TASKACCEPTED' WHERE id = :id")
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'TASKACCEPTED', resolved = 1 WHERE id = :id")
     suspend fun acceptTask(id: Int)
 
-    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'TASKREJECTED' WHERE id = :id")
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'TASKREJECTED', resolved = 1 WHERE id = :id")
     suspend fun rejectTask(id: Int)
 
-    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'WORKACCEPTED' WHERE id = :id")
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'WORKACCEPTED', resolved = 1 WHERE id = :id")
     suspend fun acceptWork(id: Int)
 
-    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'WORKREFUSED' WHERE id = :id")
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'WORKREFUSED', resolved = 1 WHERE id = :id")
     suspend fun refuseWork(id: Int)
 
-    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'WORKCANCELED' WHERE modifiedRecordId = " +
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'WORKCANCELED', resolved = 1 WHERE modifiedRecordId = " +
             ":modifiedRecordId AND notificationCausedByUserId = :notificationCausedBy")
-    suspend fun cancelNotification(modifiedRecordId: Int, notificationCausedBy: String)
+    suspend fun cancelWorkNotification(modifiedRecordId: Int, notificationCausedBy: String)
+
+    @Query("UPDATE dashboard_notifications_table SET dashboardNotificationType = 'TASKBOARDCANCELED', resolved = 1 WHERE modifiedRecordId = " +
+            ":modifiedRecordId AND notificationCausedByUserId = :notificationCausedBy")
+    suspend fun cancelBoardApplicationNotification(modifiedRecordId: Int, notificationCausedBy: String)
 
     @Query("DELETE FROM dashboard_notifications_table")
     suspend fun deleteAll()

@@ -13,8 +13,10 @@ class TaskRepository(private val taskModelDao: TaskModelDao) {
     fun getAllCreatedTasks(userId: String): LiveData<List<TaskModelFull>> = taskModelDao.getAllCreatedTasks(userId)
     val activeTasks: LiveData<List<TaskModelFull>> = taskModelDao.getActiveTasks()
     fun getTasksQueried(query: SimpleSQLiteQuery): LiveData<List<TaskModelFull>> = taskModelDao.getTasksQueried(query)
-    fun getBoardTasks(): LiveData<List<TaskModelFull>> = taskModelDao.getBoardTasks()
+    fun getMineBoardTasks(userId: String): LiveData<List<TaskModelFull>> = taskModelDao.getMineBoardTasks(userId)
+    fun getOthersBoardTasks(userId: String): LiveData<List<TaskModelFull>> = taskModelDao.getOthersBoardTasks(userId)
     fun getUserInvitations(userId: String): LiveData<List<TaskModelFull>> = taskModelDao.getUserInvitations(userId)
+    fun getUserApplications(userId: String): LiveData<List<TaskModelFull>> = taskModelDao.getUserApplications(userId)
 
     suspend fun insert(taskModel: TaskModel): Long {
         return taskModelDao.insert(taskModel)
@@ -30,6 +32,7 @@ class TaskRepository(private val taskModelDao: TaskModelDao) {
     suspend fun acceptTask(modifiedRecordId: Int) = taskModelDao.acceptTask(modifiedRecordId)
     suspend fun deleteTask(taskId: Int) = taskModelDao.delete(taskId)
     suspend fun refuseTask(taskId: Int) = taskModelDao.refuseTask(taskId)
+    suspend fun selectBoardWorker(taskId: Int, userId: String) = taskModelDao.selectBoardWorker(taskId, userId)
 
 
 }

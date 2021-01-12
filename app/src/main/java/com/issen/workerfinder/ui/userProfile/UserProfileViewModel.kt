@@ -55,6 +55,10 @@ class UserProfileViewModel(
     val isUserInContactList: LiveData<Boolean>
         get() = _isUserInContactList
 
+    private val _isAccountPublic = MutableLiveData<Boolean>()
+    val isAccountPublic: LiveData<Boolean>
+        get() = _isAccountPublic
+
     init {
         viewModelScope.launch { _activeTasks.value = taskRepository.getActiveTasks(userDataFull.userData.userId) }
         viewModelScope.launch { _completedTasks.value = taskRepository.getCompletedTasks(userDataFull.userData.userId) }
@@ -76,6 +80,7 @@ class UserProfileViewModel(
     }
 
     fun setAccountPublic(firebaseKey: String, isPublic: Boolean) {
+        _isAccountPublic.value = isPublic
         viewModelScope.launch {
             userRepository.setAccountPublic(firebaseKey, isPublic)
         }
@@ -91,7 +96,8 @@ class UserProfileViewModel(
                     userDataFull.userData.userId,
                     currentLoggedInUserFull!!.userData.userId,
                     DashboardNotificationTypes.CONTACTREMOVED.toString(),
-                    0
+                    0,
+                    true
                 )
             )
             dashboardNotificationRepository.notify(
@@ -101,7 +107,8 @@ class UserProfileViewModel(
                     currentLoggedInUserFull!!.userData.userId,
                     userDataFull.userData.userId,
                     DashboardNotificationTypes.CONTACTREMOVED.toString(),
-                    0
+                    0,
+                    true
                 )
             )
         }
@@ -116,7 +123,8 @@ class UserProfileViewModel(
                     userDataFull.userData.userId,
                     currentLoggedInUserFull!!.userData.userId,
                     DashboardNotificationTypes.CONTACTINVITED.toString(),
-                    0
+                    0,
+                    false
                 )
             )
         }

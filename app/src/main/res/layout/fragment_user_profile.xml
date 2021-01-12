@@ -12,6 +12,10 @@
         <variable
             name="clickListener"
             type="com.issen.workerfinder.ui.userProfile.UserProfileListener" />
+
+        <variable
+            name="isUserContact"
+            type="boolean" />
     </data>
 
     <ScrollView
@@ -22,7 +26,6 @@
         android:scrollingCache="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".ui.userProfile.UserProfileFragment">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -36,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text='@{user.userData.userName ?? "Brak danych"}'
+                setNullableText="@{user.userData.userName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +70,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/user_profile_photo"
                 app:layout_constraintEnd_toStartOf="@id/user_profile_photo"
                 app:layout_constraintTop_toTopOf="@+id/user_profile_photo"
-                app:srcCompat="@drawable/ic_chat" />
+                app:srcCompat="@drawable/ic_message" />
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/user_profile_photo"
@@ -111,7 +114,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/user_profile_photo"
                 app:layout_constraintStart_toEndOf="@id/user_profile_contact_call"
                 app:layout_constraintTop_toTopOf="@+id/user_profile_photo"
-                app:srcCompat="@drawable/ic_logo_small" />
+                app:srcCompat="@drawable/ic_logo" />
 
             <LinearLayout
                 android:id="@+id/user_profile_users_comments_container"
@@ -130,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:text="Pracownik" />
+                    android:text="@string/worker_label" />
 
                 <RatingBar
                     android:id="@+id/user_profile_rating_worker_bar"
@@ -149,7 +152,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_large"
                     android:layout_marginEnd="16dp"
-                    android:text="4.8"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/colorSecondary" />
 
@@ -172,7 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
-                    android:text="Pracodawca" />
+                    android:text="@string/user_label" />
 
                 <RatingBar
                     android:id="@+id/user_profile_rating_user_bar"
@@ -192,7 +194,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_large"
                     android:layout_marginEnd="16dp"
-                    android:text="4.8"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/colorSecondary" />
 
@@ -204,7 +205,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large"
                 android:layout_marginEnd="16dp"
-                android:text="1.5 K"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/colorSecondary"
                 app:layout_constraintEnd_toStartOf="@id/user_profile_active_tasks"
@@ -216,7 +216,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_medium"
-                android:text="Completed"
+                android:text="@string/completed_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textColor="@color/grey_60"
                 app:layout_constraintEnd_toEndOf="@id/user_profile_completed_tasks"
@@ -228,7 +228,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_x_large"
-                android:text="17.8 K"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/colorSecondary"
                 app:layout_constraintEnd_toStartOf="@id/user_profile_abandoned_tasks"
@@ -240,7 +239,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_medium"
-                android:text="Active"
+                android:text="@string/active_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textColor="@color/grey_60"
                 app:layout_constraintEnd_toEndOf="@id/user_profile_active_tasks"
@@ -253,7 +252,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="@dimen/spacing_large"
-                android:text="1.3 K"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/colorSecondary"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -264,7 +262,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_medium"
-                android:text="Abandoned"
+                android:text="@string/abandoned_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textColor="@color/grey_60"
                 app:layout_constraintEnd_toEndOf="@id/user_profile_abandoned_tasks"
@@ -288,7 +286,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_large"
-                    android:text='@{user.userData.description ?? "Brak opisu"}'
+                    setNullableText="@{user.userData.description}"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_90" />
 
@@ -308,7 +306,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_large"
-                    android:text="No categories yet"
+                    android:text="Brak kategorii"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_90" />
 
@@ -337,7 +335,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_large"
-                            android:text="Email: "
+                            android:text="@string/email_label"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_90" />
 
@@ -346,7 +344,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_large"
-                            android:text='@{user.userData.email ?? "Brak danych"}'
+                            setNullableText="@{user.userData.email}"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_90" />
                     </LinearLayout>
@@ -360,7 +358,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_large"
-                            android:text="Phone: "
+                            android:text="@string/phone_label"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_90" />
 
@@ -369,7 +367,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_large"
-                            android:text='@{user.userData.phone ?? "Brak danych"}'
+                            setNullableText="@{user.userData.phone}"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_90" />
                     </LinearLayout>
@@ -383,7 +381,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_large"
-                            android:text="Address: "
+                            android:text="@string/localization_label"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_90" />
 
@@ -391,7 +389,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_large"
-                            android:text="address"
+                            setNullableText="@{user.userData.localization}"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/grey_90" />
                     </LinearLayout>
@@ -409,45 +407,83 @@
                 app:layout_constraintTop_toBottomOf="@id/user_profile_user_additional_info_container">
 
                 <Button
-                    android:id="@+id/user_profile_contact_manage"
+                    android:id="@+id/user_profile_contact_invite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:onClick="@{() -> clickListener.onContactManageClicked(user)}"
-                    android:text="Nawiąż kontakt/ usuń kontakt" />
+                    android:drawableStart="@drawable/ic_invitation_contact"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:onClick="@{() -> clickListener.onContactInvite(user)}"
+                    contactInviteVisibility="@{isUserContact}"
+                    userData="@{user.userData}"
+                    android:text="@string/invite_contact" />
+
+                <Button
+                    android:id="@+id/user_profile_contact_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:drawableStart="@drawable/ic_contact_remove"
+                    android:drawablePadding="@dimen/spacing_small"
+                    contactDeleteVisibility="@{isUserContact}"
+                    userData="@{user.userData}"
+                    android:onClick="@{() -> clickListener.onContactDelete(user)}"
+                    android:text="@string/delete_contact" />
 
                 <Button
                     android:id="@+id/user_profile_offer_work"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:visibility="@{user.userData.openForWork ? View.VISIBLE : View.GONE}"
+                    android:drawableStart="@drawable/ic_invitation_task"
+                    android:drawablePadding="@dimen/spacing_small"
+                    offerWorkVisibility="@{user.userData}"
                     android:onClick="@{() -> clickListener.onOfferWork(user)}"
-                    android:text="Wystaw zadanie" />
+                    android:text="@string/offer_work" />
 
                 <Button
                     android:id="@+id/user_profile_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:drawableStart="@drawable/ic_edit"
+                    android:drawablePadding="@dimen/spacing_small"
+                    visibleIfCurrentUser="@{user.userData}"
                     android:onClick="@{() -> clickListener.onEditProfileClicked(user)}"
-                    android:text="Edytuj profil" />
+                    android:text="@string/edit_profile" />
 
                 <Button
-                    android:id="@+id/user_profile_public_manage"
+                    android:id="@+id/user_profile_public"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:onClick="@{() -> clickListener.onPublicManageClicked(user)}"
-                    android:text="Opublikuj konto" />
+                    android:drawableStart="@drawable/ic_public"
+                    android:drawablePadding="@dimen/spacing_small"
+                    privateVisibility="@{user.userData}"
+                    android:onClick="@{() -> clickListener.onPublicClicked(user)}"
+                    android:text="@string/make_public" />
+
+                <Button
+                    android:id="@+id/user_profile_private"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:drawableStart="@drawable/ic_private"
+                    android:drawablePadding="@dimen/spacing_small"
+                    publicVisibility="@{user.userData}"
+                    android:onClick="@{() -> clickListener.onPrivateClicked(user)}"
+                    android:text="@string/make_private" />
 
                 <Button
                     android:id="@+id/user_profile_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:drawableStart="@drawable/ic_delete"
+                    android:drawablePadding="@dimen/spacing_small"
+                    visibleIfCurrentUser="@{user.userData}"
                     android:onClick="@{() -> clickListener.onDeleteAccountClicked(user)}"
-                    android:text="Usuń konto" />
+                    android:text="@string/delete_account" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -54,7 +54,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Filtruj"
+                            android:text="@string/filter_label"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                             android:textColor="@color/grey_80" />
 
@@ -66,7 +66,7 @@
                             android:clickable="false"
                             android:tag="viewButton"
                             android:tint="@color/grey_80"
-                            app:srcCompat="@drawable/ic_expand_arrow" />
+                            app:srcCompat="@drawable/ic_arrow_down" />
 
                     </LinearLayout>
 
@@ -92,8 +92,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
-                                android:padding="@dimen/spacing_medium"
-                                android:hint="Wyszukaj"/>
+                                android:hint="@string/search_hint"
+                                android:padding="@dimen/spacing_medium" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_search"
@@ -121,7 +121,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Pracownik" />
+                                android:text="@string/worker_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_worker"
@@ -149,7 +149,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Pracodawca" />
+                                android:text="@string/user_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_user"
@@ -177,7 +177,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Kategoria" />
+                                android:text="@string/category_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_category"
@@ -205,7 +205,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Cykliczność" />
+                                android:text="@string/cyclic_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_cyclic_type"
@@ -233,7 +233,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Lokalizacja" />
+                                android:text="@string/localization_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_localization"
@@ -261,7 +261,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Data" />
+                                android:text="@string/date_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_date"
@@ -289,7 +289,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Priorytet" />
+                                android:text="@string/priority_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_priority"
@@ -317,7 +317,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Stan" />
+                                android:text="@string/state_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_completion_type"
@@ -344,7 +344,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Stawka" />
+                                android:text="@string/pay_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_pay"
@@ -371,7 +371,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Ocena" />
+                                android:text="@string/rating_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_rating"
@@ -398,7 +398,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:padding="@dimen/spacing_medium"
-                                android:text="Otwarty na zlecenia" />
+                                android:text="@string/open_for_work_label" />
 
                             <ImageButton
                                 android:id="@+id/drawer_filter_filter_open_for_work"
@@ -449,7 +449,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Sortuj"
+                            android:text="@string/sort_label"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                             android:textColor="@color/grey_80" />
 
@@ -461,7 +461,7 @@
                             android:clickable="false"
                             android:tag="viewButton"
                             android:tint="@color/grey_80"
-                            app:srcCompat="@drawable/ic_expand_arrow" />
+                            app:srcCompat="@drawable/ic_arrow_down" />
 
                     </LinearLayout>
 
@@ -485,7 +485,7 @@
                                 android:layout_height="wrap_content"
                                 android:checked="true"
                                 android:tag="none"
-                                android:text="Brak" />
+                                android:text="@string/none_label" />
 
 
                             <RadioButton
@@ -494,7 +494,7 @@
                                 android:layout_height="wrap_content"
                                 android:checked="true"
                                 android:tag="pay"
-                                android:text="Stawka"
+                                android:text="@string/pay_label"
                                 android:visibility="gone" />
 
 
@@ -504,7 +504,7 @@
                                 android:layout_height="wrap_content"
                                 android:checked="true"
                                 android:tag="task_next_completion_date"
-                                android:text="Data"
+                                android:text="@string/date_label"
                                 android:visibility="gone" />
 
                             <RadioButton
@@ -513,7 +513,7 @@
                                 android:layout_height="wrap_content"
                                 android:checked="true"
                                 android:tag="rating"
-                                android:text="Ocena"
+                                android:text="@string/rating_label"
                                 android:visibility="gone" />
 
                         </RadioGroup>
@@ -528,19 +528,18 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:clickable="true"
                                 android:gravity="center"
                                 android:onClick="@{(view) -> drawerFilterClickListener.onOrderSwitched(view)}"
                                 android:tag="desc"
-                                android:text="Malejąco" />
+                                android:text="@string/descending_label" />
 
                             <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/drawer_filter_sort_switch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:onClick="@{(view) -> drawerFilterClickListener.onOrderSwitchClicked(view)}"
-                                android:gravity="center" />
+                                android:gravity="center"
+                                android:onClick="@{(view) -> drawerFilterClickListener.onOrderSwitchClicked(view)}" />
 
                             <TextView
                                 android:id="@+id/drawer_filter_sort_asc"
@@ -550,7 +549,7 @@
                                 android:gravity="center"
                                 android:onClick="@{(view) -> drawerFilterClickListener.onOrderSwitched(view)}"
                                 android:tag="asc"
-                                android:text="Rosnąco" />
+                                android:text="@string/ascending_label" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -591,7 +590,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Grupuj"
+                            android:text="@string/group_label"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                             android:textColor="@color/grey_80" />
 
@@ -603,7 +602,7 @@
                             android:clickable="false"
                             android:tag="viewButton"
                             android:tint="@color/grey_80"
-                            app:srcCompat="@drawable/ic_expand_arrow" />
+                            app:srcCompat="@drawable/ic_arrow_down" />
 
                     </LinearLayout>
 
@@ -627,14 +626,14 @@
                                 android:layout_height="wrap_content"
                                 android:checked="true"
                                 android:tag="none"
-                                android:text="Brak" />
+                                android:text="@string/none_label" />
 
                             <RadioButton
                                 android:id="@+id/drawer_filter_group_priority"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:tag="task_priority_type"
-                                android:text="Priorytet"
+                                android:text="@string/priority_label"
                                 android:visibility="gone" />
 
                             <RadioButton
@@ -642,7 +641,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:tag="task_next_completion_date"
-                                android:text="Data"
+                                android:text="@string/date_label"
                                 android:visibility="gone" />
 
                             <RadioButton
@@ -650,10 +649,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:tag="localization"
-                                android:text="Lokalizacja"
+                                android:text="@string/localization_label"
                                 android:visibility="gone" />
-
-
                         </RadioGroup>
                     </LinearLayout>
                 </LinearLayout>
@@ -694,7 +691,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Aktywne ustawienia"
+                            android:text="@string/active_filters_label"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                             android:textColor="@color/grey_80" />
 
@@ -706,8 +703,7 @@
                             android:clickable="false"
                             android:tag="viewButton"
                             android:tint="@color/grey_80"
-                            app:srcCompat="@drawable/ic_expand_arrow" />
-
+                            app:srcCompat="@drawable/ic_arrow_down" />
                     </LinearLayout>
 
                     <LinearLayout

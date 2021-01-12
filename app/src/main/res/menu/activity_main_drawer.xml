@@ -6,11 +6,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dashboard"
-            android:icon="@drawable/tasks_smallest_black"
+            android:icon="@drawable/ic_notifications"
             android:title="@string/menu_dashboard" />
         <item
             android:id="@+id/nav_invitations"
-            android:icon="@drawable/tasks_smallest_black"
+            android:icon="@drawable/ic_invitation"
             android:title="@string/menu_invitations" />
         <item
             android:id="@+id/nav_task_menu_title"
@@ -18,15 +18,15 @@
             <menu>
                 <item
                     android:id="@+id/nav_task_list"
-                    android:icon="@drawable/tasks_smallest_black"
+                    android:icon="@drawable/ic_task_list"
                     android:title="@string/menu_task_list" />
                 <item
                     android:id="@+id/nav_new_task"
-                    android:icon="@drawable/new_task_smallest_black"
-                    android:title="@string/menu_newTask" />
+                    android:icon="@drawable/ic_add_task"
+                    android:title="@string/menu_new_task" />
                 <item
                     android:id="@+id/nav_task_board"
-                    android:icon="@drawable/new_task_smallest_black"
+                    android:icon="@drawable/ic_task_board"
                     android:title="@string/menu_task_board" />
             </menu>
         </item>
@@ -36,19 +36,19 @@
             <menu>
                 <item
                     android:id="@+id/nav_contact_list"
-                    android:icon="@drawable/contact_list_smallest_black"
+                    android:icon="@drawable/ic_contacts"
                     android:title="@string/menu_contact_list" />
                 <item
                     android:id="@+id/nav_contact_add"
-                    android:icon="@drawable/contact_add_smallest_black"
+                    android:icon="@drawable/ic_contact_add"
                     android:title="@string/menu_contact_add" />
                 <item
                     android:id="@+id/nav_conversation_list"
-                    android:icon="@drawable/contact_add_smallest_black"
+                    android:icon="@drawable/ic_message"
                     android:title="@string/menu_conversation_list" />
                 <item
                     android:id="@+id/nav_contact_board"
-                    android:icon="@drawable/contact_add_smallest_black"
+                    android:icon="@drawable/ic_contact_board"
                     android:title="@string/menu_contact_board" />
             </menu>
         </item>
@@ -58,20 +58,20 @@
             <menu>
                 <item
                     android:id="@+id/nav_settings"
-                    android:icon="@drawable/settings_smallest_black"
+                    android:icon="@drawable/ic_settings"
                     android:title="@string/menu_settings" />
                 <item
                     android:id="@+id/nav_info"
-                    android:icon="@drawable/info_smallest_black"
+                    android:icon="@drawable/ic_info"
                     android:title="@string/menu_info" />
                 <item
                     android:id="@+id/nav_contact"
-                    android:icon="@drawable/about_smallest_black"
+                    android:icon="@drawable/ic_about"
                     android:title="@string/menu_contact" />
                 <item
                     android:id="@+id/nav_logout"
-                    android:icon="@drawable/logout_smallest_black"
-                    android:title="@string/title_logout" />
+                    android:icon="@drawable/ic_power"
+                    android:title="@string/action_logout" />
             </menu>
         </item>
     </group>

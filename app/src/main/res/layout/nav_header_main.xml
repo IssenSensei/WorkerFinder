@@ -19,17 +19,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/material_bg_1" />
+            android:src="@drawable/bg_nav_header" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar"
+            photo="@{user.userData.photo}"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_marginStart="@dimen/spacing_large"
             android:layout_marginTop="@dimen/spacing_double"
             android:layout_marginBottom="@dimen/spacing_large"
             android:onClick="navigateProfile"
-            photo="@{user.userData.photo}"
             app:civ_border_width="2dp"
             app:civ_shadow="true"
             app:civ_shadow_radius="0" />
@@ -50,23 +50,20 @@
 
                 <TextView
                     android:id="@+id/name"
+                    setNullableText="@{user.userData.userName}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:text='@{user.userData.userName ?? "Nie podano"}'
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                 <TextView
                     android:id="@+id/email"
+                    setNullableText="@{user.userData.email}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{user.userData.email ?? "Nie podano"}'
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             </LinearLayout>
-
         </LinearLayout>
-
     </RelativeLayout>
-
 </layout>

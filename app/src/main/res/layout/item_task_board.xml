@@ -26,16 +26,16 @@
         <FrameLayout
             android:id="@+id/lyt_parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.balysv.materialripple.MaterialRippleLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="@{() -> clickListener.onTaskClicked(fullTask)}">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_large">
 
                     <TextView
@@ -44,33 +44,55 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/task_pay"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="@{fullTask.task.taskTitle}" />
 
                     <TextView
-                        android:id="@+id/task_worker"
-                        android:layout_width="0dp"
+                        android:id="@+id/task_pay"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="@{fullTask.taskWorker.userName}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/task_title"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@{Float.toString(fullTask.task.pay)}" />
+
+                    <TextView
+                        android:id="@+id/task_localization"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@{fullTask.task.localization}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/task_title" />
 
                     <TextView
-                        android:id="@+id/task_next_completion_date"
+                        android:id="@+id/task_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:text="@{fullTask.task.nextCompletionDate}"
+                        app:layout_constraintEnd_toStartOf="@id/task_apply"
+                        app:layout_constraintStart_toEndOf="@id/task_localization"
+                        app:layout_constraintTop_toBottomOf="@+id/task_title" />
+
+                    <TextView
+                        android:id="@+id/task_apply"
+                        visibleIfNotCurrentUser="@{fullTask.taskUser}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:onClick="@{()->clickListener.onTaskApplied(fullTask)}"
+                        android:text="@string/apply"
+                        android:textColor="@color/colorAccent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/task_worker" />
+                        app:layout_constraintStart_toEndOf="@id/task_date"
+                        app:layout_constraintTop_toBottomOf="@+id/task_title" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </com.balysv.materialripple.MaterialRippleLayout>
 
             <ImageView
@@ -81,7 +103,7 @@
                 android:layout_marginEnd="@dimen/spacing_single"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:src="@drawable/camera_smallest_black" />
+                android:src="@drawable/ic_camera" />
 
             <ImageView
                 android:id="@+id/cyclic_indicator"
@@ -91,7 +113,7 @@
                 android:layout_marginEnd="@dimen/spacing_double"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:src="@drawable/cyclic_smallest_black" />
+                android:src="@drawable/ic_cyclic" />
         </FrameLayout>
     </androidx.cardview.widget.CardView>
 </layout>

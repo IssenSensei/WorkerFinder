@@ -39,29 +39,39 @@ interface UserDataDao {
     suspend fun setAccountPublic(userId: String, public: Boolean)
 
     @Transaction
-    @Query("SELECT DISTINCT * FROM user_table WHERE userId not in (SELECT contactId from contact_table where userId = :userId) and userId" +
-            " not in (SELECT userId from contact_table where contactId = :userId) and userId not like :userId and isAccountPublic = 1 and" +
-            " isOpenForWork = 1")
+    @Query(
+        "SELECT DISTINCT * FROM user_table WHERE userId not in (SELECT contactId from contact_table where userId = :userId) and userId" +
+                " not in (SELECT userId from contact_table where contactId = :userId) and userId not like :userId and isAccountPublic = 1 and" +
+                " isOpenForWork = 1"
+    )
     fun getUsersList(userId: String): LiveData<List<UserDataFull>>
 
     @Transaction
-    @Query("SELECT DISTINCT * FROM user_table WHERE userId in (SELECT contactId from contact_table where userId = :userId) OR userId in " +
-            "(SELECT userId from contact_table where contactId = :userId)")
+    @Query(
+        "SELECT DISTINCT * FROM user_table WHERE userId in (SELECT contactId from contact_table where userId = :userId) OR userId in " +
+                "(SELECT userId from contact_table where contactId = :userId)"
+    )
     fun getUserContacts(userId: String): LiveData<List<UserDataFull>>
 
     @Transaction
-    @Query("SELECT DISTINCT * FROM user_table WHERE userId in (SELECT notificationOwnerId from dashboard_notifications_table where notificationCausedByUserId =" +
-            " :userId AND dashboardNotificationType = 'CONTACTINVITED')")
+    @Query(
+        "SELECT DISTINCT * FROM user_table WHERE userId in (SELECT notificationOwnerId from dashboard_notifications_table where notificationCausedByUserId =" +
+                " :userId AND dashboardNotificationType = 'CONTACTINVITED')"
+    )
     fun gerUserInvitations(userId: String): LiveData<List<UserDataFull>>
 
     @Transaction
-    @Query("SELECT DISTINCT * FROM user_table WHERE (userId in (SELECT contactId from contact_table where userId = :userId) OR userId in " +
-            "(SELECT userId from contact_table where contactId = :userId)) AND isOpenForWork = 1 and userName like '%' || :userName || '%'")
+    @Query(
+        "SELECT DISTINCT * FROM user_table WHERE (userId in (SELECT contactId from contact_table where userId = :userId) OR userId in " +
+                "(SELECT userId from contact_table where contactId = :userId)) AND isOpenForWork = 1 and userName like '%' || :userName || '%'"
+    )
     fun getUserWorkers(userId: String, userName: String): LiveData<List<UserDataFull>>
 
     @Transaction
-    @Query("SELECT DISTINCT * FROM user_table WHERE (userId in (SELECT contactId from contact_table where userId = :userId) OR userId in " +
-            "(SELECT userId from contact_table where contactId = :userId)) AND isOpenForWork = 1")
+    @Query(
+        "SELECT DISTINCT * FROM user_table WHERE (userId in (SELECT contactId from contact_table where userId = :userId) OR userId in " +
+                "(SELECT userId from contact_table where contactId = :userId)) AND isOpenForWork = 1"
+    )
     fun getUserWorkers(userId: String): LiveData<List<UserDataFull>>
 
     @Transaction
@@ -73,15 +83,27 @@ interface UserDataDao {
     fun getBoardWorkers(): LiveData<List<UserDataFull>>
 
     @Transaction
+    @Query("SELECT * FROM user_table WHERE userId in (SELECT notificationCausedByUserId FROM dashboard_notifications_table WHERE modifiedRecordId = :taskId AND dashboardNotificationType = 'TASKBOARDAPPLIED')")
+    fun getBoardTaskApplications(taskId: Int): LiveData<List<UserDataFull>>
+
+    @Transaction
     @Query(
-        "SELECT comment_table.*, user_table.* from user_table join comment_table on userId = commentedUserId " +
+        "SELECT * FROM user_table WHERE userId in " +
+                "(SELECT notificationCausedByUserId FROM dashboard_notifications_table WHERE modifiedRecordId = :taskId AND dashboardNotificationType = 'TASKBOARDAPPLIED')" +
+                "AND userName like '%' || :name || '%'"
+    )
+    fun getBoardTaskApplications(taskId: Int, name: String): LiveData<List<UserDataFull>>
+
+    @Transaction
+    @Query(
+        "SELECT comment_table.*, user_table.* from user_table join comment_table on userId = commentatorUserId " +
                 "where commentedUserId = :userId and commentByWorker = 0"
     )
     suspend fun getCommentUser(userId: String): List<UserDataWithComments>?
 
     @Transaction
     @Query(
-        "SELECT comment_table.*, user_table.* from user_table join comment_table on userId = commentedUserId " +
+        "SELECT comment_table.*, user_table.* from user_table join comment_table on userId = commentatorUserId " +
                 "where commentedUserId = :userId and commentByWorker = 1"
     )
     suspend fun getCommentWorker(userId: String): List<UserDataWithComments>?

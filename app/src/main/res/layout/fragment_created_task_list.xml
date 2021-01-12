@@ -28,12 +28,10 @@
             android:id="@+id/created_task_recycler_list_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/save_smallest_black"
+            android:layout_margin="@dimen/spacing_small"
+            android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="@+id/created_task_recycler_list"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/create_task_label" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.drawerlayout.widget.DrawerLayout>

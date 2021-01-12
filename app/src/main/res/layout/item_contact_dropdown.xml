@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/roundedblock"
-    android:padding="@dimen/spacing_small"
+    android:gravity="center_vertical"
+    android:padding="@dimen/spacing_medium"
     android:textStyle="bold" />
 

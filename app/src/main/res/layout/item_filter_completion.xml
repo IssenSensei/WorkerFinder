@@ -17,7 +17,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="@{(view) -> clickListener.onFilterCompletionChanged(completionType, view)}"
             android:padding="@dimen/spacing_large">
 
@@ -29,9 +29,9 @@
                 android:gravity="center"
                 android:tag="checkbox"
                 android:clickable="false"
-                app:layout_constraintBottom_toBottomOf="@id/filter_completion_title"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/filter_completion_title" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/filter_completion_title"
@@ -42,11 +42,8 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/filter_completion_checkbox"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-
+                app:layout_constraintBottom_toBottomOf="@id/filter_completion_checkbox"
+                app:layout_constraintTop_toTopOf="@id/filter_completion_checkbox"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.balysv.materialripple.MaterialRippleLayout>
-
 </layout>

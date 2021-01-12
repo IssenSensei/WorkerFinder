@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.issen.workerfinder.R
@@ -69,6 +70,10 @@ class TaskCreateFragment : Fragment(), TaskCreateListener {
         val binding = FragmentTaskCreateBinding.inflate(inflater, container, false)
         val tempModel = taskCreateViewModel.generateMockupModel()
         worker = if (taskCreateFragmentArgs.userDataFull != null) taskCreateFragmentArgs.userDataFull!!.userData else currentLoggedInUserFull!!.userData
+        taskCreateViewModel.setIsTaskBoardValue(taskCreateFragmentArgs.isTaskBoard)
+        taskCreateViewModel.isTaskBoard.observe(viewLifecycleOwner, Observer {
+            binding.isTaskSetToBoard = it
+        })
         binding.task = TaskModelFull(tempModel, mutableListOf(), mutableListOf(), mutableListOf(), currentLoggedInUserFull!!.userData, worker)
         binding.clickListener = this
 
@@ -102,16 +107,32 @@ class TaskCreateFragment : Fragment(), TaskCreateListener {
                 new_task_title.text.toString(),
                 new_task_description.text.toString(),
                 currentLoggedInUserFull!!.userData.userId,
-                worker.userId,
+                if (taskCreateViewModel.isTaskBoard.value == false) worker.userId else "",
                 new_task_date_container.text.toString(),
                 type,
                 Date(),
                 PriorityTypes.NORMAL.toString(),
-                if(worker.userId == currentLoggedInUserFull!!.userData.userId) CompletionTypes.ACTIVE.toString() else CompletionTypes.OFFERED.toString(),
-                ""
+                when {
+                    taskCreateViewModel.isTaskBoard.value == true -> {
+                        CompletionTypes.BOARD.toString()
+                    }
+                    worker.userId != currentLoggedInUserFull!!.userData.userId -> {
+                        CompletionTypes.OFFERED.toString()
+                    }
+                    else -> {
+                        CompletionTypes.ACTIVE.toString()
+                    }
+                },
+                "",
+                new_task_localization.text.toString()
             )
         )
-        findNavController().navigate(R.id.nav_task_list)
+        findNavController().navigate(
+            if (taskCreateViewModel.isTaskBoard.value == false)
+                R.id.nav_task_list
+            else
+                R.id.nav_task_board
+        )
         //todo should set correct task list fragment and scroll to new task? consider possible problem when there are active filters
     }
 
@@ -382,6 +403,14 @@ class TaskCreateFragment : Fragment(), TaskCreateListener {
 
     override fun setRemote(view: View) {
         TODO("Not yet implemented")
+    }
+
+    override fun setTaskToBoard() {
+        taskCreateViewModel.setIsTaskBoardValue(true)
+    }
+
+    override fun setTaskToUser() {
+        taskCreateViewModel.setIsTaskBoardValue(false)
     }
 
 }

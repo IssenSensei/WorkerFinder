@@ -19,8 +19,8 @@
         android:layout_marginStart="@dimen/spacing_small"
         android:layout_marginTop="@dimen/spacing_small"
         android:layout_marginEnd="@dimen/spacing_small"
-        android:onClick="@{() -> clickListener.onContactClicked(worker)}"
         android:background="@drawable/roundedblock"
+        android:onClick="@{() -> clickListener.onContactClicked(worker)}"
         app:cardCornerRadius="@dimen/spacing_x_small"
         app:cardElevation="@dimen/spacing_medium">
 
@@ -43,22 +43,23 @@
 
             <TextView
                 android:id="@+id/item_invitation_contacts_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{worker.userData.userName}"
-                android:layout_margin="@dimen/spacing_medium"
                 style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:text="@{worker.userData.userName}"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/item_invitation_contacts_profile_photo"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/item_invitation_contacts_cancel"
+                style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel invitation"
-                android:onClick="@{() -> clickListener.onCancelClicked(worker)}"
                 android:layout_margin="@dimen/spacing_medium"
-                style="@style/TextAppearance.AppCompat.Subhead"
+                android:onClick="@{() -> clickListener.onCancelClicked(worker)}"
+                android:text="@string/cancel_invitation"
                 app:layout_constraintStart_toEndOf="@id/item_invitation_contacts_profile_photo"
                 app:layout_constraintTop_toBottomOf="@id/item_invitation_contacts_name" />
 

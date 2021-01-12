@@ -14,7 +14,6 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.issen.workerfinder.R
@@ -56,13 +55,6 @@ class AcceptedTaskListFragment : Fragment(), TaskListListener, PopupMenu.OnMenuI
             }
         })
         root.accepted_task_recycler_list.adapter = adapter
-
-        root.accepted_task_recycler_list_fab.setOnClickListener(
-            Navigation.createNavigateOnClickListener(
-                R.id.action_nav_home_to_nav_new_task,
-                null
-            )
-        )
 
         createChannel(
             getString(R.string.notification_rating_channel_id),
@@ -141,7 +133,7 @@ class AcceptedTaskListFragment : Fragment(), TaskListListener, PopupMenu.OnMenuI
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.apply {
             setTitle("Oceń użytkownika")
-            val view: View = layoutInflater.inflate(R.layout.dialog_rating, null)
+            val view: View = layoutInflater.inflate(R.layout.dialog_comment, null)
             setView(view)
             setPositiveButton("Zatwierdź") { dialogInterface, i ->
                 acceptedTaskListViewModel.rateUser(

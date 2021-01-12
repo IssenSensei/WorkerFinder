@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.ConversationsFull

@@ -32,8 +32,16 @@ interface TaskModelDao {
     fun getAllTasks(): LiveData<List<TaskModelFull>>
 
     @Transaction
-    @Query("SELECT * FROM task_table WHERE task_worker_id = '' AND task_completion_type = 'BOARD'")
-    fun getBoardTasks(): LiveData<List<TaskModelFull>>
+    @Query(
+        "SELECT * FROM task_table WHERE task_worker_id = '' AND task_completion_type = 'BOARD' AND task_user_id <> :userId " +
+                "AND taskId NOT IN (SELECT modifiedRecordId " +
+                "FROM dashboard_notifications_table WHERE notificationCausedByUserId = :userId AND dashboardNotificationType = 'TASKBOARDAPPLIED')"
+    )
+    fun getOthersBoardTasks(userId: String): LiveData<List<TaskModelFull>>
+
+    @Transaction
+    @Query("SELECT * FROM task_table WHERE task_worker_id = '' AND task_completion_type = 'BOARD' AND task_user_id = :userId")
+    fun getMineBoardTasks(userId: String): LiveData<List<TaskModelFull>>
 
     @Transaction
     @Query("SELECT * FROM task_table WHERE task_completion_type LIKE 'ACTIVE'")
@@ -75,7 +83,7 @@ interface TaskModelDao {
     fun getAllAcceptedTasks(userId: String): LiveData<List<TaskModelFull>>
 
     @Transaction
-    @Query("SELECT * FROM task_table WHERE task_user_id = :userId AND task_worker_id <> :userId AND task_completion_type NOT IN ('OFFERED', 'REFUSED')")
+    @Query("SELECT * FROM task_table WHERE task_user_id = :userId AND task_worker_id <> :userId AND task_completion_type NOT IN ('OFFERED', 'REFUSED', 'BOARD')")
     fun getAllCommissionedTasks(userId: String): LiveData<List<TaskModelFull>>
 
     @Transaction
@@ -83,12 +91,22 @@ interface TaskModelDao {
     fun getAllCreatedTasks(userId: String): LiveData<List<TaskModelFull>>
 
     @Transaction
-    @Query("SELECT DISTINCT * FROM task_table WHERE taskId in (SELECT modifiedRecordId from dashboard_notifications_table where notificationCausedByUserId =" +
-            " :userId AND (dashboardNotificationType = 'WORKOFFERED' OR dashboardNotificationType = 'WORKREFUSED'))")
+    @Query(
+        "SELECT DISTINCT * FROM task_table WHERE taskId in (SELECT modifiedRecordId from dashboard_notifications_table where notificationCausedByUserId =" +
+                " :userId AND (dashboardNotificationType = 'WORKOFFERED' OR dashboardNotificationType = 'WORKREFUSED')) AND task_completion_type NOT IN ('BOARD')"
+    )
     fun getUserInvitations(userId: String): LiveData<List<TaskModelFull>>
 
     @Query("UPDATE task_table set task_completion_type = 'ACTIVE' where taskId = :modifiedRecordId")
     suspend fun acceptTask(modifiedRecordId: Int)
+
+    @Transaction
+    @Query("SELECT * FROM task_table WHERE taskId in (SELECT modifiedRecordId " +
+            "FROM dashboard_notifications_table WHERE notificationCausedByUserId = :userId AND dashboardNotificationType = 'TASKBOARDAPPLIED')")
+    fun getUserApplications(userId: String): LiveData<List<TaskModelFull>>
+
+    @Query("UPDATE task_table SET task_worker_id = :userId where taskId = :taskId")
+    suspend fun selectBoardWorker(taskId: Int, userId: String)
 
 
 }

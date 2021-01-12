@@ -26,7 +26,6 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 
     private val userProfileFragmentArgs: UserProfileFragmentArgs by navArgs()
     lateinit var userDataFull: UserDataFull
-    private var isUserInContactList: Boolean = false
 
     private val userProfileViewModel: UserProfileViewModel by viewModels {
         UserProfileViewModelFactory(
@@ -76,26 +75,21 @@ class UserProfileFragment : Fragment(), UserProfileListener {
         })
 
         userProfileViewModel.isUserInContactList.observe(viewLifecycleOwner, Observer {
-            if(it){
-                binding.userProfileContactManage.text = "Usuń kontakt"
-                isUserInContactList = true
-            } else {
-                binding.userProfileContactManage.text = "Nawiąż kontakt"
-                isUserInContactList = false
-            }
+            binding.isUserContact = it
+            binding.executePendingBindings()
         })
 
-        if (userDataFull.userData.userId == currentLoggedInUserFull!!.userData.userId) {
-            binding.userProfileContactSms.visibility = View.GONE
-            binding.userProfileContactEmail.visibility = View.GONE
-            binding.userProfileContactCall.visibility = View.GONE
-            binding.userProfileContactChat.visibility = View.GONE
-            binding.userProfileContactManage.visibility = View.GONE
-        } else {
-            binding.userProfileDelete.visibility = View.GONE
-            binding.userProfilePublicManage.visibility = View.GONE
-            binding.userProfileEdit.visibility = View.GONE
-        }
+        userProfileViewModel.isAccountPublic.observe(viewLifecycleOwner, Observer {
+            if (userDataFull.userData.userId == currentLoggedInUserFull!!.userData.userId) {
+                if (it) {
+                    binding.userProfilePublic.visibility = View.GONE
+                    binding.userProfilePrivate.visibility = View.VISIBLE
+                } else {
+                    binding.userProfilePublic.visibility = View.VISIBLE
+                    binding.userProfilePrivate.visibility = View.GONE
+                }
+            }
+        })
 
         binding.executePendingBindings()
         return view
@@ -121,22 +115,23 @@ class UserProfileFragment : Fragment(), UserProfileListener {
 
     //todo add restrictions if profile is public
     override fun onEditProfileClicked(userFull: UserDataFull) {
-        findNavController().navigate(R.id.action_nav_user_profile_to_nav_user_profile_edit)
+        val actionEdit = UserProfileFragmentDirections.actionNavUserProfileToNavUserProfileEdit(userFull)
+        findNavController().navigate(actionEdit)
     }
 
     override fun onDeleteAccountClicked(userFull: UserDataFull) {
         (this.activity as MainActivity).askUserForPassword()
     }
 
-    override fun onPublicManageClicked(userFull: UserDataFull) {
-        if (userFull.userData.isAccountPublic) {
+    override fun onPublicClicked(userFull: UserDataFull) {
+        showPublicConfirmationDialog(true)
+    }
+
+    override fun onPrivateClicked(userFull: UserDataFull) {
+        if (checkValidation()) {
             showPublicConfirmationDialog(false)
         } else {
-            if (checkValidation()) {
-                showPublicConfirmationDialog(true)
-            } else {
-                Toast.makeText(requireContext(), "Uzupełnij wymagane dane aby móc uczynić profil publicznym!", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(requireContext(), "Uzupełnij wymagane dane aby móc uczynić profil publicznym!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -148,32 +143,37 @@ class UserProfileFragment : Fragment(), UserProfileListener {
         else -> true
     }
 
-    override fun onContactManageClicked(userFull: UserDataFull) {
+    override fun onContactInvite(userFull: UserDataFull) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.apply {
-            setTitle("Potwierdź decyzję")
-            if (isUserInContactList) {
-                setMessage(
-                    "Usunięcie kontaktu spowoduje brak możliwości wysyłania oraz otrzymywania zadań pomiędzy Tobą a ${
-                        userFull
-                            .userData.userName
-                    }, jednakże wciąż będziecie mieli możliwość dokończenia aktywnych zadań. Czy jesteś pewien?"
-                )
-                setPositiveButton("Akceptuj") { dialogInterface, i ->
-                    userProfileViewModel.removeContact(userDataFull)
-                    Toast.makeText(requireContext(), "Zerwałeś kontakt z użytkownikiem ${userFull.userData.userName}", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            } else {
-                setMessage(
-                    "Wysłać zaproszenie do użytkownika ${userFull.userData.userName}? Jeśli zaakceptuje Twoje zaproszenie, będzie możliwe" +
-                            " udostępnianie oraz wykonywanie zadań pomiędzy Wami, czy jesteś pewien?"
-                )
-                setPositiveButton("Akceptuj") { dialogInterface, i ->
-                    userProfileViewModel.addContact(userDataFull)
-                    Toast.makeText(requireContext(), "Wysłano zaproszenie do użytkownika ${userFull.userData.userName}", Toast.LENGTH_SHORT)
-                        .show()
-                }
+            setMessage(
+                "Wysłać zaproszenie do użytkownika ${userFull.userData.userName}? Jeśli zaakceptuje Twoje zaproszenie, będzie możliwe" +
+                        " udostępnianie oraz wykonywanie zadań pomiędzy Wami, czy jesteś pewien?"
+            )
+            setPositiveButton("Akceptuj") { dialogInterface, i ->
+                userProfileViewModel.addContact(userDataFull)
+                Toast.makeText(requireContext(), "Wysłano zaproszenie do użytkownika ${userFull.userData.userName}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            setNeutralButton("Anuluj") { dialogInterface, i -> }
+            create()
+            show()
+        }
+    }
+
+    override fun onContactDelete(userFull: UserDataFull) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.apply {
+            setMessage(
+                "Usunięcie kontaktu spowoduje brak możliwości wysyłania oraz otrzymywania zadań pomiędzy Tobą a ${
+                    userFull
+                        .userData.userName
+                }, jednakże wciąż będziecie mieli możliwość dokończenia aktywnych zadań. Czy jesteś pewien?"
+            )
+            setPositiveButton("Akceptuj") { dialogInterface, i ->
+                userProfileViewModel.removeContact(userDataFull)
+                Toast.makeText(requireContext(), "Zerwałeś kontakt z użytkownikiem ${userFull.userData.userName}", Toast.LENGTH_SHORT)
+                    .show()
             }
             setNeutralButton("Anuluj") { dialogInterface, i -> }
             create()
@@ -251,8 +251,10 @@ interface UserProfileListener {
     fun onSmsClicked(userFull: UserDataFull)
     fun onEditProfileClicked(userFull: UserDataFull)
     fun onDeleteAccountClicked(userFull: UserDataFull)
-    fun onPublicManageClicked(userFull: UserDataFull)
-    fun onContactManageClicked(userFull: UserDataFull)
+    fun onPublicClicked(userFull: UserDataFull)
+    fun onPrivateClicked(userFull: UserDataFull)
+    fun onContactInvite(userFull: UserDataFull)
+    fun onContactDelete(userFull: UserDataFull)
     fun onOfferWork(userFull: UserDataFull)
     fun onProfilePhotoClicked(userFull: UserDataFull)
     fun onShowUserCommentsClicked(userFull: UserDataFull)

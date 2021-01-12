@@ -15,7 +15,7 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        cardStrokeColor="@{fullTask}"
+        cardStrokeColor="@{fullTask.task.completed}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_small"
@@ -68,7 +68,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:text="@{fullTask.taskWorker.userName}"
+                        taskWorkerText="@{fullTask}"
+                        taskWorkerTextVisibility="@{fullTask}"
                         app:layout_constraintStart_toEndOf="@id/task_checkbox"
                         app:layout_constraintTop_toBottomOf="@+id/task_title" />
 
@@ -85,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:src="@drawable/ic_star"
+                        android:src="@drawable/ic_more"
                         android:onClick="@{(view)->clickListener.onPopupClicked(view, fullTask)}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -102,7 +103,7 @@
                 android:layout_marginEnd="@dimen/spacing_single"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:src="@drawable/camera_smallest_black" />
+                android:src="@drawable/ic_camera" />
 
             <ImageView
                 android:id="@+id/cyclic_indicator"
@@ -112,7 +113,7 @@
                 android:layout_marginEnd="@dimen/spacing_double"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:src="@drawable/cyclic_smallest_black" />
+                android:src="@drawable/ic_cyclic" />
 
         </FrameLayout>
     </androidx.cardview.widget.CardView>

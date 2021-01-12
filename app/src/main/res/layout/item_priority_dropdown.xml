@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,8 +12,9 @@
         android:layout_height="32dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:scaleType="centerInside"
         app:tint="@color/colorSecondary"
-        android:src="@drawable/indicator" />
+        android:src="@drawable/ic_indicator" />
 
     <TextView
         android:id="@+id/priority_name"
@@ -23,7 +23,6 @@
         android:layout_marginStart="@dimen/spacing_medium"
         android:layout_toEndOf="@id/priority_indicator"
         android:layout_centerVertical="true"
-        android:textSize="18sp"
-        tools:text="United Kingdom"/>
+        android:textSize="18sp"/>
 
 </RelativeLayout>

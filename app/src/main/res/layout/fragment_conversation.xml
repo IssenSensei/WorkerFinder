@@ -11,9 +11,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/conversation_message_recycler_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/conversation_message_new"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,11 +31,14 @@
     <ImageButton
         android:id="@+id/conversation_message_send"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_small"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:adjustViewBounds="true"
         android:background="@color/transparent"
-        android:src="@drawable/ic_logo_small"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_send"
+        app:layout_constraintBottom_toBottomOf="@id/conversation_message_new"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/conversation_message_new" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

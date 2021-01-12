@@ -18,7 +18,10 @@ enum class DashboardNotificationTypes(private val type: String) {
     WORKCANCELED("WORKCANCELED"),
 
     RATEDBYWORKER("RATEDBYWORKER"),
-    RATEDBYUSER("RATEDBYUSER");
+    RATEDBYUSER("RATEDBYUSER"),
+
+    TASKBOARDAPPLIED("TASKBOARDAPPLIED"),
+    TASKBOARDCANCELED("TASKBOARDCANCELED");
 
 
     override fun toString(): String {

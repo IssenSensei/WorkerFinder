@@ -4,13 +4,13 @@
     <item
         android:id="@+id/action_abandon"
         android:orderInCategory="100"
-        android:title="@string/title_abandon"
-        android:icon="@drawable/ic_cancel"
+        android:title="@string/action_abandon"
+        android:icon="@drawable/ic_close"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_edit"
         android:orderInCategory="101"
-        android:title="@string/title_edit"
-        android:icon="@drawable/edit_smallest_black"
+        android:title="@string/action_edit"
+        android:icon="@drawable/ic_edit"
         app:showAsAction="always" />
 </menu>

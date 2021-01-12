@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.issen.workerfinder.database.models.DashboardNotification
 import com.issen.workerfinder.database.models.DashboardNotificationFull
 import com.issen.workerfinder.databinding.ItemNotificationContactBinding
 import com.issen.workerfinder.databinding.ItemNotificationRatingBinding
@@ -136,10 +135,10 @@ interface DashboardListener {
     fun onCheckRating()
     fun onCreateTask()
     fun onChatWithUser()
-    fun onTaskAccept(dashboardNotification: DashboardNotification)
-    fun onTaskReject(dashboardNotification: DashboardNotification)
-    fun onWorkAccept(dashboardNotification: DashboardNotification)
-    fun onWorkRefuse(dashboardNotification: DashboardNotification)
+    fun onTaskAccept(dashboardNotificationFull: DashboardNotificationFull)
+    fun onTaskReject(dashboardNotificationFull: DashboardNotificationFull)
+    fun onWorkAccept(dashboardNotificationFull: DashboardNotificationFull)
+    fun onWorkRefuse(dashboardNotificationFull: DashboardNotificationFull)
     fun onCheckTaskDetails()
     fun onTaskEdit()
 }

@@ -2,11 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <import type="com.issen.workerfinder.enums.DashboardNotificationTypes" />
+
         <variable
             name="notificationData"
             type="com.issen.workerfinder.database.models.DashboardNotificationFull" />
+
         <variable
             name="clickListener"
             type="com.issen.workerfinder.ui.dashboard.DashboardListener" />
@@ -35,7 +39,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_logo_small"
+                android:src="@drawable/ic_logo"
                 app:tint="@color/colorAccent" />
 
             <View
@@ -87,34 +91,31 @@
                 <Button
                     android:id="@+id/item_notification_task_accept"
                     style="@style/Widget.AppCompat.ImageButton"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_medium"
-                    android:layout_marginTop="@dimen/spacing_medium"
                     android:background="@drawable/btn_rounded_transparent"
-                    android:drawableStart="@drawable/ic_done"
-                    android:drawableTint="@color/green_600"
-                    android:onClick="@{() -> clickListener.onTaskAccept(notificationData.notification)}"
+                    android:drawableStart="@drawable/ic_accept"
+                    android:drawableTint="@color/colorAccept"
+                    android:onClick="@{() -> clickListener.onTaskAccept(notificationData)}"
                     android:shadowRadius="3"
-                    android:text="Zatwierdź"
+                    android:text="@string/confirm"
                     android:visibility="@{notificationData.notification.dashboardNotificationType.equals(DashboardNotificationTypes.TASKCOMPLETED.toString()) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/item_notification_task_refuse"
-                    app:layout_constraintStart_toEndOf="@id/item_notification_task_user_photo" />
+                    app:layout_constraintStart_toEndOf="@id/item_notification_task_user_photo"
+                    app:layout_constraintTop_toBottomOf="@id/item_notification_task_text" />
 
                 <Button
                     android:id="@+id/item_notification_task_refuse"
                     style="@style/Widget.AppCompat.ImageButton"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_large"
-                    android:layout_marginEnd="@dimen/spacing_medium"
                     android:background="@drawable/btn_rounded_transparent"
-                    android:drawableStart="@drawable/clear_smallest_black"
-                    android:drawableTint="@color/red_600"
-                    android:onClick="@{() -> clickListener.onTaskReject(notificationData.notification)}"
+                    android:drawableStart="@drawable/ic_close"
+                    android:drawableTint="@color/colorRefuse"
+                    android:onClick="@{() -> clickListener.onTaskReject(notificationData)}"
                     android:shadowRadius="3"
-                    android:text="Odrzuć"
+                    android:text="@string/refuse"
                     android:visibility="@{notificationData.notification.dashboardNotificationType.equals(DashboardNotificationTypes.TASKCOMPLETED.toString()) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

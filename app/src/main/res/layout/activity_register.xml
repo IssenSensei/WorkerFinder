@@ -51,7 +51,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/spacing_medium"
                         android:layout_marginBottom="@dimen/spacing_large"
-                        android:text="Rejestracja"
+                        android:text="@string/activity_register_header"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                         android:textColor="@color/green_500"
                         android:textStyle="bold" />
@@ -59,7 +59,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Email*"
+                        android:text="@string/email_label_required"
                         android:textAlignment="center"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                         android:textColor="@color/grey_40" />
@@ -85,7 +85,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hasło*"
+                        android:text="@string/password_label_required"
                         android:textAlignment="center"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                         android:textColor="@color/grey_40" />
@@ -111,7 +111,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Imie i nazwisko"
+                        android:text="@string/username_label"
                         android:textAlignment="center"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                         android:textColor="@color/grey_40" />
@@ -137,7 +137,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Numer telefonu"
+                        android:text="@string/phone_label"
                         android:textAlignment="center"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                         android:textColor="@color/grey_40" />
@@ -167,7 +167,7 @@
                         android:layout_marginRight="-4dp"
                         android:background="@drawable/btn_rounded_primary"
                         android:onClick="register"
-                        android:text="Zarejestruj"
+                        android:text="@string/register_label"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
                         android:textStyle="bold" />
@@ -183,7 +183,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Posiadasz już konto? "
+                            android:text="@string/has_account_label"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/blue_grey_300" />
 
@@ -191,9 +191,9 @@
                             android:id="@+id/sign_up"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:clickable="true"
                             android:onClick="navigateLogin"
-                            android:text="Zaloguj się"
+                            android:layout_marginStart="@dimen/spacing_small"
+                            android:text="@string/log_in"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/colorPrimaryDark"
                             android:textStyle="bold" />

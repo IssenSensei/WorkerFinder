@@ -1,0 +1,62 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="com.issen.workerfinder.ui.boardTaskWorkerPicker.BoardTaskWorkerPickerListener" />
+
+        <variable
+            name="worker"
+            type="com.issen.workerfinder.database.models.UserDataFull" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/item_worker_picker_photo"
+            photo="@{worker.userData.photo}"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="@dimen/spacing_medium"
+            app:civ_border="false"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_worker_picker_name"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            android:text="@{worker.userData.userName}"
+            app:layout_constraintBottom_toBottomOf="@id/item_worker_picker_photo"
+            app:layout_constraintEnd_toStartOf="@id/item_worker_picker_button"
+            app:layout_constraintStart_toEndOf="@id/item_worker_picker_photo"
+            app:layout_constraintTop_toTopOf="@id/item_worker_picker_photo" />
+
+        <Button
+            android:id="@+id/item_worker_picker_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedblock"
+            android:onClick="@{()->clickListener.onBoardWorkerPicked(worker)}"
+            android:text="@string/select_label"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

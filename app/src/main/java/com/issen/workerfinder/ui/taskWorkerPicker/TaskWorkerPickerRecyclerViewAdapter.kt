@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.issen.workerfinder.database.models.UserDataFull
 import com.issen.workerfinder.databinding.ItemWorkerPickerBinding
+import com.issen.workerfinder.ui.boardTaskWorkerPicker.TaskWorkerPickerDiffCallback
 
 class TaskWorkerPickerRecyclerViewAdapter(private val taskWorkerPickerListener: TaskWorkerPickerListener) :
     ListAdapter<UserDataFull, TaskWorkerPickerRecyclerViewAdapter.ViewHolder>(TaskWorkerPickerDiffCallback()) {

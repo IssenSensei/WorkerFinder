@@ -6,6 +6,7 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <dimen name="spacing_smallest">1dp</dimen>
     <dimen name="spacing_x_small">4dp</dimen>
     <dimen name="spacing_small">8dp</dimen>
     <dimen name="spacing_medium">12dp</dimen>
@@ -14,6 +15,7 @@
 
     <dimen name="spacing_single">10dp</dimen>
     <dimen name="spacing_double">30dp</dimen>
+    <dimen name="spacing_message">300dp</dimen>
 
     <dimen name="actionBarSize">56dp</dimen>
     <dimen name="text_margin">16dp</dimen>

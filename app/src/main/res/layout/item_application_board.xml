@@ -1,0 +1,51 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="com.issen.workerfinder.ui.invitations.ApplicationBoardListener" />
+
+        <variable
+            name="task"
+            type="com.issen.workerfinder.database.models.TaskModelFull" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/item_application_board_name"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_medium"
+            android:text="@{task.task.taskTitle}"
+            app:layout_constraintBottom_toBottomOf="@id/item_application_board_cancel"
+            app:layout_constraintEnd_toStartOf="@id/item_application_board_cancel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/item_application_board_cancel" />
+
+        <Button
+            android:id="@+id/item_application_board_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundedblock"
+            android:onClick="@{() -> clickListener.onCancelClicked(task)}"
+            android:text="@string/cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:background="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_application_board_cancel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

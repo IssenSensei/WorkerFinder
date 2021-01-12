@@ -17,7 +17,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="@{(view) -> clickListener.onFilterPriorityChanged(priorityItem, view)}"
             android:padding="@dimen/spacing_medium">
 
@@ -38,7 +38,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 app:tint="@color/colorSecondary"
-                android:src="@drawable/indicator"
+                android:src="@drawable/ic_indicator"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/filter_priority_checkbox"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -54,9 +54,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/filter_priority_indicator" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.balysv.materialripple.MaterialRippleLayout>
-
 </layout>

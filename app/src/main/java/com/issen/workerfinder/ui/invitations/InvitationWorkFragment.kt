@@ -42,7 +42,7 @@ class InvitationWorkFragment : Fragment(), InvitationWorkListener {
     }
 
     override fun onCancelClicked(taskModel: TaskModel) {
-        invitationWorkViewModel.cancelInvitation(taskModel.taskId)
+        invitationWorkViewModel.cancelInvitation(taskModel)
     }
 
     override fun onTaskClicked(taskModelFull: TaskModelFull) {

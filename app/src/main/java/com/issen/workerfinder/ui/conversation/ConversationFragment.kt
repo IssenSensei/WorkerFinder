@@ -53,11 +53,16 @@ class ConversationFragment : Fragment() {
 
         conversationViewModel.messageList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            if(adapter.itemCount > 0)
+                root.conversation_message_recycler_list.smoothScrollToPosition(adapter.itemCount - 1)
         })
         root.conversation_message_recycler_list.adapter = adapter
+        if(adapter.itemCount > 0)
+            root.conversation_message_recycler_list.smoothScrollToPosition(adapter.itemCount - 1)
 
         root.conversation_message_send.setOnClickListener {
             conversationViewModel.sendMessage(root.conversation_message_new.text.toString())
+            root.conversation_message_new.text.clear()
         }
         return root
     }

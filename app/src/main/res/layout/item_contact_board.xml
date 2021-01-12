@@ -43,12 +43,13 @@
 
             <TextView
                 android:id="@+id/item_contact_board_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{worker.userData.userName}"
                 android:layout_margin="@dimen/spacing_medium"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 app:layout_constraintStart_toEndOf="@id/item_contact_board_profile_photo"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,10 +21,23 @@ class InvitationFragment : Fragment() {
         view.invitation_pager.adapter = pagerAdapter
 
         TabLayoutMediator(view.invitation_tab_layout, view.invitation_pager) { tab, position ->
-            tab.text = when (position) {
-                0 -> "Kontakty"
-                1 -> "Zadania"
-                else -> "Kontakty"
+            when (position) {
+                0 -> {
+                    tab.setIcon(R.drawable.ic_invitation_contact)
+                    tab.text = getString(R.string.contacts_header)
+                }
+                1 -> {
+                    tab.setIcon(R.drawable.ic_invitation_task)
+                    tab.text = getString(R.string.tasks_header)
+                }
+                2 -> {
+                    tab.setIcon(R.drawable.ic_task_board)
+                    tab.text = getString(R.string.applications_header)
+                }
+                else -> {
+                    tab.setIcon(R.drawable.ic_invitation_contact)
+                    tab.text = getString(R.string.contacts_header)
+                }
             }
         }.attach()
         return view

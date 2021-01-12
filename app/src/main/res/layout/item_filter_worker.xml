@@ -3,12 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="isWorker"
             type="Boolean" />
+
         <variable
             name="user"
             type="com.issen.workerfinder.database.models.UserDataFull" />
+
         <variable
             name="clickListener"
             type="com.issen.workerfinder.ui.misc.OnFilterSelectionListener" />
@@ -20,7 +23,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="@{(view) -> clickListener.onUserFilterSelected(user, isWorker, view)}"
             android:padding="@dimen/spacing_small">
 
@@ -28,10 +31,10 @@
                 android:id="@+id/filter_user_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="false"
                 android:foregroundGravity="center"
                 android:gravity="center"
                 android:tag="checkbox"
-                android:clickable="false"
                 app:layout_constraintBottom_toBottomOf="@id/filter_user_profile_photo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/filter_user_profile_photo" />
@@ -50,19 +53,16 @@
 
             <TextView
                 android:id="@+id/filter_user_name"
-                android:layout_width="0dp"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{user.userData.userName}"
                 android:layout_marginStart="@dimen/spacing_medium"
                 android:layout_marginEnd="@dimen/spacing_medium"
-                style="@style/TextAppearance.AppCompat.Subhead"
-                app:layout_constraintStart_toEndOf="@id/filter_user_profile_photo"
+                android:text="@{user.userData.userName}"
+                app:layout_constraintBottom_toBottomOf="@id/filter_user_profile_photo"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
+                app:layout_constraintStart_toEndOf="@id/filter_user_profile_photo"
+                app:layout_constraintTop_toTopOf="@id/filter_user_profile_photo" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.balysv.materialripple.MaterialRippleLayout>
-
 </layout>

@@ -17,33 +17,43 @@
             messageSpacingLeft="@{message.user.userId}"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            app:layout_constraintBottom_toBottomOf="@id/item_conversation_message_content"
-            app:layout_constraintEnd_toStartOf="@id/item_conversation_message_content"
+            app:layout_constraintBottom_toBottomOf="@id/item_conversation_message_container"
+            app:layout_constraintEnd_toStartOf="@id/item_conversation_message_container"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/item_conversation_message_content" />
+            app:layout_constraintTop_toTopOf="@id/item_conversation_message_container" />
 
-        <TextView
-            android:id="@+id/item_conversation_message_content"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="0dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/item_conversation_message_container"
+            messageGravity="@{message.user.userId}"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{message.message.messageContent}"
+            android:layout_margin="@dimen/spacing_smallest"
+            android:elevation="@dimen/spacing_x_small"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/item_conversation_message_end"
+            app:layout_constraintHorizontal_weight="8"
             app:layout_constraintStart_toEndOf="@id/item_conversation_message_start"
             app:layout_constraintTop_toTopOf="parent"
-            messageGravity="@{message.user.userId}"
-            app:layout_constraintHorizontal_weight="9" />
+            app:layout_constraintWidth_max="300dp">
+
+            <TextView
+                android:id="@+id/item_conversation_message_content"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_small"
+                android:text="@{message.message.messageContent}" />
+        </androidx.cardview.widget.CardView>
 
         <View
             android:id="@+id/item_conversation_message_end"
+            messageSpacingRight="@{message.user.userId}"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            app:layout_constraintBottom_toBottomOf="@id/item_conversation_message_content"
+            app:layout_constraintBottom_toBottomOf="@id/item_conversation_message_container"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_conversation_message_content"
-            app:layout_constraintTop_toTopOf="@id/item_conversation_message_content"
-            messageSpacingRight="@{message.user.userId}" />
+            app:layout_constraintStart_toEndOf="@id/item_conversation_message_container"
+            app:layout_constraintTop_toTopOf="@id/item_conversation_message_container" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

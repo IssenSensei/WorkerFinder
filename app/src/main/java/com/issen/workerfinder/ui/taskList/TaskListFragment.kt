@@ -23,11 +23,23 @@ class TaskListFragment : Fragment() {
         view.task_list_pager.offscreenPageLimit = 2
 
         TabLayoutMediator(view.task_list_tab_layout, view.task_list_pager) { tab, position ->
-            tab.text = when (position) {
-                0 -> "Moje"
-                1 -> "Przyjęte"
-                2 -> "Zlecone"
-                else -> "Moje"
+            when (position) {
+                0 -> {
+                    tab.setIcon(R.drawable.ic_created_tasks)
+                    tab.text = getString(R.string.my_tasks_header)
+                }
+                1 -> {
+                    tab.setIcon(R.drawable.ic_accepted_tasks)
+                    tab.text = getString(R.string.accepted_tasks_header)
+                }
+                2 -> {
+                    tab.setIcon(R.drawable.ic_commissioned_tasks)
+                    tab.text = getString(R.string.commissioned_tasks_header)
+                }
+                else -> {
+                    tab.setIcon(R.drawable.ic_created_tasks)
+                    tab.text = getString(R.string.my_tasks_header)
+                }
             }
         }.attach()
         return view
@@ -45,7 +57,7 @@ class TaskListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_filter -> {
-                when(val fragment = getCurrentListFragment()){
+                when (val fragment = getCurrentListFragment()) {
                     is CreatedTaskListFragment -> fragment.toggleFilterDrawer()
                     is AcceptedTaskListFragment -> fragment.toggleFilterDrawer()
                     is CommissionedTaskListFragment -> fragment.toggleFilterDrawer()

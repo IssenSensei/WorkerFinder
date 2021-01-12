@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="task"
             type="com.issen.workerfinder.database.models.TaskModelFull" />
@@ -13,6 +15,14 @@
         <variable
             name="clickListener"
             type="com.issen.workerfinder.ui.taskCreate.TaskCreateListener" />
+
+        <variable
+            name="isTaskSetToBoard"
+            type="boolean" />
+
+        <variable
+            name="isTaskSetToRemote"
+            type="boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,7 +74,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Podstawowe informacje"
+                                android:text="@string/basic_information_label"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                 android:textColor="@color/grey_80" />
 
@@ -76,7 +86,7 @@
                                 android:clickable="false"
                                 android:tag="viewButton"
                                 android:tint="@color/grey_80"
-                                app:srcCompat="@drawable/ic_expand_arrow" />
+                                app:srcCompat="@drawable/ic_arrow_down" />
 
                         </LinearLayout>
 
@@ -91,7 +101,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/new_task_title_label"
+                                android:hint="@string/task_title_hint"
                                 app:endIconMode="clear_text">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -108,7 +118,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/new_task_description_label"
+                                android:hint="@string/task_description_hint"
                                 app:endIconMode="clear_text">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -124,19 +134,44 @@
 
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <include
-                                android:id="@+id/item_contact_mini"
-                                layout="@layout/item_contact_mini"
-                                bind:worker="@{task.taskWorker}" />
+                            <RadioGroup
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                            <Button
-                                android:id="@+id/new_task_worker_button"
-                                android:layout_width="wrap_content"
+                                <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="@{isTaskSetToBoard}"
+                                    android:onClick="@{()->clickListener.setTaskToBoard()}"
+                                    android:text="@string/task_board_task_label" />
+
+                                <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="@{!isTaskSetToBoard}"
+                                    android:onClick="@{()->clickListener.setTaskToUser()}"
+                                    android:text="@string/selected_user_task_label" />
+                            </RadioGroup>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:onClick="@{() -> clickListener.onAddWorkerClicked()}"
-                                android:text="Wybierz pracownika" />
+                                android:orientation="vertical"
+                                android:visibility="@{isTaskSetToBoard ? View.GONE : View.VISIBLE}">
 
+                                <include
+                                    android:id="@+id/item_contact_mini"
+                                    layout="@layout/item_contact_mini"
+                                    bind:worker="@{task.taskWorker}" />
+
+                                <Button
+                                    android:id="@+id/new_task_worker_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:onClick="@{() -> clickListener.onAddWorkerClicked()}"
+                                    android:text="@string/select_worker_label" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -175,7 +210,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Dodatkowe informacje"
+                                android:text="@string/additional_information_label"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                 android:textColor="@color/grey_80" />
 
@@ -187,7 +222,7 @@
                                 android:clickable="false"
                                 android:tag="viewButton"
                                 android:tint="@color/grey_80"
-                                app:srcCompat="@drawable/ic_expand_arrow" />
+                                app:srcCompat="@drawable/ic_arrow_down" />
 
                         </LinearLayout>
 
@@ -205,13 +240,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:labelFor="@id/new_task_priority_spinner"
-                                android:text="Priorytet" />
+                                android:text="@string/priority_label" />
 
                             <Spinner
                                 android:id="@+id/new_task_priority_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/blue_outline"
                                 android:spinnerMode="dropdown"
                                 tools:listitem="@layout/item_priority" />
 
@@ -219,26 +253,26 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:onClick="@{(view)->clickListener.setRemote(view)}"
-                                android:text="Praca zdalna" />
+                                android:text="@string/remote_label" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:labelFor="@id/new_task_localization"
-                                android:text="Lokalizacja" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/spacing_small"
-                                android:orientation="horizontal">
+                                android:orientation="vertical"
+                                android:visibility="@{isTaskSetToRemote ? View.GONE : View.VISIBLE}">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/localization_label" />
 
                                 <TextView
                                     android:id="@+id/new_task_localization"
-                                    android:layout_width="0dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="8"
-                                    android:hint="Podaj lokalizację" />
+                                    android:hint="@string/insert_localization_label" />
 
                                 <!--                                todo implement localization picker-->
 
@@ -248,7 +282,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:labelFor="@id/new_task_pay"
-                                android:text="Stawka" />
+                                android:text="@string/pay_label" />
 
                             <EditText
                                 android:id="@+id/new_task_pay"
@@ -268,7 +302,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="8"
-                                    android:hint="@string/task_form_category_label"
+                                    android:hint="@string/category_hint"
                                     app:endIconMode="clear_text">
 
                                     <com.google.android.material.textfield.TextInputEditText
@@ -334,7 +368,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Data"
+                                android:text="@string/date_label"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                 android:textColor="@color/grey_80" />
 
@@ -346,7 +380,7 @@
                                 android:clickable="false"
                                 android:tag="viewButton"
                                 android:tint="@color/grey_80"
-                                app:srcCompat="@drawable/ic_expand_arrow" />
+                                app:srcCompat="@drawable/ic_arrow_down" />
 
                         </LinearLayout>
 
@@ -376,7 +410,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:onClick="@{() -> clickListener.onSetNextDateClicked()}"
-                                    android:src="@drawable/save_smallest_black" />
+                                    android:src="@drawable/ic_save" />
 
                             </LinearLayout>
 
@@ -394,7 +428,7 @@
                                     <com.google.android.material.textview.MaterialTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="@string/new_task_cyclic_form_label"
+                                        android:text="@string/cyclic_label"
                                         android:textStyle="bold" />
 
                                     <LinearLayout
@@ -415,7 +449,7 @@
                                                 android:buttonTint="@color/colorSecondary"
                                                 android:checked="true"
                                                 android:onClick="@{ () -> clickListener.onCyclicNoneClicked()}"
-                                                android:text="@string/new_task_cyclic_none_label" />
+                                                android:text="@string/none_label" />
 
                                             <RadioButton
                                                 android:id="@+id/new_task_cyclic_weekday"
@@ -423,7 +457,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:buttonTint="@color/colorSecondary"
                                                 android:onClick="@{ () -> clickListener.onCyclicWeekdayClicked()}"
-                                                android:text="@string/new_task_cyclic_weekday_label" />
+                                                android:text="@string/weekday_label" />
 
                                             <RadioButton
                                                 android:id="@+id/new_task_cyclic_monthday"
@@ -431,7 +465,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:buttonTint="@color/colorSecondary"
                                                 android:onClick="@{ () -> clickListener.onCyclicMonthDayClicked()}"
-                                                android:text="@string/new_task_cyclic_monthday_label" />
+                                                android:text="@string/monthday_label" />
 
                                             <RadioButton
                                                 android:id="@+id/new_task_cyclic_yearday"
@@ -439,7 +473,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:buttonTint="@color/colorSecondary"
                                                 android:onClick="@{ () -> clickListener.onCyclicYearDayClicked()}"
-                                                android:text="@string/new_task_cyclic_yearday_label" />
+                                                android:text="@string/yearday_label" />
 
                                             <RadioButton
                                                 android:id="@+id/new_task_cyclic_day"
@@ -447,7 +481,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:buttonTint="@color/colorSecondary"
                                                 android:onClick="@{ () -> clickListener.onCyclicDayClicked()}"
-                                                android:text="@string/new_task_cyclic_day_label" />
+                                                android:text="@string/day_label" />
                                         </RadioGroup>
                                     </LinearLayout>
 
@@ -497,7 +531,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Zdjęcia"
+                                android:text="@string/photos_label"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                                 android:textColor="@color/grey_80" />
 
@@ -507,9 +541,10 @@
                                 android:layout_height="?attr/actionBarSize"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:clickable="false"
+                                android:contentDescription="@string/show_photo_adding_options_label"
                                 android:tag="viewButton"
                                 android:tint="@color/grey_80"
-                                app:srcCompat="@drawable/ic_expand_arrow" />
+                                app:srcCompat="@drawable/ic_arrow_down" />
 
                         </LinearLayout>
 
@@ -535,14 +570,14 @@
                                     android:layout_margin="@dimen/spacing_small"
                                     android:layout_weight="3"
                                     android:onClick="@{()->clickListener.onTakePictureClicked()}"
-                                    android:src="@drawable/camera_smallest_black"
-                                    android:text="Zrób nowe" />
+                                    android:src="@drawable/ic_camera"
+                                    android:text="@string/new_photo_label" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
-                                    android:text="lub" />
+                                    android:text="@string/or" />
 
                                 <Button
                                     android:id="@+id/new_task_gallery"
@@ -551,8 +586,8 @@
                                     android:layout_margin="@dimen/spacing_small"
                                     android:layout_weight="3"
                                     android:onClick="@{()->clickListener.onSelectPictureClicked()}"
-                                    android:src="@drawable/ic_menu_gallery"
-                                    android:text="Wybierz z galerii" />
+                                    android:src="@drawable/ic_gallery"
+                                    android:text="@string/choose_from_gallery_label" />
                             </LinearLayout>
 
                             <GridLayout

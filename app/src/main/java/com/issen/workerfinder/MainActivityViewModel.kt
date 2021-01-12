@@ -23,8 +23,11 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
     var currentCommissionedTaskListFilter = FilterContainer()
     var selectedCommissionedTaskListFilter: FilterContainer = currentCommissionedTaskListFilter
 
-    var currentTaskBoardFilter = FilterContainer()
-    var selectedTaskBoardFilter: FilterContainer = currentTaskBoardFilter
+    var currentTaskBoardMineFilter = FilterContainer()
+    var selectedTaskBoardMineFilter: FilterContainer = currentTaskBoardMineFilter
+
+    var currentTaskBoardOthersFilter = FilterContainer()
+    var selectedTaskBoardOthersFilter: FilterContainer = currentTaskBoardOthersFilter
 
     var currentContactListFilter = FilterContainer()
     var selectedContactListFilter: FilterContainer = currentContactListFilter
@@ -82,12 +85,20 @@ class MainActivityViewModel(private val userRepository: UserRepository, private 
         selectedCommissionedTaskListFilter = currentCommissionedTaskListFilter
     }
 
-    fun applyTaskBoardFilters() {
-        currentTaskBoardFilter = selectedTaskBoardFilter
+    fun applyTaskBoardOthersFilters() {
+        currentTaskBoardOthersFilter = selectedTaskBoardOthersFilter
     }
 
-    fun clearSelectedTaskBoardFilters() {
-        selectedTaskBoardFilter = currentTaskBoardFilter
+    fun clearSelectedTaskBoardOthersFilters() {
+        selectedTaskBoardOthersFilter = currentTaskBoardOthersFilter
+    }
+
+    fun applyTaskBoardMineFilters() {
+        currentTaskBoardMineFilter = selectedTaskBoardMineFilter
+    }
+
+    fun clearSelectedTaskBoardMineFilters() {
+        selectedTaskBoardMineFilter = currentTaskBoardMineFilter
     }
 
     fun applyContactListFilters() {

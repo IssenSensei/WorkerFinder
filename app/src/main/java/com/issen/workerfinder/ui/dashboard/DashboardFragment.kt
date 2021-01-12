@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
-import com.issen.workerfinder.database.models.DashboardNotification
 import com.issen.workerfinder.database.models.DashboardNotificationFull
 import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 
@@ -66,20 +65,20 @@ class DashboardFragment : Fragment(), DashboardListener {
         TODO("Not yet implemented")
     }
 
-    override fun onTaskAccept(dashboardNotification: DashboardNotification) {
-        dashboardViewModel.acceptTask(dashboardNotification)
+    override fun onTaskAccept(dashboardNotificationFull: DashboardNotificationFull) {
+        dashboardViewModel.acceptTask(dashboardNotificationFull)
     }
 
-    override fun onTaskReject(dashboardNotification: DashboardNotification) {
-        dashboardViewModel.rejectTask(dashboardNotification)
+    override fun onTaskReject(dashboardNotificationFull: DashboardNotificationFull) {
+        dashboardViewModel.rejectTask(dashboardNotificationFull)
     }
 
-    override fun onWorkAccept(dashboardNotification: DashboardNotification) {
-        dashboardViewModel.acceptWork(dashboardNotification)
+    override fun onWorkAccept(dashboardNotificationFull: DashboardNotificationFull) {
+        dashboardViewModel.acceptWork(dashboardNotificationFull)
     }
 
-    override fun onWorkRefuse(dashboardNotification: DashboardNotification) {
-        dashboardViewModel.refuseWork(dashboardNotification)
+    override fun onWorkRefuse(dashboardNotificationFull: DashboardNotificationFull) {
+        dashboardViewModel.refuseWork(dashboardNotificationFull)
     }
 
     override fun onCheckTaskDetails() {

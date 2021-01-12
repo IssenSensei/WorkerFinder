@@ -133,7 +133,7 @@ class CommissionedTaskListFragment : Fragment(), TaskListListener, PopupMenu.OnM
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.apply {
             setTitle("Oceń pracownika")
-            val view: View = layoutInflater.inflate(R.layout.dialog_rating, null)
+            val view: View = layoutInflater.inflate(R.layout.dialog_comment, null)
             setView(view)
             setPositiveButton("Zatwierdź") { dialogInterface, i ->
                 commissionedTaskListViewModel.rateWorker(

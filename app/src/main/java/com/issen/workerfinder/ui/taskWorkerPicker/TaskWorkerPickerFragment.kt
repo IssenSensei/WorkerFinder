@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.issen.workerfinder.R
 import com.issen.workerfinder.WorkerFinderApplication
 import com.issen.workerfinder.database.models.UserDataFull
+import com.issen.workerfinder.ui.taskWorkerPicker.TaskWorkerPickerListener
 import kotlinx.android.synthetic.main.fragment_task_worker_picker.view.*
 
 class TaskWorkerPickerFragment : Fragment(), TaskWorkerPickerListener {

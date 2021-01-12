@@ -5,6 +5,6 @@
         android:id="@+id/action_show_rating_dialog"
         android:icon="@drawable/ic_star"
         android:orderInCategory="99"
-        android:title="@string/context_menu_action_rating"
+        android:title="@string/action_rating"
         app:showAsAction="always" />
 </menu>

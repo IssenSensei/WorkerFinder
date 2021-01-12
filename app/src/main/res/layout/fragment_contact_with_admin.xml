@@ -18,37 +18,33 @@
         <Spinner
             android:id="@+id/contact_spinner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
+            android:layout_height="match_parent" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
         android:layout_margin="@dimen/spacing_large"
-        android:background="@drawable/roundedblock"
+        android:layout_weight="8"
         android:padding="@dimen/spacing_medium">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/roundedblock"
+            android:layout_height="match_parent"
             android:padding="@dimen/spacing_large"
             android:textColorHint="@color/grey_40">
 
             <EditText
                 android:id="@+id/contact_item_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:gravity="top"
-                android:hint="Message"
+                android:hint="@string/contact_admin_message_label"
+                android:importantForAutofill="no"
                 android:inputType="textMultiLine"
                 android:minLines="7" />
-
         </com.google.android.material.textfield.TextInputLayout>
-
     </androidx.cardview.widget.CardView>
 
     <Button
@@ -60,7 +56,5 @@
         android:layout_marginEnd="@dimen/spacing_double"
         android:layout_marginBottom="@dimen/spacing_large"
         android:background="@drawable/roundedblock"
-        android:text="Send" />
-
-
+        android:text="@string/send_label" />
 </LinearLayout>

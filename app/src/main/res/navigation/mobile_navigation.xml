@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/nav_new_task"
         android:name="com.issen.workerfinder.ui.taskCreate.TaskCreateFragment"
-        android:label="@string/menu_newTask"
+        android:label="@string/menu_new_task"
         tools:layout="@layout/fragment_task_create">
         <action
             android:id="@+id/action_nav_new_task_to_nav_task_list"
@@ -51,6 +51,10 @@
             android:defaultValue="@null"
             app:argType="com.issen.workerfinder.database.models.UserDataFull"
             app:nullable="true" />
+        <argument
+            android:name="isTaskBoard"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_nav_new_task_to_nav_task_worker_picker"
             app:destination="@id/nav_task_worker_picker" />
@@ -74,8 +78,8 @@
             app:destination="@id/nav_user_profile" />
         <argument
             android:name="shouldDisplayChatButton"
-            app:argType="boolean"
-            android:defaultValue="false"/>
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_nav_contact_list_to_nav_conversation"
             app:destination="@id/nav_conversation" />
@@ -83,22 +87,30 @@
     <fragment
         android:id="@+id/nav_task_detail"
         android:name="com.issen.workerfinder.ui.taskDetail.TaskDetailFragment"
-        android:label="@string/menu_taskDetail"
+        android:label="@string/menu_task_detail"
         tools:layout="@layout/fragment_task_detail">
         <argument
             android:name="fullTask"
             app:argType="com.issen.workerfinder.database.models.TaskModelFull" />
+        <argument
+            android:name="userDataFull"
+            android:defaultValue="@null"
+            app:argType="com.issen.workerfinder.database.models.UserDataFull"
+            app:nullable="true" />
         <action
             android:id="@+id/action_nav_task_detail_to_task_edit_fragment"
             app:destination="@id/task_edit_fragment" />
         <action
             android:id="@+id/action_nav_task_detail_to_nav_user_profile"
             app:destination="@id/nav_user_profile" />
+        <action
+            android:id="@+id/action_nav_task_detail_to_nav_board_task_worker_picker"
+            app:destination="@id/nav_board_task_worker_picker" />
     </fragment>
     <fragment
         android:id="@+id/task_edit_fragment"
         android:name="com.issen.workerfinder.ui.taskEdit.TaskEditFragment"
-        android:label="@string/menu_taskEdit"
+        android:label="@string/menu_task_edit"
         tools:layout="@layout/fragment_task_edit">
         <argument
             android:name="fullTask"
@@ -107,7 +119,7 @@
     <fragment
         android:id="@+id/nav_user_profile"
         android:name="com.issen.workerfinder.ui.userProfile.UserProfileFragment"
-        android:label="@string/menu_userProfile"
+        android:label="@string/menu_user_profile"
         tools:layout="@layout/fragment_user_profile">
         <argument
             android:name="userDataFull"
@@ -125,7 +137,7 @@
     <fragment
         android:id="@+id/nav_user_profile_edit"
         android:name="com.issen.workerfinder.ui.userProfile.UserProfileEditFragment"
-        android:label="@string/menu_userProfileEdit"
+        android:label="@string/menu_user_profile_edit"
         tools:layout="@layout/fragment_user_profile_edit">
         <argument
             android:name="userDataFull"
@@ -139,6 +151,9 @@
         <action
             android:id="@+id/action_nav_task_board_to_nav_task_detail"
             app:destination="@id/nav_task_detail" />
+        <action
+            android:id="@+id/action_nav_task_board_to_nav_new_task"
+            app:destination="@id/nav_new_task" />
     </fragment>
     <fragment
         android:id="@+id/nav_contact_board"
@@ -181,7 +196,7 @@
     <fragment
         android:id="@+id/nav_task_worker_picker"
         android:name="com.issen.workerfinder.ui.taskWorkerPicker.TaskWorkerPickerFragment"
-        android:label="@string/menu_workerPicker"
+        android:label="@string/menu_worker_picker"
         tools:layout="@layout/fragment_task_worker_picker">
         <action
             android:id="@+id/action_nav_task_worker_picker_to_nav_new_task"
@@ -203,6 +218,22 @@
             android:defaultValue="@null"
             app:argType="com.issen.workerfinder.database.models.UserData"
             app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_board_task_worker_picker"
+        android:name="com.issen.workerfinder.ui.boardTaskWorkerPicker.BoardTaskWorkerPickerFragment"
+        android:label="@string/choose_worker"
+        tools:layout="@layout/fragment_board_task_worker_picker">
+        <argument
+            android:name="taskId"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="fullTask"
+            app:argType="com.issen.workerfinder.database.models.TaskModelFull" />
+        <action
+            android:id="@+id/action_nav_board_task_worker_picker_to_nav_task_detail"
+            app:destination="@id/nav_task_detail" />
     </fragment>
 
 </navigation>

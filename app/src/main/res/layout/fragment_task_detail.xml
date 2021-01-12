@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="fullTask"
             type="com.issen.workerfinder.database.models.TaskModelFull" />
+
+        <variable
+            name="clickListener"
+            type="com.issen.workerfinder.ui.taskDetail.TaskDetailListener" />
     </data>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,215 +20,161 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/grey_300"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_large"
-            tools:context=".ui.taskDetail.TaskDetailFragment">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_title"
-                android:text="Title" />
-
-            <TextView
-                android:id="@+id/task_detail_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.taskTitle}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_description"
-                android:text="Description" />
-
-            <TextView
-                android:id="@+id/task_detail_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.taskDescription}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_user"
-                android:text="User" />
-
-            <TextView
-                android:id="@+id/task_detail_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.taskUser.userName}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_worker"
-                android:text="Worker" />
-
-            <TextView
-                android:id="@+id/task_detail_worker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.taskWorker.userName}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_category"
-                android:text="Category" />
-
-            <TextView
-                android:id="@+id/task_detail_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_next_completion_date"
-                android:text="Deadline" />
-
-            <TextView
-                android:id="@+id/task_detail_next_completion_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.nextCompletionDate}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_cyclic"
-                android:text="Cyclic" />
-
-            <TextView
-                android:id="@+id/task_detail_cyclic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.cyclic}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_repeat_days"
-                android:text="Repeat days" />
-
-            <TextView
-                android:id="@+id/task_detail_repeat_days"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_repeat_until"
-                android:text="Repeat until" />
-
-            <TextView
-                android:id="@+id/task_detail_repeat_until"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.repeatUntil.toString()}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_photos"
-                android:text="Photos" />
-
-            <TextView
-                android:id="@+id/task_detail_photos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_priority"
-                android:text="Priority" />
-
-            <TextView
-                android:id="@+id/task_detail_priority"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.priority}" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_completion_type"
-                android:text="Completion type" />
-
-            <TextView
-                android:id="@+id/task_detail_completion_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.completed}" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_small"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
-                android:id="@+id/task_list_photos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:orientation="horizontal" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@id/task_detail_completion_date"
-                android:text="Completion date" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_large"
+                tools:context=".ui.taskDetail.TaskDetailFragment">
 
-            <TextView
-                android:id="@+id/task_detail_completion_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/roundedblock"
-                android:padding="@dimen/spacing_small"
-                android:layout_marginBottom="@dimen/spacing_small"
-                android:text="@{fullTask.task.completionDate}" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/task_detail_title"
+                    android:text="Title" />
+
+                <TextView
+                    android:id="@+id/task_detail_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:background="@drawable/roundedblock"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@{fullTask.task.taskTitle}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/task_detail_description"
+                    android:text="Description" />
+
+                <TextView
+                    android:id="@+id/task_detail_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:background="@drawable/roundedblock"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@{fullTask.task.taskDescription}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/task_detail_user"
+                    android:text="Task Owner" />
+
+                <TextView
+                    android:id="@+id/task_detail_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:background="@drawable/roundedblock"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@{fullTask.taskUser.userName}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/task_detail_worker"
+                    android:text="Worker" />
+
+                <include
+                    android:id="@+id/item_contact_mini"
+                    layout="@layout/item_contact_mini"
+                    android:visibility="@{fullTask.task.workerFirebaseKey.equals(``) ? View.GONE : View.VISIBLE}"
+                    bind:worker="@{fullTask.taskWorker}" />
+
+                <Button
+                    android:id="@+id/task_worker_button"
+                    taskBoardWorkerPickerVisibility="@{fullTask}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="@{() -> clickListener.onSelectFromApplications()}"
+                    android:text="@string/select_worker_label" />
+
+                <TextView
+                    android:id="@+id/task_detail_worker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:background="@drawable/roundedblock"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@{fullTask.taskWorker.userName}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/task_detail_category"
+                    android:text="Categories" />
+
+                <TextView
+                    android:id="@+id/task_detail_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:background="@drawable/roundedblock"
+                    android:padding="@dimen/spacing_small" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/task_detail_next_completion_date"
+                    android:text="Deadline" />
+
+                <TextView
+                    android:id="@+id/task_detail_next_completion_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:background="@drawable/roundedblock"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@{fullTask.task.nextCompletionDate}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/task_detail_cyclic"
+                    android:text="Cyclic" />
+
+                <TextView
+                    android:id="@+id/task_detail_cyclic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:background="@drawable/roundedblock"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@{fullTask.task.cyclic}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/task_detail_priority"
+                    android:text="Priority" />
+
+                <TextView
+                    android:id="@+id/task_detail_priority"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:background="@drawable/roundedblock"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@{fullTask.task.priority}" />
 
 
-        </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 </layout>

@@ -15,4 +15,6 @@ interface TaskCreateListener{
     fun onCyclicNoneClicked()
     fun onSetNextDateClicked()
     fun setRemote(view: View)
+    fun setTaskToBoard()
+    fun setTaskToUser()
 }

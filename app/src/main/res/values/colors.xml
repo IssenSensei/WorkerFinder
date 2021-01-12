@@ -15,6 +15,12 @@
     <color name="colorOther">@color/purple_A400</color>
     <color name="colorPositive">#43A047</color>
     <color name="colorNeutral">#2196F3</color>
+    <color name="colorAbandon">@color/red_900</color>
+    <color name="colorActive">@color/light_blue_A200</color>
+    <color name="colorPending">@color/yellow_A100</color>
+    <color name="colorCompleted">@color/green_600</color>
+    <color name="colorAccept">@color/green_600</color>
+    <color name="colorRefuse">@color/red_900</color>
 
 
     <color name="overlay_dark_10">#1A000000</color>

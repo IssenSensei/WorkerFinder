@@ -1,5 +1,7 @@
 package com.issen.workerfinder.ui.taskCreate
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.issen.workerfinder.database.models.DashboardNotification
@@ -25,6 +27,10 @@ class TaskCreateViewModel(
 
     private val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
 
+    private val _isTaskBoard = MutableLiveData<Boolean>()
+    val isTaskBoard: LiveData<Boolean>
+        get() = _isTaskBoard
+
     val repeatDays = mutableListOf<TaskModelRepeatDays>()
     val photos = mutableListOf<TaskModelPhotos>()
 
@@ -33,6 +39,10 @@ class TaskCreateViewModel(
 //            repository.insert(taskModel, photos, repeatDays)
 //        }
 //    }
+
+    fun setIsTaskBoardValue(value: Boolean){
+        _isTaskBoard.value = value
+    }
 
     fun insert(taskModel: TaskModel) {
         viewModelScope.launch(Dispatchers.IO) {
